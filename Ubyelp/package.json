@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "yelp-fusion": "^3.0.0"
   }
 }
