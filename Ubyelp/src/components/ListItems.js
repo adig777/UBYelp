@@ -11,13 +11,11 @@ function ListItems(props){
          <input type="text" id={item.key} value={item.text} onChange={(e)=>{
              props.setUpdate(e.target.value,item.key)}}/>
         <span>
-       
         <FontAwesomeIcon className="f1" onClick={() => {
             props.deleteItem(item.key)
         }} icon="trash" />
         </span>
      </p>
-     
     </div>})
     return <div>
         <FlipMove duration={300} easing="ease-in-out">
