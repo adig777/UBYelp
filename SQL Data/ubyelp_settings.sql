@@ -23,16 +23,17 @@ DROP TABLE IF EXISTS `settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `settings` (
-  `accuont_id` int NOT NULL,
+  `account_id` int NOT NULL,
   `address` text,
   `theme` text,
   `filter_distance` int DEFAULT '-1',
   `filter_rating` int DEFAULT '-1',
-  `filter_price_range` int DEFAULT '-1',
+  `filter_price_min` int DEFAULT '-1',
+  `filter_price_max` int DEFAULT '-1',
   `filter_open` tinyint DEFAULT '0',
   `filter_in_list` text,
   `filter_not_list` text,
-  PRIMARY KEY (`accuont_id`)
+  PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +43,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
+INSERT INTO `settings` VALUES (663,NULL,NULL,-1,-1,-1,-1,0,NULL,NULL);
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-24 18:54:36
+-- Dump completed on 2022-03-31  1:12:40

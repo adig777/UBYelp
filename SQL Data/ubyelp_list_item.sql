@@ -26,6 +26,8 @@ CREATE TABLE `list_item` (
   `list_item_id` int NOT NULL,
   `name` text NOT NULL,
   `desc` longtext,
+  `rating` int DEFAULT NULL,
+  `link` text,
   PRIMARY KEY (`list_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,6 +38,7 @@ CREATE TABLE `list_item` (
 
 LOCK TABLES `list_item` WRITE;
 /*!40000 ALTER TABLE `list_item` DISABLE KEYS */;
+INSERT INTO `list_item` VALUES (1,'2nd Apple Store','hated apple store',1,'www.yelp.com/asfsdhkgdl');
 /*!40000 ALTER TABLE `list_item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-02-24 18:54:36
+-- Dump completed on 2022-03-31  1:12:40
