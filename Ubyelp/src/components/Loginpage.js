@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import './Loginpage.css';
+import { useNavigate } from "react-router-dom";
 import SearchBar from './SearchBar/SearchBar.js';
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
   
     function validateForm() {
       return username.length > 0 && password.length > 0;
@@ -21,10 +23,9 @@ export default function Login() {
             })
         }).then((response) => response.json()
         ).then((id) => {
-            console.log(id);
-            if (id != -1) {
+            if (id !== '-1') {
                 //If login success, redirect with ?id=[id]
-                return (<SearchBar />);
+                navigate('/test', { 'state': {'id':id}});
             } else {
                 //Please try again message
             }

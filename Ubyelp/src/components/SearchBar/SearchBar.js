@@ -1,5 +1,6 @@
 import React from 'react';
 import './SearchBar.css';
+import { useLocation } from "react-router-dom";
 
 class SearchBar extends React.Component {
     constructor(props) {
