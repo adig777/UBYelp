@@ -24,12 +24,10 @@ class Accounts {
     //Log in
     async logIn(username, password) {
         let id = await this.#queryLogIn(username, password);
-        if (id == -1) {
-            throw 'Invalid login';
-        } else {
-            console.log('Account '+ id + ' logged in')
-            return id;
+        if (id != -1) {
+            console.log('Account ' + id + ' logged in');
         }
+        return id;
     }
 
     //Create account
@@ -99,7 +97,7 @@ class Accounts {
     }
 }
 
-modeule.exports = Accounts;
+module.exports = Accounts;
 
 async function test() {
     let accounts = new Accounts();
@@ -112,4 +110,4 @@ async function test() {
     accounts.disconnect();
 }
 
-test();
+//test();
