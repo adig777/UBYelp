@@ -11,7 +11,7 @@ const SELECT_ALL_PRODUCTS_QUERY = 'SELECT * FROM products';
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Yin133700331',
+    password: '',
     database: 'sys' 
 });
 
