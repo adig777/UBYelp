@@ -21,7 +21,7 @@ class Accounts {
         this.Connection.disconnect();
     }
 
-    //Log in
+    //Log in (accepts both username and email)
     async logIn(username, password) {
         let id = await this.#queryLogIn(username, password);
         if (id != -1) {
@@ -31,14 +31,15 @@ class Accounts {
     }
 
     //Create account
-    async createAccount(username, password, repeatPassword, email) {
-        //Input check
-        if (username === '') throw 'Username cannot be empty';
-        if (password !== repeatPassword) throw 'Passwords do not match';
-        if (email === '') throw 'Please provide your email';
+    async createAccount(username, password, email) {
+        //Input check (checked in front-end)
+        //if (username === '') throw 'Username cannot be empty';
+        //if (password !== repeatPassword) throw 'Passwords do not match';
+        //if (email === '') throw 'Please provide your email';
 
-        //Non-duplicate username (email could be unique)
-        if (await this.#queryValueExists('username', username)) throw 'Username already exists';
+        //Non-duplicate username and email
+        if (await this.#queryValueExists('username', username)) return -1;
+        if (await this.#queryValueExists('email', email)) return -2;
 
         //Create id based on user hash
         let id = 0;
@@ -65,10 +66,17 @@ class Accounts {
 
     #queryLogIn(username, password) {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT account_id FROM ' + accounts_table + ' WHERE username=\'' + username + '\' AND password=\'' + password + '\'';
+            let query = 'SELECT account_id FROM ' + accounts_table + ' WHERE username=\'' + username + '\' AND password=\'' + password + '\'';
             this.Connection.query(query, function (err, rows, fields) {
                 if (err) reject(err);
-                if (rows.length!=1) {
+                if (rows.length==1) {
+                    resolve(rows[0].account_id);
+                }
+            });
+            query = 'SELECT account_id FROM ' + accounts_table + ' WHERE email=\'' + username + '\' AND password=\'' + password + '\'';
+            this.Connection.query(query, function (err, rows, fields) {
+                if (err) reject(err);
+                if (rows.length != 1) {
                     resolve(-1);
                 } else {
                     resolve(rows[0].account_id);

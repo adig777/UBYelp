@@ -7,9 +7,10 @@ import {
     Redirect,
 } from "react-router-dom";
 //import FullList from './components/FullList';
-import Loginpage from './components/Loginpage';
+import Loginpage from './components/Login/Loginpage';
 import SearchBar from './components/SearchBar/SearchBar';
 import TestTransferId from './components/TestTransferId';
+import Signup from './components/Signup/Signup';
 
 function App() {
     return (
@@ -18,7 +19,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Loginpage/>}/>
                     <Route path='/search' element={<SearchBar />} />
-                    <Route path='/test' element={<TestTransferId />} />
+                    <Route path='/signup' element={<Signup />} />
                 </Routes>
             </Router>
         </>

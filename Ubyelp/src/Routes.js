@@ -14,6 +14,12 @@ app.post('/login', async (req, res) => {
     res.end(''+id); //If returned -1, login failed
 });
 
+app.post('/signup', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let id = await accounts.createAccount(input.username, input.password, input.email);
+    res.end(''+id); //Returns message, if failed
+});
+
 app.listen(3001, () => {
     console.log('Route.js running');
 });
