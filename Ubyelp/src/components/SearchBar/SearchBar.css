@@ -12,18 +12,18 @@
     display: flex;
     justify-content: center;
     margin-bottom: 2.22rem;
-    color: #ffffff;
+    color: #ede7e7;
   }
   
   .SearchBar-sort-options li {
     cursor: pointer;
     width: 4.33rem;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid rgb(225, 222, 234);
     padding: 0 2.58rem .33rem 2.58rem;
     line-height: 1.13;
     text-align: center;
     font-weight: 600;
-    font-size: .83rem;
+    font-size: 1rem;
     transition: color .25s;
   }
   
@@ -36,21 +36,92 @@
     border-bottom: 1px solid #f0c36c;
     color: #f0c36c;
   }
+
+
+
+  .SearchBar-filter-prices ul {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.22rem;
+    color: hsl(0, 32%, 93%);
+  }
+  
+  .SearchBar-filter-prices li {
+    cursor: pointer;
+    width: 2rem;
+    border-bottom: 1px solid rgb(225, 222, 234);
+    padding: 0 2.58rem .33rem 2.58rem;
+    line-height: 1.13;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color .25s;
+  }
+  
+  .SearchBar-filter-prices li:hover {
+    color: #d4cfcf;
+  }
+  
+  .SearchBar-filter-prices li.active,
+  .SearchBar-filter-prices li.active:hover {
+    border-bottom: 1px solid #f0c36c;
+    color: #f0c36c;
+  }
+
+
+
+
+  .SearchBar-filter-openNow ul {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.22rem;
+    color: hsl(0, 32%, 93%);
+  }
+  
+  .SearchBar-filter-openNow li {
+    cursor: pointer;
+    width: 2rem;
+    border-bottom: 1px solid rgb(225, 222, 234);
+    padding: 0 2.58rem .33rem 2.58rem;
+    line-height: 1.13;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color .25s;
+  }
+  
+  .SearchBar-filter-openNow li:hover {
+    color: #d4cfcf;
+  }
+  
+  .SearchBar-filter-openNow li.active,
+  .SearchBar-filter-openNow li.active:hover {
+    border-bottom: 1px solid #f0c36c;
+    color: #f0c36c;
+  }
+
+
+
+
   
   .SearchBar-fields {
     display: flex;
     justify-content: center;
     margin-bottom: 2.88rem;
+
   }
   
   .SearchBar-fields input {
     width: 21rem;
-    padding: .66rem 1rem;
+    padding: 1.1rem 1rem;
     margin-right: 2.22rem;
     border: 1px solid #fff;
     border-radius: 4px;
-    font-size: .77rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #130475;
+    font-style: italic;
+  
   }
   
   .SearchBar-fields input:last-child {
@@ -58,12 +129,6 @@
   }
   
 
-  .SearchBar-filter{
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-  }
-  
 
   .SearchBar-submit {
     text-align: center;
@@ -71,10 +136,10 @@
   
   .SearchBar-submit a {
     border-radius: 4px;
-    padding: .72rem 1.7rem;
+    padding: 0.9rem 1.7rem;
     background-color: #cca353;
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 650;
     transition: background-color .5s;
   }
   
@@ -92,6 +157,19 @@
       margin-left: 2rem;
       margin-right: 2rem;
     }
+
+
+    .SearchBar-filter-prices ul {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+  
+
+    .SearchBar-filter-openNow ul {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+  
   
     .SearchBar-fields {
       flex-direction: column;
@@ -103,10 +181,11 @@
       margin-bottom: .86rem;
     }
 
-    .SearchBar-filter{
-      margin-left: 0.7rem;
-      margin-right: 0.7rem;
-    }
+
+  .SearchBar-submit {
+    flex-direction: column;
+    align-items: center;
+  }
 
 
   }
