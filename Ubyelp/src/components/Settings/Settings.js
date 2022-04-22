@@ -1,7 +1,8 @@
 import React from "react";
-import ThemeProvider from "./Themes/ThemeProvider";
 import ThemeSetter from "./ThemeSetter";
-import './Settings.css'
+import "./Settings.css";
+import ThemeProvider from "./Themes/ThemeProvider";
+
 
 class Settings extends React.Component{
     constructor(props) {
@@ -11,9 +12,11 @@ class Settings extends React.Component{
             filters: {
                 location: false,
                 rating: false,
-                review_count: false,
                 open: false,
-                price: false
+                1: false,
+                2: false,
+                3: false,
+                4: false
             }
         }   
 }
@@ -21,7 +24,11 @@ Handlecheckbox = event => {
     let state = this.state;
     state.filters[event.target.value] = event.target.checked;
     this.setState(state);
+    console.log(this.state.filters)
     }
+HandleSave = event => {
+
+}
 
     render(){
         return(
@@ -30,7 +37,10 @@ Handlecheckbox = event => {
                     Settings
                 </h1>
                 <div>
-                    Select Default Filters:
+                    Select Default Filters:&nbsp;&nbsp;
+                <a onClick={this.HandleSave}>
+                Save
+                </a>
                 </div>
                 <div>
                     Closest to me <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "location"/>
@@ -39,17 +49,23 @@ Handlecheckbox = event => {
                     Highest Rating <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "rating"/>
                 </div>
                 <div>
-                    Number of Reviews <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "review_count"/>
-                </div>
-                <div>
                     Currently Open <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "open"/>
                 </div>
                 <div>
-                    Cheapest first <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "price"/>
+                  Price
+                </div>
+                <div>
+                    $ <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "1"/>
+                    &nbsp;&nbsp;$$ <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "2"/>
+                    &nbsp;&nbsp;$$$ <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "3"/>
+                    &nbsp;&nbsp;$$$$ <input onChange={this.Handlecheckbox} type = "checkbox" name = "filters" value = "4"/>
+                </div>
+                <div className="ListFilter">
+                List to filter: 
                 </div>
                 <ThemeProvider>
                     <div className="themeSwitch">
-                    Light/Dark Theme:
+                    Light/Dark Theme:&nbsp;&nbsp;
                     <ThemeSetter/>
                     </div>
                 </ThemeProvider>
