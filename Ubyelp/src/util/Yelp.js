@@ -13,14 +13,15 @@ x.send();
 
 
 const Yelp = {
-    search (term, location, sortBy) {
-        return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&sort_by=${sortBy}`,
+    search (term, location, sortBy, price, open_now, limit, radius) {
+        return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&sort_by=${sortBy}&price=${price}&open_now=${open_now}&limit=${limit}&radius=${radius}`,
                     {
                         headers: {
                             Authorization: `Bearer ${apiKey}`
                         }
-                    }).then(response => {
+                    }).then(response => {         
                         return response.json();
+
                     }).then(jsonResponse => {
                         if(jsonResponse.businesses) {
                             return jsonResponse.businesses.map(business => ({
@@ -34,8 +35,10 @@ const Yelp = {
                                 category: business.categories[0].title,
                                 rating: business.rating,
                                 reviewCount: business.review_count,
-                                price:business.price,  
-                                opentime:business.opentime
+                                price: business.price,
+                                phone:business.phone
+
+
                             }));
                         }
                     });
