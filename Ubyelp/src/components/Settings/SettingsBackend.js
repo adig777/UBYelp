@@ -1,4 +1,4 @@
-const mysqlConnection = require("./mysqlConnection");
+const mysqlConnection = require("../MySQL/mysqlConnection");
 
 const accounts_table = "account";
 const settings_table = "settings";
@@ -104,7 +104,7 @@ class Settings {
     }
 
     //Default filters
-    async getFilter(filterName) {   //Names: 'distance', 'rating', 'price_min', 'price_max', 'open', 'in_list', 'not_list'
+    async getFilter(filterName) {   //Names: 'distance', 'rating', 'price', 'open', 'in_list', 'not_list'
         return await this.#queryGetSettingsValue('filter_'+filterName);
     }
 

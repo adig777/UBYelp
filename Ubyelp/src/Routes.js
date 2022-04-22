@@ -1,7 +1,7 @@
 const express = require('express');
 //import Connection from './mysqlConnection';
-const AccountsBackend = require('./components/AccountsBackend');
-const SearchBackend = require('./components/SearchBackend');
+const AccountsBackend = require('./components/Signup/AccountsBackend');
+const SearchBackend = require('./components/Searchbar/SearchBackend');
 
 var accounts = new AccountsBackend();
 const app = express();

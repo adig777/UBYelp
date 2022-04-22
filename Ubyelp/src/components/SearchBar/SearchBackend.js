@@ -1,10 +1,10 @@
-var mysqlConnection = require("./mysqlConnection");
+var mysqlConnection = require("../MySQL/mysqlConnection");
 const yelp = require('yelp-fusion'); //Source: https://github.com/tonybadguy/yelp-fusion
 const yelp_client = yelp.client('jw1QTKNWV6TdHa85nyk7ZCqS2IMQYyu0RVWbED6-3ha2r4B1AEZ_G1yX5f93JDaCR798BScRnZ0SGfyheSzkUDA-wA_DxuDfWMgcp7qMLEF56nTMkiZZw_IcfBgsYnYx');
 const util = require('util');
 
-var SettingsBackend = require('./SettingsBackend');
-var ListBackend = require('./ListBackend');
+var SettingsBackend = require('../Settings/SettingsBackend');
+var ListBackend = require('../BusinessList/ListBackend');
 
 const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 
@@ -94,7 +94,7 @@ class Search {
     //Get default filters
     async getDefaultFilters() {
         //Names: 
-        let names = ['distance', 'rating', 'price_min', 'price_max', 'open', 'in_list', 'not_list']
+        let names = ['distance', 'rating', 'price', 'open', 'in_list', 'not_list']
         let Settings = new SettingsBackend(this.account_id);
         let filters = {};
         for (let i = 0; i < names.length; i++) {

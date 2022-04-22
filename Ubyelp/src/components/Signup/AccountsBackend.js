@@ -1,4 +1,4 @@
-var mysqlConnection = require("./mysqlConnection");
+var mysqlConnection = require("../MySQL/mysqlConnection");
 
 const accounts_table = "account";
 const settings_table = "settings";

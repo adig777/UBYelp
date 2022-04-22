@@ -15,7 +15,7 @@ restuarant = {
     id: #
 }
 */
-const mysqlConnection = require("./mysqlConnection");
+const mysqlConnection = require("../MySQL/mysqlConnection");
 
 const account_list_relation = 'has_lists';
 const list_item_relation = 'contains_item';
