@@ -13,17 +13,15 @@ class App extends React.Component {
     this.searchYelp = this.searchYelp.bind(this);
   }
 
-  
   // Queries Yelp for food/product and returns local businesses
-  searchYelp(term, location, price, sortBy) {
-    Yelp.search(term, location, price, sortBy).then(businesses => {
+  searchYelp(term, location, sortBy, price, open_now, limit, radius) {
+    Yelp.search(term, location, sortBy, price, open_now, limit, radius).then(businesses => {
       this.setState({
         businesses: businesses
       });
     });
   }
   
-
   // Renders the top half and bottom half of the application
   render() {
     return (
