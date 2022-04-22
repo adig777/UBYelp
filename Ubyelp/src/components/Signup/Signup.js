@@ -48,10 +48,18 @@ export default function Signup() {
     }
     return (
         <div className="Signup">
-            <h1>Sign up</h1>
+
+
+          <div className="form-group">
+            <h5>Sign Up</h5>
+           </div>
+
             <Form onSubmit={handleSubmit}>
+ 
+            <div className="form-group">   
+            <p>
+            <label for="username">Enter Username:</label>
                 <Form.Group size="lg" controlId="username">
-                    <Form.Label>Username</Form.Label>
                     <Form.Control
                         autoFocus
                         type="username"
@@ -59,33 +67,57 @@ export default function Signup() {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </Form.Group>
+                </p>
+            </div>
+
+            <div className="form-group">
+                <p>
+            <label for="password">Enter Password:</label>            
                 <Form.Group size="lg" controlId="password">
-                    <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
+                </p>
+            </div>
+
+            <div className="form-group">
+                <p>
+                <label for="password">Reenter Password:</label>
                 <Form.Group size="lg" controlId="repeatPassword">
-                    <Form.Label>Repeat Password</Form.Label>
                     <Form.Control
                         type="password"
                         value={repeatPassword}
                         onChange={(e) => setRepeatPassword(e.target.value)}
                         />
                 </Form.Group>
+                </p>
+             </div>
+
+             <div className="form-group">
+                 <p>
+                <label for="email">Enter Email:</label>
                 <Form.Group size="lg" controlId="email">
-                    <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </Form.Group>
+                </p>
+            </div>
+
+
+            <div className="form-group">
+                <p>
                 <Button block size="lg" type="submit" disabled={!validateForm()}>
-                    Login
+                    Sign Up
                 </Button>
+                </p>
+            </div>
+
                 <div id="error" className="error"></div>
                 <div id="passwordError" className="error"></div>
             </Form>

@@ -38,7 +38,7 @@ CREATE TABLE `list_item` (
 
 LOCK TABLES `list_item` WRITE;
 /*!40000 ALTER TABLE `list_item` DISABLE KEYS */;
-INSERT INTO `list_item` VALUES (1,'2nd Apple Store','hated apple store',1,'www.yelp.com/asfsdhkgdl');
+INSERT INTO `list_item` VALUES (1,'3rd Apple Store','old apple store',1,'www.yelp.com/asfsdhkgdl'),(2,'Aple','local apple store',4,'www.yelp.com/hash'),(3,'Restaurant','food',5,'www.link.gov/pirate'),(4,'Slider\'s','test',5,'https://www.yelp.com/biz/sliders-burgers-san-jose?adjust_creative=KXoRDRuy2bZOLJnNzJ-JhQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=KXoRDRuy2bZOLJnNzJ-JhQ'),(5,'Jack in a Sewer','test',3,'https://www.yelp.com/biz/jack-in-the-box-san-jose-8?adjust_creative=KXoRDRuy2bZOLJnNzJ-JhQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=KXoRDRuy2bZOLJnNzJ-JhQ'),(6,'Jack in a Sewer','test',3,'https://www.yelp.com/biz/jack-in-the-box-san-jose-8?adjust_creative=KXoRDRuy2bZOLJnNzJ-JhQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=KXoRDRuy2bZOLJnNzJ-JhQ'),(7,'Bad entry','asdf',1,'www.link.com');
 /*!40000 ALTER TABLE `list_item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-31  1:12:40
+-- Dump completed on 2022-04-21 18:26:00

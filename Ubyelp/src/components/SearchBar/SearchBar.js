@@ -1,6 +1,5 @@
 import React from 'react';
 import './SearchBar.css';
-import { useLocation } from "react-router-dom";
 
 class SearchBar extends React.Component {
     constructor(props) {
@@ -9,20 +8,17 @@ class SearchBar extends React.Component {
         this.state = {
             term:'',
             location:'',
-            price:'',
             sortBy:'best_match'
         };
 
         this.handleTermChange = this.handleTermChange.bind(this);
         this.handleLocationChange = this.handleLocationChange.bind(this);
-        this.handlePriceChange = this.handlePriceChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
 
         this.sortByOptions = {
             'Best Match': 'best_match',
             'Highest Rated': 'rating',
-            'Most Reviewed': 'review_count',
-            'Open': 'open'
+            'Most Reviewed': 'review_count'
         };
     }
 
@@ -49,17 +45,9 @@ class SearchBar extends React.Component {
         this.setState({location: event.target.value});
     }
 
-
-    // Updates Price input given by user
-    handlePriceChange(event) {
-        this.setState({price: event.target.value});
-    }
-
-
-
     // Queries Yelp for food/product
     handleSearch(event) {
-        this.props.searchYelp(this.state.term, this.state.location, this.state.price, this.state.sortBy);
+        this.props.searchYelp(this.state.term, this.state.location, this.state.sortBy);
         event.preventDefault();
     }
 
@@ -77,7 +65,7 @@ class SearchBar extends React.Component {
         });
     }
 
-    // Renders three input boxes: keyword, location, and price
+    // Renders two input boxes. One for business and the other for location
     render() {
         return (
             <div className="SearchBar">
@@ -87,11 +75,28 @@ class SearchBar extends React.Component {
                     </ul>
                 </div>
                 <div className="SearchBar-fields">
-                    <input placeholder="Enter Keyword e.g. burgers" onChange={this.handleTermChange} />
-                    <input placeholder="Enter Location e.g. San Jose" onChange={this.handleLocationChange} />
-                    <input placeholder="Enter Price e.g. $/$$/$$$" onChange={this.handlePriceChange} /> 
+                    <input placeholder="Enter Keyword. e.g. burgers" onChange={this.handleTermChange} />
+                    <input placeholder="Enter Location. e.g. San Jose" onChange={this.handleLocationChange} />
+                </div>
+
+
+                <div className="SearchBar-filter">
+                    <div className="buttons has-addons">
+                       <button className="button">$</button>
+                       <button className="button">$$</button>
+                       <button className="button">$$$</button>
+                    </div>
+
+                    <div className="buttons has-addons">
+                       <button className="button">Open Now</button>
+                    </div>
 
                 </div>
+
+                
+
+
+
                  <div className="SearchBar-submit">
                     <a onClick={this.handleSearch}>Search</a>
                 </div>

@@ -10,9 +10,9 @@ const yelp_client = yelp.client('jw1QTKNWV6TdHa85nyk7ZCqS2IMQYyu0RVWbED6-3ha2r4B
 
 yelp_client.search({ //Will take a bit to load
     term: 'fast food',
-    location: 'san jose, ca',
+    location: '1 washington square, san jose'
 }).then(response => {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 20; i++) {
         console.log(response.jsonBody.businesses[i].name);
     }
     console.log();

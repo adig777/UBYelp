@@ -28,8 +28,7 @@ CREATE TABLE `settings` (
   `theme` text,
   `filter_distance` int DEFAULT '-1',
   `filter_rating` int DEFAULT '-1',
-  `filter_price_min` int DEFAULT '-1',
-  `filter_price_max` int DEFAULT '-1',
+  `filter_price` int DEFAULT '-1',
   `filter_open` tinyint DEFAULT '0',
   `filter_in_list` text,
   `filter_not_list` text,
@@ -43,7 +42,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (663,NULL,NULL,-1,-1,-1,-1,0,NULL,NULL);
+INSERT INTO `settings` VALUES (663,NULL,NULL,-1,-1,-1,0,NULL,NULL),(1000,NULL,NULL,-1,-1,-1,0,NULL,NULL);
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-31  1:12:40
+-- Dump completed on 2022-04-21 18:26:00

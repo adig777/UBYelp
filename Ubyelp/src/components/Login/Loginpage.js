@@ -34,11 +34,18 @@ export default function Login() {
     }
     return (
       <div className="Login">
+
+       <meta charset="UTF-8"></meta>
+
         <header>
           <h1>UBYelp</h1>
-          <h4>(It's Yelp, but UnBiased)</h4>
+          <h4>&#127854;It's Yelp, but UnBiased&#127856;</h4>
         </header>
+
+
+
         <Form onSubmit={handleSubmit}>
+            
             <Form.Group size="lg" controlId="username">
             <Form.Label className="input-header">Enter Username or Email</Form.Label>
             <Form.Control
@@ -49,6 +56,8 @@ export default function Login() {
                 onChange={(e) => setUsername(e.target.value)}
             />
             </Form.Group>
+
+
             <Form.Group  size="lg" controlId="password">
             <Form.Label className="input-header">Password</Form.Label>
             <Form.Control
@@ -58,12 +67,27 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             </Form.Group>
-            <Button block size="lg" onClick={() => { navigate('/signup') }}>
-                SignUp
-            </Button>
+
+            <p>
             <Button block size="lg" type="submit" disabled={!validateForm()}>
-            Login
+            Log In
             </Button>
+            </p>
+
+            <p>
+                <label>Don't Have an Account Yet?</label>
+            </p>
+
+            <p>
+            <Button block size="lg" onClick={() => { navigate('/signup') }}>
+                Sign Up
+            </Button>
+            </p>
+
+
+            
+
+
         </Form>
         <div id="error" className="error"></div>
       </div>

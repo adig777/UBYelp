@@ -165,7 +165,7 @@ class ListBackend{
         console.log('List item name changed');
     }
 
-    //Get all lists from Database
+    //Get all non-empty lists from Database
     async getLists(callback) {
         const query = 'SELECT list.name AS \'listname\', list.desc AS \'listdesc\', list_item.name AS \'itemname\', list_item.desc AS \'itemdesc\', list_item.rating AS \'rating\', list_item.link AS \'link\' FROM ' + account_list_relation + ' JOIN ' + list_item_relation + ' USING(list_id) JOIN ' + list_table + ' USING(list_id) JOIN ' + list_item_table + ' USING(list_item_id) WHERE `account_id`=' + this.account_id;
         this.Connection.query(query, function (err, rows, fields) {
@@ -279,14 +279,14 @@ module.exports = ListBackend;
 
 //Testing
 async function test() {
-    var list = new ListBackend(1);
+    var list = new ListBackend(663);
     await list.createList('new', 'desc');
-    await list.editListName(1, 'new name');
+    await list.editListName(1, 'new name 2');
     await list.editListDescription(1, 'new desc');
     await list.addListItem(1, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);
-    await list.editItemDescription(1, 'hated apple store');
+    await list.editItemDescription(1, 'old apple store');
     await list.editItemRating(1, 1);
-    await list.editItemName(1, '2nd Apple Store');
+    await list.editItemName(1, '3rd Apple Store');
     await list.getLists((err, list) => {
         if (err) throw err;
         else {
