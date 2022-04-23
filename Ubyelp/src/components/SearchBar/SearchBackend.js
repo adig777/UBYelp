@@ -11,12 +11,11 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 //mySQL tables
 
 //TODO:
-//-*Major cahnge: price default filter changed (recheck Settings and SearchBar Backend)
-//-ListBackend error handling
-//-Adding to list (handle in Routes)
-//-CSS for filter buttons
-//-Finish filter buttons on frontend
-//-Connect to backend
+//-Connect to backend: addlistitem
+// -ListBackend: create a getListId function
+//-Fix BusinessList and Business processing
+// -Adding to list (handle in Routes)
+//-Wait for Searchbar frontend to finish
 
 class Search {
     constructor(account_id) {
@@ -26,9 +25,9 @@ class Search {
         this.disconnect = this.disconnect.bind(this);
         this.search = this.search.bind(this);
         this.getDefaultFilters = this.getDefaultFilters.bind(this);
-        this.getListNames = this.getListNames.bind(this);
+        this.getListNamesAndIds = this.getListNamesAndIds.bind(this);
         this.getLists = this.getLists.bind(this);
-        this.#processPriceRange;
+        //this.#processPriceRange;
     }
 
     //Connection
@@ -38,10 +37,15 @@ class Search {
 
     //According to API, location is required
     //Search (handle all filters)
-    async search(keywords, location, sort_by, radius, rating, price_min, price_max, open, in_list, not_list, callback) {
+    async search(keywords, location, sort_by, radius, rating, price, open, in_list, not_list, callback) {
         let open_now = false;
         if (radius === -1) radius = 40000;
-        if (open === 1) open = false;
+        if (price === '') price = '1,2,3,4';
+        if (open === 1){
+            open = true;
+        } else {
+            open = false;
+        }
 
         let results = {};
         let response = await yelp_client.search({ //Will take a bit to load
@@ -49,7 +53,7 @@ class Search {
             'location': location,
             'sort_by': sort_by,
             'radius': radius,   //In meters
-            'price': this.#processPriceRange(price_min, price_max),
+            'price': price,
             'open_now': open_now,
             'limit': QUERYLIMIT
         });
@@ -84,7 +88,7 @@ class Search {
             }
             if (rating !== -1) {
                 results = results.filter((business) => {
-                    return business.url == rating;    //Filter rating
+                    return business.rating <= rating;    //Filter rating
                 });
             }
             callback(results);
@@ -104,17 +108,17 @@ class Search {
         return filters;
     }
 
-    getListNames(callback) {
+    getListNamesAndIds(callback) {
         let listBackend = new ListBackend(this.account_id);
-        let results = [];
+        let results = {};
         listBackend.getLists((err, lists) => {
             if (err) throw err;
             for (const listName in lists) {
-                results.push(listName);
+                results[listName] = lists[listName].id;
             }
             callback(results);
+            listBackend.disconnect();
         });
-        listBackend.disconnect();
     }
 
     async getLists(inListName, notListName, callback) {
@@ -135,6 +139,7 @@ class Search {
         listBackend.disconnect();
     }
 
+    //Deprecated
     #processPriceRange(min, max) {
         let rank_min = 1;
         if (min >= 20) rank_min++;
@@ -158,20 +163,22 @@ class Search {
 
 async function test() {
     var search = new Search(663);
-    await search.search('fast food', 'san jose, 95112', 'distance', -1, -1, -1, -1, 0, 'new name 2', '', await util.promisify((x) => {
-        for (key in x) {
+    await search.search('fast food', 'san jose, 95112', 'distance', -1, -1, -1, -1, 0, 'new name 2', 'list3', await util.promisify((x) => {
+       for (let key in x) {
             console.log(x[key].name + ' - ' + x[key].url);
         }
     }));
     
-    search.getListNames(await util.promisify((results) => {
+    search.getListNamesAndIds(await util.promisify((results) => {
         console.log(results);
     }));
 
     console.log(await search.getDefaultFilters());
 
+
+
     search.disconnect();
 }
 
-test();
+//test();
 module.exports = Search;
