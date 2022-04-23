@@ -24,7 +24,6 @@ Handlecheckbox = event => {
     let state = this.state;
     state.filters[event.target.value] = event.target.checked;
     this.setState(state);
-    console.log(this.state.filters)
     }
 HandleSave = event => {
 
