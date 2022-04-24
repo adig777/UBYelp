@@ -2,8 +2,7 @@ import React from "react";
 import "./list.css";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
-import RemoveIcon from "@mui/icons-material/Remove";
-import Fab from "@mui/material/Fab";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function List() {
   const [listname, setlistname] = React.useState("");
@@ -77,15 +76,19 @@ export default function List() {
       {list.map((item) => (
         <div key={item.id}>
           <div>
+            <Button>
             {item.text}
+            </Button>
             &nbsp;&nbsp;
-            <Fab
+            <Button
               size="small"
               className="deletebutton"
+              variant="outlined"
+              startIcon={<DeleteIcon/>}
               onClick={() => deleteitem(item.id)}
             >
-              <RemoveIcon />
-            </Fab>
+              Delete
+            </Button>
           </div>
         </div>
       ))}
@@ -98,4 +101,3 @@ export default function List() {
     </div>
   );
 }
-
