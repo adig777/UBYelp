@@ -40,16 +40,15 @@ app.post('/defaultfilters', async (req, res) => {
 app.post('/listnames', (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Search = new SearchBackend(input.id);
-    Search.getListNames((names) => {
+    Search.getListNamesAndIds((names) => {
         res.end(JSON.stringify(names));
     });
 });
 
 app.post('/addlistitem', async (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
-    let List = new ListBackend(input.id);
-    await List.addListItem()
-    //list_id, name, link, desc, rating
+    let List = new ListBackend(input.account_id);
+    res.end(await List.addListItem(input.list_id, input.name, input.link, input.desc, input.rating));
 });
 
 
@@ -59,30 +58,6 @@ app.listen(3001, () => {
 });
 
 /* Fetch calls saved here until Front-ends are done
-
-//SearchBar
-fetch('http://localhost:3001/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: JSON.stringify({
-                //Temporary variables used 
-                //Alternative option: JSON.stringify(this.filters)
-                id: id,
-                keywords: 'fast food',
-                location: 'san jose, 95112',
-                sort_by: 'distance',
-                radius: -1,
-                rating: -1,
-                price: '',
-                open: 0,
-                in_list: '',
-                not_list: ''
-            })
-        }).then((response) => response.json()
-        ).then((result) => {
-            //Send to account_id and results BusinessList
-            navigate('/results', { 'state': { 'id': id, 'results': result } });
-        });
 
 //Get Default Filters
 fetch('http://localhost:3001/defaultfilters', {

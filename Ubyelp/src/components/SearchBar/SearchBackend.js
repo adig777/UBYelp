@@ -11,11 +11,15 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 //mySQL tables
 
 //TODO:
+//**Focus on main parts for now, (Business, no-crash Searching, BusinessList)
+//-Searchbar frontend to finish
+// *Radius set to numbers only up to 40000 + Automatically fill default value on load
+// *Bug: Button hightlights stop when clicking sortBy buttons
+// *Require keyword and location/try-catch crashes
+// *Change price to toggle, not choose
 //-Connect to backend: addlistitem
-// -ListBackend: create a getListId function
-//-Fix BusinessList and Business processing
-// -Adding to list (handle in Routes)
-//-Wait for Searchbar frontend to finish
+// -(ListBackend: create a getListId function)
+//-Business bug (modal not unique)
 
 class Search {
     constructor(account_id) {
@@ -40,7 +44,7 @@ class Search {
     async search(keywords, location, sort_by, radius, rating, price, open, in_list, not_list, callback) {
         let open_now = false;
         if (radius === -1) radius = 40000;
-        if (price === '') price = '1,2,3,4';
+        if (price === -1) price = '1,2,3,4';
         if (open === 1){
             open = true;
         } else {
@@ -163,7 +167,7 @@ class Search {
 
 async function test() {
     var search = new Search(663);
-    await search.search('fast food', 'san jose, 95112', 'distance', -1, -1, -1, -1, 0, 'new name 2', 'list3', await util.promisify((x) => {
+    await search.search('fast food', 'san jose, 95112', 'distance', -1, -1, -1, 0, 'new name 2', 'list3', await util.promisify((x) => {
        for (let key in x) {
             console.log(x[key].name + ' - ' + x[key].url);
         }

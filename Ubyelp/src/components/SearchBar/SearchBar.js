@@ -1,51 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SearchBar.css';
-
-class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            term:'',
-            location:'',
-            sortBy:'best_match',
-            price: 2,
-            open_now: true,
-            limit: 20,
-            radius: 30000
-        };
-
-        this.handleTermChange = this.handleTermChange.bind(this);
-        this.handleLocationChange = this.handleLocationChange.bind(this);
-        this.handleLimitChange = this.handleLimitChange.bind(this);
-        this.handleRadiusChange = this.handleRadiusChange.bind(this);
-        this.handleSearch = this.handleSearch.bind(this);
-
-        this.sortByOptions = {
-            'Best Match': 'best_match',
-            'Highest Rated': 'rating',
-            'Most Reviewed': 'review_count'
-        };
-
-        this.filterByPrices = {
-            '$': 1,
-            '$$': 2,
-            '$$$': 3,
-            '$$$$': 4
-        };
-
-        this.filterByOpenNows = {
-           'Open': true,
-           'Closed': false
-        };
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
+export default function SearchBar() {
+    const { state } = useLocation();
+    const { account_id } = state;
+    const navigate = useNavigate();
 
-    }
+    var thisState = {
+        id: account_id,
+        term:'',
+        location:'',
+        sortBy:'best_match',
+        price: 2,
+        open_now: true,
+        radius: 30000
+    };
+
+    const sortByOptions = {
+        'Best Match': 'best_match',
+        'Highest Rated': 'rating',
+        'Most Reviewed': 'review_count'
+    };
+
+    const filterByPrices = {
+        '$': 1,
+        '$$': 2,
+        '$$$': 3,
+        '$$$$': 4
+    };
+
+    const filterByOpenNows = {
+        'Open Now': 1,
+        'Hours don\'t matter': 0    //Needs a better name
+    };
+
+
+    //Initialize state
+    const [id, unused] = useState(account_id);
+    const [term, setTerm] = useState('');
+    const [location, setLocation] = useState('');
+    const [sortBy, setSortBy] = useState('best_match');
+    const [radius, setRadius] = useState(30000);
+    const [rating, setRating] = useState('-1');
+    const [price, setPrice] = useState(2);
+    const [open_now, setOpenNow] = useState(1);
+    const [in_list, setInList] = useState('');
+    const [not_list, setNotList] = useState('');
+    fetch('http://localhost:3001/defaultfilters', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: JSON.stringify({
+            'id': id
+        })
+    }).then((response) => response.json()
+    ).then((filters) => {
+        setRadius(filters.distance);
+        setRating(filters.rating);
+        setPrice(filters.price);
+        setOpenNow(filters.open);
+        setInList(filters.in_list);
+        setNotList(filters.not_list);
+    });
+
 
     // Determines which sort method to highlight
-    getSortByClass(sortByOption) {
-        if(this.state.sortBy === sortByOption) {
+    function getSortByClass(sortByOption) {
+        if(sortBy === sortByOption) {
             return 'active';
         }
         return '';
@@ -53,8 +76,8 @@ class SearchBar extends React.Component {
 
 
 
-    getFilterByPriceClass(filterByPrice){
-        if(this.state.price === filterByPrice) {
+    function getFilterByPriceClass(filterByPrice){
+        if (price === filterByPrice) {
             return 'active';
         }
         return '';
@@ -63,8 +86,8 @@ class SearchBar extends React.Component {
 
 
 
-    getFilterByOpenNowClass(filterByOpenNow){
-        if(this.state.open_now === filterByOpenNow) {
+    function getFilterByOpenNowClass(filterByOpenNow){
+        if (open_now === filterByOpenNow) {
             return 'active';
         }
         return '';
@@ -72,19 +95,19 @@ class SearchBar extends React.Component {
     }
 
     // Determines which sort method to use
-    handleSortByChange(sortByOption) {
-        this.setState({sortBy: sortByOption})
+    function handleSortByChange(sortByOption) {
+        setSortBy(sortByOption.target.value);
     }
 
 
      // Determines which price range we choose
-     handleFilterByPriceChange(filterByPrice) {
-        this.setState({price: filterByPrice})
+    function handleFilterByPriceChange(filterByPrice) {;
+        setPrice(filterByPrice);
     }
 
     // Determines open or closed
-    handleFilterByOpenNowChange(filterByOpenNow) {
-        this.setState({open_now: filterByOpenNow})
+    function handleFilterByOpenNowChange(filterByOpenNow) {
+        setOpenNow(filterByOpenNow.target.value);
     }
 
 
@@ -92,42 +115,59 @@ class SearchBar extends React.Component {
 
 
     // Updates food/product input given by user
-    handleTermChange(event) {
-        this.setState({term: event.target.value});
+    function handleTermChange(event) {
+        setTerm(event.target.value);
     }
 
     // Updates location input given by user
-    handleLocationChange(event) {
-        this.setState({location: event.target.value});
-    }
-
-    // Updates limit input given by user
-    handleLimitChange(event) {
-        this.setState({limit: event.target.value});
+    function handleLocationChange(event) {
+        setLocation(event.target.value);
     }
 
      // Updates radius input given by user
-     handleRadiusChange(event) {
-        this.setState({radius: event.target.value});
+    function handleRadiusChange(event) {
+        setRadius(event.target.value);
     }
 
     
 
 
     // Queries Yelp for food/product
-    handleSearch(event) {
-        this.props.searchYelp(this.state.term, this.state.location, this.state.sortBy, this.state.price, this.state.open_now, this.state.limit, this.state.radius);
+    function handleSearch(event) {
+        //this.props.searchYelp(state.term, state.location, state.sortBy, state.price, state.open_now, state.radius);
+        fetch('http://localhost:3001/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: JSON.stringify({
+                //Temporary variables used 
+                //Alternative option: JSON.stringify(this.filters)
+                id: id,
+                keywords: term,
+                location: location,
+                sort_by: sortBy,
+                radius: radius,
+                rating: rating,
+                price: price,
+                open: open_now,
+                in_list: in_list,
+                not_list: not_list
+            })
+        }).then((response) => response.json()
+        ).then((result) => {
+            //Send to account_id and results BusinessList
+            navigate('/results', { 'state': { 'account_id': thisState.id, 'searchResults': result } });
+        });
         event.preventDefault();
     }
 
     // Highlights the selected sort-by method
-    renderSortByOptions() {
-        return Object.keys(this.sortByOptions).map(sortByOption => {
-            let sortByOptionValue = this.sortByOptions[sortByOption];
+    function renderSortByOptions() {
+        return Object.keys(sortByOptions).map(sortByOption => {
+            let sortByOptionValue = sortByOptions[sortByOption];
             return (
-                    <li className={this.getSortByClass(sortByOptionValue)}
+                    <li className={getSortByClass(sortByOptionValue)}
                         key={sortByOptionValue}
-                        onClick={this.handleSortByChange.bind(this,sortByOptionValue)}>
+                        onClick={handleSortByChange.bind(sortByOptionValue)}>
                     {sortByOption}
                     </li>
                     );  
@@ -135,82 +175,76 @@ class SearchBar extends React.Component {
     }
 
 
- // Highlights the selected price range
- renderFilterByPrice() {
-    return Object.keys(this.filterByPrices).map(filterByPrice => {
-        let filterByPriceValue = this.filterByPrices[filterByPrice];
-        return (
-                <li className={this.getFilterByPriceClass(filterByPriceValue)}
-                    key={filterByPriceValue}
-                    onClick={this. handleFilterByPriceChange.bind(this,filterByPriceValue)}>
-                {filterByPrice}
-                </li>
-                );  
-    });
-}
+    // Highlights the selected price range
+    function renderFilterByPrice() {
+        return Object.keys(filterByPrices).map(filterByPrice => {
+            let filterByPriceValue = filterByPrices[filterByPrice];
+            return (
+                    <li className={getFilterByPriceClass(filterByPriceValue)}
+                        key={filterByPriceValue}
+                        onClick={()=>handleFilterByPriceChange(filterByPriceValue)}>
+                    {filterByPrice}
+                    </li>
+                    );  
+        });
+    }
 
 
 
- // Highlights open or closed
- renderFilterByOpenNow() {
-    return Object.keys(this.filterByOpenNows).map(filterByOpenNow => {
-        let filterByOpenNowValue = this.filterByOpenNows[filterByOpenNow];
-        return (
-                <li className={this.getFilterByOpenNowClass(filterByOpenNowValue)}
-                    key={filterByOpenNowValue}
-                    onClick={this. handleFilterByOpenNowChange.bind(this,filterByOpenNowValue)}>
-                {filterByOpenNow}
-                </li>
-                );  
-    });
-}
+    // Highlights open or closed
+    function renderFilterByOpenNow() {
+        return Object.keys(filterByOpenNows).map(filterByOpenNow => {
+            let filterByOpenNowValue = filterByOpenNows[filterByOpenNow];
+            return (
+                    <li className={getFilterByOpenNowClass(filterByOpenNowValue)}
+                        key={filterByOpenNowValue}
+                        onClick={handleFilterByOpenNowChange.bind(filterByOpenNowValue)}>
+                    {filterByOpenNow}
+                    </li>
+                    );  
+        });
+    }
 
     // Renders two input boxes. One for business and the other for location. 
-    render() {
-        return (
-            <div className="SearchBar">
+    return (
+        <div className="SearchBar">
 
 
-                <div className="SearchBar-sort-options">
-                    <ul>
-                        {this.renderSortByOptions()} 
-                    </ul>
-                </div>
+            <div className="SearchBar-sort-options">
+                <ul>
+                    {renderSortByOptions()} 
+                </ul>
+            </div>
 
-                <div className="SearchBar-filter-prices">
-                    <ul>
-                        {this.renderFilterByPrice()} 
-                    </ul>
-                </div>
-
-
-
-                <div className="SearchBar-filter-openNow">          
-                    <ul>
-                        {this.renderFilterByOpenNow()} 
-                    </ul>
-                </div>
+            <div className="SearchBar-filter-prices">
+                <ul>
+                    {renderFilterByPrice()}
+                </ul>
+            </div>
 
 
 
-                <div className="SearchBar-fields">
+            <div className="SearchBar-filter-openNow">          
+                <ul>
+                    {renderFilterByOpenNow()} 
+                </ul>
+            </div>
+
+
+
+            <div className="SearchBar-fields">
                     
-                    <input placeholder="Enter Keyword. e.g. burgers" onChange={this.handleTermChange} />
-                    <input placeholder="Enter Location. e.g. San Jose" onChange={this.handleLocationChange} />           
-                    <input placeholder="Enter Number of Results. e.g. 20" onChange={this.handleLimitChange} />
-                    <input placeholder="Enter Radius in Meters. e.g. 30000" onChange={this.handleRadiusChange} />
+                <input placeholder="Enter Keyword. e.g. burgers" onChange={handleTermChange} />
+                <input placeholder="Enter Location. e.g. San Jose" onChange={handleLocationChange} />
+                <input placeholder="Enter Radius in Meters. e.g. 30000" onChange={handleRadiusChange} />
 
-                </div>
-
+            </div>
 
 
-                 <div className="SearchBar-submit">
-                    <a onClick={this.handleSearch}>Search</a>
-                </div>
-            </div>    
-        );
 
-    }
+                <div className="SearchBar-submit">
+                <a onClick={handleSearch}>Search</a>
+            </div>
+        </div>    
+    );
 }
-
-export default SearchBar;

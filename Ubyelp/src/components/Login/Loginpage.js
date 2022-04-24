@@ -24,17 +24,13 @@ export default function Login() {
         ).then((id) => {
             if (id !== -1) {
                 //If login success, redirect with id transfered
-                navigate('/search', { 'state': {'id':id}});
+                navigate('/search', { 'state': {'account_id':id}});
             } else {
                 //Please try again message
                 document.getElementById("error").innerHTML = 'Login Failed!';
             }
         });
         event.preventDefault();
-
-        ///Testing///
-        let id = 663;
-
     }
     return (
       <div className="Login">
