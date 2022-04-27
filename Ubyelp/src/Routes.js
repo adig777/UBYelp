@@ -51,6 +51,54 @@ app.post('/addlistitem', async (req, res) => {
     res.end(await List.addListItem(input.list_id, input.name, input.link, input.desc, input.rating));
 });
 
+app.post('/deletelistitem', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.removeListItem(input.list_id, input.list_item_id));
+});
+
+app.post('/deletelist', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.removeList(input.list_id));
+});
+
+app.post('/editlistname', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.editListName(input.list_id, input.newTitle));
+});
+
+app.post('/editlistdesc', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.editListDescription(input.list_id, input.newDesc));
+});
+
+app.post('/edititemdesc', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.editItemDescription(input.list_item_id, input.newDesc));
+});
+
+app.post('/edititemrating', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.editItemRating(input.list_item_id, input.rating));
+});
+
+app.post('/edititemname', async (req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    res.end(await List.editItemName(input.list_item_id, input.name));
+});
+
+
+
+
+
+
+
 
 
 app.listen(3001, () => {
