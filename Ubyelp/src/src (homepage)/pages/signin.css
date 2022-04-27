@@ -1,0 +1,68 @@
+/*@media all and (min-width: 480px) {*/
+    .Login {
+        padding: 60px 0;
+        text-align: center;
+        background-size: cover;
+        height: 95vh;
+        width: 95vw;
+    }
+    
+    
+    Form {
+        background-color: lightblue;
+        width: 450px;
+        height: 300px;
+        margin-bottom: 10px;
+        
+    }
+    
+    
+    
+    h1 {
+        margin-bottom: -15px;
+        font-size: 40px;
+    }
+    
+    h4 {
+        font-family: monospace;
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+      
+    .Login form {
+        margin: 0 auto;
+        max-width: 320px;
+    }
+    
+    .input {
+        border-radius: 8px;
+        color: #606468;
+        margin-bottom: 1em;
+        padding: 10px 16px;
+        width: 250px;
+    }
+    
+    .input-header {
+        font-size: 16px;
+    }
+    
+    Button {
+        min-height: 30px;
+        width: 100px;
+        border-radius: 4px;
+        font-family: Inconsolata, monospace;
+        height: 40px;
+        font-size: 16px;
+        font-weight: 100;
+        letter-spacing: 1px;
+        margin-left: 10px;
+    }
+    
+    .error {
+        margin-top: 5px;
+        color: red;
+        font-weight: bold;
+        font-family: monospace;
+        font-size: 16px;
+    }
+      /*}*/
