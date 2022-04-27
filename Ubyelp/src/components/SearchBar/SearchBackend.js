@@ -11,15 +11,14 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 //mySQL tables
 
 //TODO:
-//**Focus on main parts for now, (Business, no-crash Searching, BusinessList)
 //-Searchbar frontend to finish
-// *Radius set to numbers only up to 40000 + Automatically fill default value on load
-// *Bug: Button hightlights stop when clicking sortBy buttons
+// **Constant refresh bug
+// *Automatically fill default values on load (open, rating)
+// *Bug: Button hightlights stop when clicking price/open buttons
 // *Require keyword and location/try-catch crashes
-// *Change price to toggle, not choose
-//-Connect to backend: addlistitem
-// -(ListBackend: create a getListId function)
-//-Business bug (modal not unique)
+// *Price highlighting
+// *Remove dots * next to options
+//-Business bug: rating not displyed properly after select (can be left alone)
 
 class Search {
     constructor(account_id) {
@@ -44,7 +43,7 @@ class Search {
     async search(keywords, location, sort_by, radius, rating, price, open, in_list, not_list, callback) {
         let open_now = false;
         if (radius === -1) radius = 40000;
-        if (price === -1) price = '1,2,3,4';
+        if (price === '') price = '1,2,3,4';
         if (open === 1){
             open = true;
         } else {
@@ -92,7 +91,7 @@ class Search {
             }
             if (rating !== -1) {
                 results = results.filter((business) => {
-                    return business.rating <= rating;    //Filter rating
+                    return business.rating >= rating;    //Filter rating
                 });
             }
             callback(results);
@@ -108,6 +107,7 @@ class Search {
         for (let i = 0; i < names.length; i++) {
             filters[names[i]] = await Settings.getFilter(names[i]);
         }
+        filters['address'] = await Settings.getAddress();
         Settings.disconnect();
         return filters;
     }

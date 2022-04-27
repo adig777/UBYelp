@@ -112,7 +112,7 @@ class ListBackend{
         if (!await this.#queryAccountListAccess(list_id)) return 'Illegal access to list!';
 
         //Check if item already added
-        if (await this.#queryVerifyListItem(list_id,link)) return '';
+        if (await this.#queryVerifyListItem(list_id,link)) return 'Item already added';
 
         //Generate list item id
         let list_item_id = await this.#queryGenerateListItemId();

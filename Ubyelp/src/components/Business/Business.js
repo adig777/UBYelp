@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import './Business.css';
 
 class Business extends React.Component {
@@ -6,7 +6,7 @@ class Business extends React.Component {
         super(props);
         this.state = {
             listNames: {},
-            modal: false
+            key: this.props.key
         }
         //Set in_list and not_list's dropdown menu values to 'names'
         fetch('http://localhost:3001/listnames', {
@@ -26,14 +26,18 @@ class Business extends React.Component {
     
 
 
-    openModal() {
-        //this.setState({ modal: true });
-        document.getElementById("addModal").style.display = 'block';
+    openModal(business) {
+        document.getElementById("modal" + business.id).style.display = 'block';
+        document.getElementById("modelHeader" + business.id).innerHTML = 'Adding ' + business.name + ' on ' + business.location.address1 + ' to list';//<i>' + listMenu.options[listMenu.selectedIndex].text + '</i>';
+        //document.getElementById("successMessage" + business.id).innerHTML = business.name + ' on ' + business.location.address1 + ' added to ' + listMenu.options[listMenu.selectedIndex].text + '!'
     }
 
-    closeModal() {
-        //this.setState({ modal: true });
-        document.getElementById("addModal").style.display = 'none';
+    closeModal(key) {
+        document.getElementById("modal"+key).style.display = 'none';
+    }
+
+    closeSuccessModal(key) {
+        document.getElementById("successModal" + key).style.display = 'none';
     }
 
     renderModalOptions() {
@@ -44,12 +48,36 @@ class Business extends React.Component {
         });
     }
 
-    submitModal() {
+    addToList(business) {
+        let listMenu = document.getElementById('listMenu' + business.id);
+        if (listMenu.value !== '') {
+            fetch('http://localhost:3001/addlistitem', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: JSON.stringify({
+                    'account_id': business.account_id,
+                    'list_id': listMenu.value,
+                    'link': encodeURIComponent(business.url),
+                    'name': business.name,
+                    'desc': document.getElementById("desc" + business.id).value,
+                    'rating': document.querySelector('input[name="rating"]:checked').value
+                })
+            }).then(async (response) => {
+                let message = await response.text();
+                //Clear modal inputs
+                this.closeModal(this.props.business.id);
 
-    }
-
-    addToList() {
-        console.log(this.state.listNames);
+                document.getElementById("successModal" + this.props.business.id).style.display = 'block';
+                if (message === '') {
+                    //Open success modal
+                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Added ' + business.name + ' on ' + business.location.address1 + ' to ' + listMenu.options[listMenu.selectedIndex].text + '!';
+                } else {
+                    //Open modal with error message
+                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Error: '+message;
+                }
+                
+            });
+        }
     }
 
     // Renders the individual businesses returned in the search results
@@ -76,19 +104,37 @@ class Business extends React.Component {
                         <p>{`${this.props.business.review_count} reviews`}</p>
                     </div>
                 </div>
-                <div id="addModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onClick={this.closeModal}>&times;</span>
-                        <h2>Add to list: {this.props.business.name + " " + this.props.business.review_count}</h2>
-                        <form>
-                            <select id="listMenu">
-                                {this.renderModalOptions()}
-                            </select>
-                        </form>
-                        <button onClick={this.submitModal}>Add</button>
+                <button onClick={() => this.openModal(this.props.business)}>Add to list</button>
+
+                <div id={"modal"+this.props.business.id} className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={() =>this.closeModal(this.props.business.id)}>&times;</span>
+                        <h2 id={"modelHeader" + this.props.business.id}></h2>
+                        <select id={"listMenu" + this.props.business.id}>
+                            {this.renderModalOptions()}
+                            <option value="">Select list...</option>
+                        </select>
+                        <input type="hidden" id={"listId" + this.props.business.id} />
+                        <h3>Description</h3>
+                        <textarea id={"desc" + this.props.business.id} cols="60" rows="3" />
+                        <h3>Rating for list</h3>
+                        <div className="rating">
+                            <input type="radio" name="rating" value="5" id="5"/><label for="5">☆</label>
+                            <input type="radio" name="rating" value="4" id="4"/><label for="4">☆</label>
+                            <input type="radio" name="rating" value="3" id="3"/><label for="3">☆</label>
+                            <input type="radio" name="rating" value="2" id="2"/><label for="2">☆</label>
+                            <input type="radio" name="rating" value="1" id="1" /><label for="1">☆</label>
+                        </div>
+                        <button id={"submit" + this.props.business.id} onClick={() => this.addToList(this.props.business)}>Add!</button>
                     </div>
                 </div>
-                <button onClick={this.openModal}>Add to list</button>
+
+                <div id={"successModal" + this.props.business.id} className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={() => this.closeSuccessModal(this.props.business.id)}>&times;</span>
+                        <h2 id={"modalMessage" + this.props.business.id}/>
+                    </div>
+                </div>
             </div>
         );
     }
