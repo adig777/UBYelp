@@ -4,6 +4,7 @@ const util = require('util');
 const AccountsBackend = require('./components/Signup/AccountsBackend');
 const SearchBackend = require('./components/Searchbar/SearchBackend');
 const ListBackend = require('./components/BusinessList/ListBackend');
+const SettingsBackend = require('./components/Settings/SettingsBackend');
 
 var accounts = new AccountsBackend();
 const app = express();
@@ -92,6 +93,52 @@ app.post('/edititemname', async (req, res) => {
     let List = new ListBackend(input.account_id);
     res.end(await List.editItemName(input.list_item_id, input.name));
 });
+
+app.post('/setdistance', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterDistance(input.newFilter))
+});
+
+app.post('/setdistance', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterDistance(input.newFilter))
+});
+
+app.post('/setrating', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterRating(input.newFilter))
+});
+
+app.post('/setpricerange', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterPriceRange(input.newMin, input.newMax))
+});
+
+app.post('/setopen', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterOpen(input.newFilter))
+});
+
+app.post('/setinlist', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterInList(input.listName))
+});
+
+app.post('/setnotlist', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let Settings = new SettingsBackend(input.account_id);
+    res.end(await Settings.setFilterNotInList(input.listName))
+});
+
+
+
+
 
 
 
