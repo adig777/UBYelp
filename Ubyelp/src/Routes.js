@@ -100,12 +100,6 @@ app.post('/setdistance', async(req, res) => {
     res.end(await Settings.setFilterDistance(input.newFilter))
 });
 
-app.post('/setdistance', async(req, res) => {
-    let input = JSON.parse(Object.keys(req.body)[0]);
-    let Settings = new SettingsBackend(input.account_id);
-    res.end(await Settings.setFilterDistance(input.newFilter))
-});
-
 app.post('/setrating', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.account_id);
