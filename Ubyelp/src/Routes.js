@@ -130,16 +130,13 @@ app.post('/setnotlist', async(req, res) => {
     res.end(await Settings.setFilterNotInList(input.listName))
 });
 
-
-
-
-
-
-
-
-
-
-
+app.post('/getlists', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.account_id);
+    await List.getLists((list)=>{
+    res.end(list);
+    });
+});
 
 
 app.listen(3001, () => {
