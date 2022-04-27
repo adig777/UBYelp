@@ -24,6 +24,7 @@ export default function Login() {
         ).then((id) => {
             if (id !== -1) {
                 //If login success, redirect with id transfered
+                browserHistory.push({pathname: '/Lists', state: {'account_id':id}});
                 navigate('/search', { 'state': {'account_id':id}});
             } else {
                 //Please try again message
