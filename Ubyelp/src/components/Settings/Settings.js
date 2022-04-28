@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
 
 
 
@@ -24,7 +25,7 @@ class Settings extends React.Component{
                 open: 1,
                 inlist: '',
                 notinlist: '',
-                listNames: {},
+                listNames: [],
                 id:account_id 
         }  
         
@@ -157,6 +158,16 @@ class Settings extends React.Component{
         });
     }
 
+    handlechangein(SelectChangeEvent){
+        
+        this.state.inlist.setState(SelectChangeEvent.target.value)
+    }
+
+
+    handlechangeout(SelectChangeEvent){
+        this.state.notinlist.setState(SelectChangeEvent.target.value)
+    }
+
     render(){
         return(
             <div className='settings'>
@@ -178,6 +189,11 @@ class Settings extends React.Component{
                     onChange = {this.handledistance}
                     value = {this.state.distance}
                     />
+                </div>
+                <div className = 'open'>
+                    Only show places that are open? 
+                    <input type="radio" value={this.state.open} name="gender"/> Yes
+                    <input type="radio" value={this.state.open} name="gender"/> No
                 </div>
                 <div className = 'rating'>
                     Select Default Rating Filter: 
@@ -209,8 +225,55 @@ class Settings extends React.Component{
                 </div>
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
+                    <Box sx={{ maxWidth: 120 }}>
+                    <FormControl fullWidth>
+                     <InputLabel id="demo-simple-select-label">Include</InputLabel>
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.inlist}
+                    defaultvalue = {listName}
+                    label="InList"
+                    onChange={this.handlechangein}
+                >
+                    {
+                        this.state.listNames.map(listName) => (
+                            <MenuItem
+                            value = {listName}
+                            >
+                            {listName}
+                            </MenuItem>
 
+                        );    
+                    }
+                    </Select>
+                    </FormControl>
+                    </Box>
 
+                    <Box sx={{ maxWidth: 120 }}>
+                    <FormControl fullWidth>
+                     <InputLabel id="demo-simple-select-label">Exclude</InputLabel>
+                    <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.notinlist}
+                    defaultvalue = {this.state.notinlist}
+                    label="InList"
+                    onChange={this.handlechangeout}
+                >
+                    {
+                        this.state.listNames.map(listName) => (
+                            <MenuItem
+                            value = {this.state.notinlist}
+                            >
+                            {listName}
+                            </MenuItem>
+
+                        );    
+                    }
+                    </Select>
+                    </FormControl>
+                    </Box>
                 </div>
                 
                 
@@ -223,6 +286,7 @@ class Settings extends React.Component{
                 </div>
         );
     }
+
 }
 
 
@@ -231,3 +295,4 @@ class Settings extends React.Component{
 
 
   export default Settings;
+
