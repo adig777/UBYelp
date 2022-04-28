@@ -117,45 +117,31 @@ class Settings extends React.Component{
     }
     handledistance(event){
         const newdistance = event.target.value;
-        this.setState({
-           distance : newdistance
-        });
+        this.state.distance.setState(newdistance)
     }
     handlerating(event){
         const newrating = event.target.value;
-        this.setState({
-            rating: newrating
-        });
+        this.state.rating.setState(newrating)
     }
     handlemin(event){
         const newmin = event.target.value;
-        this.setState({
-            minprice: newmin
-        });
+        this.state.minprice.setState(newmin)
     }
     handlemax(event){
         const newmax = event.target.value;
-        this.setState({
-            maxprice: newmax
-        });
+        this.state.maxprice.setState(newmax)
     }
     handleopen(event){
         const newopen = event.target.value;
-        this.setState({
-            open: newopen
-        });
+        this.state.open.setState(newopen)
     }
     handleinlist(event){
         const newinlist = event.target.value;
-        this.setState({
-            inlist: newinlist
-        });
+        this.state.inlist.setState(newinlist)
     }
     handlenotinlist(event){
         const newnotinlist = event.target.value;
-        this.setState({
-            notinlist: newnotinlist
-        });
+        this.state.notinlist.setState(newnotinlist)
     }
 
     handlechangein(SelectChangeEvent){
