@@ -109,7 +109,7 @@ app.post('/setrating', async(req, res) => {
 app.post('/setpricerange', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.account_id);
-    res.end(await Settings.setFilterPriceRange(input.newprices))
+    res.end(await Settings.setFilterPrice(input.newPrices))
 });
 
 app.post('/setopen', async(req, res) => {
