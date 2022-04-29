@@ -13,6 +13,7 @@ export default function Lists(){
    const[newlistdesc, setnewlistdesc] = useState('')
    const[newrating, setnewrating] = useState(5)
    const{account_id} = state;
+   const[id,setid] = useState(account_id)
    const[alllists, setalllists] = useState([])
    
 
@@ -22,7 +23,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'id': account_id
+            'id': id
 
         })
     }).then((response) => response.json()
@@ -34,7 +35,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'id': account_id
+            'id': id
         })
     }).then((response) => response.json()
     ).then((results) => {
@@ -47,7 +48,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'account_id': account_id,
+            'account_id': id,
             'list_id': list_id,
             'newTitle': newlistname
         })
@@ -62,7 +63,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'account_id': account_id,
+            'account_id': id,
             'list_item_id': list_item_id,
             'name': newitemname
         })
@@ -77,7 +78,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'account_id': account_id,
+            'account_id': id,
             'list_id': list_id,
             'newDesc': newlistdesc
         })
@@ -92,7 +93,7 @@ export default function Lists(){
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'account_id': account_id,
+            'account_id': id,
             'list_item_id': list_item_id,
             'newDesc': newitemdesc
         })
@@ -101,13 +102,13 @@ export default function Lists(){
     });
     }
 
-    function editlistitemrating(event,list_item_id){
+    function editlistitemrating(list_item_id){
 
         fetch('http://localhost:3001/edititemrating', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
-            'account_id': account_id,
+            'account_id': id,
             'list_item_id': list_item_id,
             'rating': newrating
         })
@@ -121,7 +122,7 @@ export default function Lists(){
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'account_id': account_id,
+                'account_id': id,
                 'list_id': list_id
             })
         }).then((response) => response.json()
@@ -134,12 +135,13 @@ export default function Lists(){
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'account_id': account_id,
+                'account_id': id,
                 'list_id': list_id,
                 'list_item_id': list_item_id
             })
         }).then((response) => response.json()
         ).then((res) => {  
+            console.log('delete list item success')
         });
 
     }
@@ -179,7 +181,7 @@ export default function Lists(){
                 startIcon={<DeleteIcon />}
                 onClick={() => deletelist(mainlist.id)}
               >
-                Delete
+                Delete List
               </Button>
                 </h1>
                 <TextField
@@ -192,7 +194,7 @@ export default function Lists(){
                         (e) => setnewlistname(e.target.value)
                     }
                     />
-                     <TextField
+                <TextField
                     type = "text"
                     size = "small"
                     label = "Change List Description"
@@ -203,17 +205,26 @@ export default function Lists(){
                     }
                     />
             {
-            mainlist.map((mainlist.item) =>
+            mainlist.map((mainlist.listitem) =>
             (
-               <div key = {mainlist.item.id} >
+               <div key = {mainlist.listitem.id} >
                    <br /><br />
-                   {mainlist.item.name}
+                   {mainlist.listitem.name}
                    &nbsp;
+            <Button
+                size="small"
+                className="deletebutton"
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                onClick={() => deletelistitem(mainlist.id ,mainlist.listitem.id)}
+              >
+                Delete
+              </Button>
                     <TextField
                     type = "text"
                     size = "small"
                     label = "Change Item Name"
-                    defaultValue = {mainlist.item.name}
+                    defaultValue = {mainlist.listitem.name}
                     value = {newitemname}
                     onChange = {
                         (e) => setnewitemname(e.target.value)
@@ -224,14 +235,14 @@ export default function Lists(){
                     variant = "text"
                     size = "small"
                     >
-                    {mainlist.item.link}
+                    {mainlist.listitem.link}
                     </Button>
                     &nbsp;
                     <TextField
                     type = "text"
                     size = "small"
                     label = "Change Item Description"
-                    defaultValue = {mainlist.item.desc}
+                    defaultValue = {mainlist.listitem.desc}
                     value = {newitemdesc}
                     onChange = {
                         (e) => setnewitemdesc(e.target.value)
@@ -241,7 +252,7 @@ export default function Lists(){
                     type = "text"
                     size = "small"
                     label = "Change Item Rating"
-                    defaultValue = {mainlist.item.rating}
+                    defaultValue = {mainlist.listitem.rating}
                     value = {newrating}
                     onChange = {
                         (e) => setnewrating(e.target.value)
