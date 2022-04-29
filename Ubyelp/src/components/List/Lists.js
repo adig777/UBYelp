@@ -1,12 +1,16 @@
 import React, {useState} from "react";
 import { useLocation } from "react-router-dom";
-import Button from "@mui/material/InputLabel";
+import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function Lists(){
    const {state} = useLocation()
+   const navigate = useNavigate();
    const[newitemname, setnewitemname] = useState('')
    const[newlistname, setnewlistname] = useState('')
    const[newitemdesc, setnewitemdesc] = useState('')
@@ -14,11 +18,14 @@ export default function Lists(){
    const[newrating, setnewrating] = useState(5)
    const{account_id} = state;
    const[id,setid] = useState(account_id)
+   const[currname, setcurrname] = useState('')
    const[alllists, setalllists] = useState([])
+   const [initialized, setInitialized] = useState(false);
    
 
    
-
+initialize(){
+   if(!initialized){
    fetch('http://localhost:3001/getlists', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -41,7 +48,9 @@ export default function Lists(){
     ).then((results) => {
        setnamesandid(results)
     });
-
+      setInitialized(true)
+   }
+}
     function editlistname(list_id){
 
         fetch('http://localhost:3001/editlistname', {
@@ -145,14 +154,21 @@ export default function Lists(){
         });
 
     }
+
+    function onsubmit(listnames){
+        setcurrname(listnames)
+        renderlist(currname)
+    }
+
     function renderlistoptions(){
         for(const listnames in alllists){
             return(
                 <>
                 <Button
                 variant = "outlined"
+                value = {listnames}
                 type = "submit"
-                onSubmit = {renderlist(listnames)}
+                onSubmit = {onsubmit(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -205,8 +221,8 @@ export default function Lists(){
                     }
                     />
             {
-            mainlist.map((mainlist.listitem) =>
-            (
+             Object.keys(mainlist).map((mainlist.listitem) =>
+            return(
                <div key = {mainlist.listitem.id} >
                    <br /><br />
                    {mainlist.listitem.name}
@@ -263,7 +279,7 @@ export default function Lists(){
                </div> 
 
 
-            ))
+            ));
             }
             </div>
         );
@@ -276,9 +292,30 @@ export default function Lists(){
 
     return(
         <div className="Lists">
+       <div className="NavBar">
+                UBYELP
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/search') }}>
+                    Search
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                    Lists
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                    About us
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
+                    Settings
+                </Button>
+            </div>
+         {initialize()}
             <h1>
             My Lists
             </h1>
+       
         {renderlistoptions}
 
         <div>
