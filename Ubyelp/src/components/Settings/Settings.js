@@ -179,6 +179,25 @@ function Settings(){
 
         return(
             <div className='settings'>
+             <div className="NavBar">
+                UBYELP
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
+                    Search
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                    Lists
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                    About us
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/settings') }}>
+                    Settings
+                </Button>
+            </div>
                 
                 {initialize()}
             
