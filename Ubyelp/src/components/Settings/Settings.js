@@ -9,44 +9,43 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
+import {useLocation} from "react-router-dom";
+import {useState} from "react";
 
 
 
-class Settings extends React.Component{
-    constructor(props) {
-        super(props);
-        this.pageTitle = "Settings";
-        const{account_id} = this.state;
-        this.state = {
-                distance: 100,
-                rating: 5,
-                minprice: 1,
-                maxprice: 5,
-                open: 1,
-                inlist: '',
-                notinlist: '',
-                listNames: [],
-                id:account_id 
-        }  
+function Settings(){
+    const { state } = useLocation();
+    const{account_id} = state;
+    const[distance, setdistance] = useState(100)
+    const[rating, setrating] = useState(5)
+    const[maxprice, setmaxprice] = useState(5)
+    const[minprice, setminprice] = useState(1)
+    const[open, setopen] = useState(1)
+    const[inlist, setinlist] = useState('')
+    const[notinlist, setnotinlist] = useState('')
+    const[listNames, setlistnames] = useState([])
+    const[id, setid] = useState(account_id)
+
         
         fetch('http://localhost:3001/listnames', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id': this.state.id
+                'id': id
             })
         }).then((response) => response.json()
         ).then((names) => {
-            this.setState({ listNames: names });
+            setlistnames(names)
         });
-    }
-    HandleSave(e){
+    
+    function HandleSave(){
         fetch('http://localhost:3001/setdistance', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'newFilter': this.state.distance
+                'id':id,
+                'newFilter': distance
             })
         }).then((response) => response.json()
         ).then((res) => {    
@@ -57,8 +56,8 @@ class Settings extends React.Component{
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'newFilter': this.state.rating
+                'id':id,
+                'newFilter': rating
             })
         }).then((response) => response.json()
         ).then((res) => {   
@@ -69,9 +68,9 @@ class Settings extends React.Component{
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'newMin': this.state.minprice,
-                'newMax': this.state.maxprice
+                'id':id,
+                'newMin': minprice,
+                'newMax': maxprice
             })
         }).then((response) => response.json()
         ).then((res) => {   
@@ -82,8 +81,8 @@ class Settings extends React.Component{
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'newFilter': this.state.open
+                'id':id,
+                'newFilter': open
             })
         }).then((response) => response.json()
         ).then((res) => {   
@@ -94,8 +93,8 @@ class Settings extends React.Component{
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'listName': this.state.inlist
+                'id':id,
+                'listName': inlist
             })
         }).then((response) => response.json()
         ).then((res) => {   
@@ -106,8 +105,8 @@ class Settings extends React.Component{
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
-                'id':this.state.id,
-                'listName': this.state.notinlist
+                'id':id,
+                'listName': notinlist
             })
         }).then((response) => response.json()
         ).then((res) => {    
@@ -115,46 +114,46 @@ class Settings extends React.Component{
         });
     e.preventDefault();
     }
-    handledistance(event){
-        const newdistance = event.target.value;
-        this.state.distance.setState(newdistance)
+    function handledistance(e){
+        const newdistance = e.target.value;
+        setdistance(newdistance)
     }
-    handlerating(event){
-        const newrating = event.target.value;
-        this.state.rating.setState(newrating)
+    function handlerating(e){
+        const newrating = e.target.value;
+        setrating(newrating)
     }
-    handlemin(event){
-        const newmin = event.target.value;
-        this.state.minprice.setState(newmin)
+    function handlemin(e){
+        const newmin = e.target.value;
+        setminprice(newmin)
     }
-    handlemax(event){
-        const newmax = event.target.value;
-        this.state.maxprice.setState(newmax)
+    function handlemax(e){
+        const newmax = e.target.value;
+        setmaxprice(newmax)
     }
-    handleopen(event){
-        const newopen = event.target.value;
-        this.state.open.setState(newopen)
+    function handleopen(e){
+        const newopen = e.target.value;
+        setopen(newopen)
     }
-    handleinlist(event){
-        const newinlist = event.target.value;
-        this.state.inlist.setState(newinlist)
+    function handleinlist(e){
+        const newinlist = e.target.value;
+        setinlist(newinlist)
     }
-    handlenotinlist(event){
-        const newnotinlist = event.target.value;
-        this.state.notinlist.setState(newnotinlist)
+    function handlenotinlist(e){
+        const newnotinlist = e.target.value;
+        setnotinlist(newnotinlist)
     }
 
-    handlechangein(SelectChangeEvent){
+    function handlechangein(SelectChangeEvent){
         
-        this.state.inlist.setState(SelectChangeEvent.target.value)
+        inlist.setState(SelectChangeEvent.target.value)
     }
 
 
-    handlechangeout(SelectChangeEvent){
-        this.state.notinlist.setState(SelectChangeEvent.target.value)
+    function handlechangeout(SelectChangeEvent){
+        notinlist.setState(SelectChangeEvent.target.value)
     }
 
-    render(){
+    
         return(
             <div className='settings'>
                 <h1>
@@ -162,7 +161,7 @@ class Settings extends React.Component{
                 </h1>
                 <div>
                     Select Default Filters:&nbsp;&nbsp;
-                <a onClick={this.HandleSave}>
+                <a onClick={HandleSave}>
                 Save
                 </a>
                 </div>
@@ -172,14 +171,14 @@ class Settings extends React.Component{
                     type = "number"
                     size = "small"
                     placeholder = "Enter in Miles..."
-                    onChange = {this.handledistance}
-                    value = {this.state.distance}
+                    onChange = {(e) => {handledistance}}
+                    value = {distance}
                     />
                 </div>
                 <div className = 'open'>
                     Only show places that are open? 
-                    <input type="radio" value={this.state.open} name="gender"/> Yes
-                    <input type="radio" value={this.state.open} name="gender"/> No
+                    Yes <input type="radio" value={1} name="gender"/> 
+                    <input type="radio" value={0} name="gender"/> No
                 </div>
                 <div className = 'rating'>
                     Select Default Rating Filter: 
@@ -188,7 +187,7 @@ class Settings extends React.Component{
                     size = "small"
                     placeholder = "1-5"
                     onChange = {this.handlerating}
-                    value = {this.state.rating}
+                    value = {rating}
                     />
                 </div>
                 <div className = 'price'>
@@ -198,7 +197,7 @@ class Settings extends React.Component{
                     size = "small"
                     placeholder = "Min..."
                     onChange = {this.handlemin}
-                    value = {this.state.minprice}
+                    value = {minprice}
                     />
                     &nbsp;
                     <TextField
@@ -206,7 +205,7 @@ class Settings extends React.Component{
                     size = "small"
                     placeholder = "Max..."
                     onChange = {this.handlemax}
-                    value = {this.state.maxprice}
+                    value = {maxprice}
                     />
                 </div>
                 <div className = "DefaultList">
@@ -217,15 +216,16 @@ class Settings extends React.Component{
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={this.state.inlist}
+                    value={inlist}
                     defaultvalue = {listName}
                     label="InList"
-                    onChange={this.handlechangein}
+                    onChange={handlechangein}
                 >
                     {
-                        this.state.listNames.map(listName) => (
+                        listNames.map(listName) => (
                             <MenuItem
                             value = {listName}
+                            key = {listName}
                             >
                             {listName}
                             </MenuItem>
@@ -242,15 +242,15 @@ class Settings extends React.Component{
                     <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={this.state.notinlist}
-                    defaultvalue = {this.state.notinlist}
+                    value={notinlist}
+                    defaultvalue = {notinlist}
                     label="InList"
-                    onChange={this.handlechangeout}
+                    onChange={handlechangeout}
                 >
                     {
-                        this.state.listNames.map(listName) => (
+                        listNames.map(listName) => (
                             <MenuItem
-                            value = {this.state.notinlist}
+                            value = {notinlist}
                             >
                             {listName}
                             </MenuItem>
@@ -273,7 +273,7 @@ class Settings extends React.Component{
         );
     }
 
-}
+
 
 
 
