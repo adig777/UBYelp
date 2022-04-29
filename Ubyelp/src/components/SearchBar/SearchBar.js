@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './SearchBar.css';
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button"
 
 
 export default function SearchBar() {
@@ -285,7 +286,33 @@ export default function SearchBar() {
     // Renders two input boxes. One for business and the other for location. 
     return (
         <div className="SearchBar">
-
+                <div className="NavBar">
+                  UBYELP
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button
+                   onClick={navigate('/search')}
+                   >
+                  Search
+                  </Button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button
+                  onClick={navigate('/lists', { 'state': {'account_id':account_id}})}
+                  >
+                  Lists
+                  </Button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button
+                   onClick={navigate('/about', { 'state': {'account_id':account_id}})}
+                   >
+                  About us
+                  </Button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button
+                   onClick={navigate('/settings', { 'state': {'account_id':account_id}})}
+                   >
+                  Settings
+                  </Button>
+                </div>
 
             <div className="SearchBar-sort-options">
                 <ul>
