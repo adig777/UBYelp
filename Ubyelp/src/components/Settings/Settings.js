@@ -19,26 +19,34 @@ function Settings(){
     const{account_id} = state;
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
-    const[maxprice, setmaxprice] = useState(5)
-    const[minprice, setminprice] = useState(1)
+    const[price, setprice] = useState('')
+    const[one, setone] = useState(false)
+    const[two, settwo] = useState(false)
+    const[three, setthree] = useState(false)
+    const[four, setfour] = useState(false)
     const[open, setopen] = useState(1)
     const[inlist, setinlist] = useState('')
     const[notinlist, setnotinlist] = useState('')
     const[listName, setlistnames] = useState([])
     const[id, setid] = useState(account_id)
+    const[initialized, setinitialized] = useState(false)
 
-        
-        fetch('http://localhost:3001/listnames', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: JSON.stringify({
-                'id': id
-            })
-        }).then((response) => response.json()
-        ).then((names) => {
-            setlistnames(names)
-        });
-    
+    function initialize(){  
+        if(!initialized){
+            fetch('http://localhost:3001/listnames', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: JSON.stringify({
+                    'id': id
+                })
+            }).then((response) => response.json()
+            ).then((names) => {
+                setlistnames(names)
+            });
+            setinitialized(true)
+        }
+    }
+
     function HandleSave(e){
         fetch('http://localhost:3001/setdistance', {
             method: 'POST',
@@ -64,13 +72,39 @@ function Settings(){
             console.log('setrating succesful');
         });
 
+        var text = ''
+        if(one){
+            if(!two && !three && !four){
+                text.concat('1')
+            }else{
+            text.concat('1,') 
+            }
+        }
+        if(two){
+            if(!one && !three && !four){
+                text.concat('2')
+            }else{
+            text.concat('2,') 
+            }
+        }
+        if(three){
+            if(!one && !two && !four){
+                text.concat('3')
+            }else{
+            text.concat('3,') 
+            }
+        }
+        if(four){
+           text.concat('4')
+        }
+        setprice(text)
+
         fetch('http://localhost:3001/setpricerange', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
                 'id':id,
-                'newMin': minprice,
-                'newMax': maxprice
+                'newprices':price
             })
         }).then((response) => response.json()
         ).then((res) => {   
@@ -115,56 +149,39 @@ function Settings(){
     e.preventDefault();
     }
 
-    function handledistance(e){
-        const newdistance = e.target.value;
-        setdistance(newdistance)
-    }
-    function handlerating(e){
-        const newrating = e.target.value;
-        setrating(newrating)
-    }
-    function handlemin(e){
-        const newmin = e.target.value;
-        setminprice(newmin)
-    }
-    function handlemax(e){
-        const newmax = e.target.value;
-        setmaxprice(newmax)
-    }
-    function handleopen(e){
-        const newopen = e.target.value;
-        setopen(newopen)
-    }
-    function handleinlist(e){
-        const newinlist = e.target.value;
-        setinlist(newinlist)
-    }
-    function handlenotinlist(e){
-        const newnotinlist = e.target.value;
-        setnotinlist(newnotinlist)
-    }
-
-    function handlechangein(SelectChangeEvent){
-        
-        inlist.setState(SelectChangeEvent.target.value)
-    }
-
-
-    function handlechangeout(SelectChangeEvent){
-        notinlist.setState(SelectChangeEvent.target.value)
-    }
 
     function renderlistnames(){
         return Object.keys(listName).map(name => {
             return (
-                <MenuItem value={listName[name]}>{name}</MenuItem>
+                <option>{name}</option>
             );
         });
     }
 
-    
+    function Handlecheckbox1(e){
+        const checked = e.taget.checked
+        setone(checked)
+    }
+    function Handlecheckbox2(e){
+        const checked = e.taget.checked
+        settwo(checked)
+        
+    }
+    function Handlecheckbox3(e){
+        const checked = e.taget.checked
+        setthree(checked)
+    }
+    function Handlecheckbox4(e){
+        const checked = e.taget.checked
+        setfour(checked)
+    }
+
+
         return(
             <div className='settings'>
+                
+                {initialize()}
+            
                 <h1>
                     Settings
                 </h1>
@@ -180,14 +197,14 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "Enter in Miles..."
-                    onChange = {(e) => handledistance(e)}
+                    onChange = {(e) => setdistance(e.target.value)}
                     value = {distance}
                     />
                 </div>
                 <div className = 'open'>
                     Only show places that are open? 
-                    Yes <input type="radio" value={1} name="gender" onClick = {(e) => handleopen(e)}/> 
-                    <input type="radio" value={0} name="gender" onClick = {(e) => handleopen(e)}/> No
+                    Yes <input type="radio" value={1} name="gender" onClick = {(e) => setopen(e.target.value)}/> 
+                    <input type="radio" value={0} name="gender" onClick = {(e) => setopen(e.target.value)}/> No
                 </div>
                 <div className = 'rating'>
                     Select Default Rating Filter: 
@@ -195,61 +212,59 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "1-5"
-                    onChange = {(e) => handlerating(e)}
+                    onChange = {(e) => setrating(e.target.value)}
                     value = {rating}
                     />
                 </div>
                 <div className = 'price'>
                     Select Default Price Range: 
-                    <TextField
-                    type = "number"
-                    size = "small"
-                    placeholder = "Min..."
-                    onChange = {(e) => handlemin(e)}
-                    value = {minprice}
-                    />
-                    &nbsp;
-                    <TextField
-                    type = "number"
-                    size = "small"
-                    placeholder = "Max..."
-                    onChange = {(e) => handlemax(e)}
-                    value = {maxprice}
-                    />
+                    <div>
+          Cheapest first{" "}
+          $
+          <input
+            onChange={(e) => Handlecheckbox1(e)}
+            type="checkbox"
+            name="filters"
+            value="1"
+          />
+          &nbsp;&nbsp;
+           $$
+          <input
+            onChange={(e) => Handlecheckbox2(e)}
+            type="checkbox"
+            name="filters"
+            value="2"
+          />
+          &nbsp;&nbsp;
+           $$$
+          <input
+            onChange={(e) => Handlecheckbox3(e)}
+            type="checkbox"
+            name="filters"
+            value="3"
+          />
+          &nbsp;&nbsp;
+           $$$$
+          <input
+            onChange={(e) => Handlecheckbox4(e)}
+            type="checkbox"
+            name="filters"
+            value="4"
+          />
+        </div>
                 </div>
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
-                    <Box sx={{ maxWidth: 120 }}>
-                    <FormControl fullWidth>
-                     <InputLabel id="demo-simple-select-label">Include</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={inlist}
-                    defaultvalue = {inlist}
-                    label="InList"
-                    onChange={(e) => handlechangein(e)}
-                >
-                    {renderlistnames}
-                    </Select>
-                    </FormControl>
-                    </Box>
 
-                    <Box sx={{ maxWidth: 120 }}>
-                    <FormControl fullWidth>
-                     <InputLabel id="demo-simple-select-label">Exclude</InputLabel>
-                    <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={notinlist}
-                    defaultvalue = {notinlist}
-                    label="InList"
-                    onChange={(e) => handlechangeout(e)}
-                >
-                    {renderlistnames}
-                    </Select>
-                    </FormControl>
-                    </Box>
+                    <select id="inList" className="SearchBar-dropdown" onChange={(e) => setinlist(e.target.value)}>
+                        <option value="">Include</option>
+                        {renderlistnames()}
+                    </select>
+                    <select id="inList" className="SearchBar-dropdown" onChange={(e) => setnotinlist(e.target.value)}>
+                        <option value="">Exclude</option>
+                        {renderlistnames()}
+                    </select>
+                    
                 </div>
                 
                 
