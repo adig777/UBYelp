@@ -291,6 +291,6 @@ async function test() {
 
     settings.disconnect();
 }
-test();
+//test();
 
 module.exports = Settings;
