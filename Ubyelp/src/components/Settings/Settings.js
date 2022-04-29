@@ -24,7 +24,7 @@ function Settings(){
     const[open, setopen] = useState(1)
     const[inlist, setinlist] = useState('')
     const[notinlist, setnotinlist] = useState('')
-    const[listNames, setlistnames] = useState([])
+    const[listName, setlistnames] = useState([])
     const[id, setid] = useState(account_id)
 
         
@@ -39,7 +39,7 @@ function Settings(){
             setlistnames(names)
         });
     
-    function HandleSave(){
+    function HandleSave(e){
         fetch('http://localhost:3001/setdistance', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -114,6 +114,7 @@ function Settings(){
         });
     e.preventDefault();
     }
+
     function handledistance(e){
         const newdistance = e.target.value;
         setdistance(newdistance)
@@ -153,6 +154,14 @@ function Settings(){
         notinlist.setState(SelectChangeEvent.target.value)
     }
 
+    function renderlistnames(){
+        return Object.keys(listName).map(name => {
+            return (
+                <MenuItem value={listName[name]}>{name}</MenuItem>
+            );
+        });
+    }
+
     
         return(
             <div className='settings'>
@@ -161,7 +170,7 @@ function Settings(){
                 </h1>
                 <div>
                     Select Default Filters:&nbsp;&nbsp;
-                <a onClick={HandleSave}>
+                <a onClick={(e) => HandleSave(e)}>
                 Save
                 </a>
                 </div>
@@ -171,14 +180,14 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "Enter in Miles..."
-                    onChange = {(e) => {handledistance}}
+                    onChange = {(e) => handledistance(e)}
                     value = {distance}
                     />
                 </div>
                 <div className = 'open'>
                     Only show places that are open? 
-                    Yes <input type="radio" value={1} name="gender"/> 
-                    <input type="radio" value={0} name="gender"/> No
+                    Yes <input type="radio" value={1} name="gender" onClick = {(e) => handleopen(e)}/> 
+                    <input type="radio" value={0} name="gender" onClick = {(e) => handleopen(e)}/> No
                 </div>
                 <div className = 'rating'>
                     Select Default Rating Filter: 
@@ -186,7 +195,7 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "1-5"
-                    onChange = {this.handlerating}
+                    onChange = {(e) => handlerating(e)}
                     value = {rating}
                     />
                 </div>
@@ -196,7 +205,7 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "Min..."
-                    onChange = {this.handlemin}
+                    onChange = {(e) => handlemin(e)}
                     value = {minprice}
                     />
                     &nbsp;
@@ -204,7 +213,7 @@ function Settings(){
                     type = "number"
                     size = "small"
                     placeholder = "Max..."
-                    onChange = {this.handlemax}
+                    onChange = {(e) => handlemax(e)}
                     value = {maxprice}
                     />
                 </div>
@@ -217,21 +226,11 @@ function Settings(){
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={inlist}
-                    defaultvalue = {listName}
+                    defaultvalue = {inlist}
                     label="InList"
-                    onChange={handlechangein}
+                    onChange={(e) => handlechangein(e)}
                 >
-                    {
-                        listNames.map(listName) => (
-                            <MenuItem
-                            value = {listName}
-                            key = {listName}
-                            >
-                            {listName}
-                            </MenuItem>
-
-                        );    
-                    }
+                    {renderlistnames}
                     </Select>
                     </FormControl>
                     </Box>
@@ -245,18 +244,9 @@ function Settings(){
                     value={notinlist}
                     defaultvalue = {notinlist}
                     label="InList"
-                    onChange={handlechangeout}
+                    onChange={(e) => handlechangeout(e)}
                 >
-                    {
-                        listNames.map(listName) => (
-                            <MenuItem
-                            value = {notinlist}
-                            >
-                            {listName}
-                            </MenuItem>
-
-                        );    
-                    }
+                    {renderlistnames}
                     </Select>
                     </FormControl>
                     </Box>
@@ -281,4 +271,3 @@ function Settings(){
 
 
   export default Settings;
-
