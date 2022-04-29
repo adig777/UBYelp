@@ -5,7 +5,7 @@
     background-image: url('./image1.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
-    height: 25rem;
+    height: 40rem;
   }
   
   .SearchBar-sort-options ul {
@@ -13,6 +13,7 @@
     justify-content: center;
     margin-bottom: 2.22rem;
     color: #ede7e7;
+    list-style: none;
   }
   
   .SearchBar-sort-options li {
@@ -39,12 +40,13 @@
 
 
 
-  .SearchBar-filter-prices ul {
+.SearchBar-filter-prices ul {
     display: flex;
     justify-content: center;
     margin-bottom: 2.22rem;
     color: hsl(0, 32%, 93%);
-  }
+    list-style: none;
+}
   
   .SearchBar-filter-prices li {
     cursor: pointer;
@@ -71,12 +73,13 @@
 
 
 
-  .SearchBar-filter-openNow ul {
+.SearchBar-filter-openNow ul {
     display: flex;
     justify-content: center;
     margin-bottom: 2.22rem;
     color: hsl(0, 32%, 93%);
-  }
+    list-style: none;
+}
   
   .SearchBar-filter-openNow li {
     cursor: pointer;
@@ -100,16 +103,25 @@
     color: #f0c36c;
   }
 
+.SearchBar-dropdown {
+    width: 21rem;
+    padding: 1.1rem 1rem;
+    margin-right: 2.22rem;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #130475;
+    font-style: italic;
+}
 
 
 
-  
-  .SearchBar-fields {
+.SearchBar-fields {
     display: flex;
     justify-content: center;
     margin-bottom: 2.88rem;
-
-  }
+}
   
   .SearchBar-fields input {
     width: 21rem;

@@ -13,6 +13,7 @@ import TestTransferId from './components/TestTransferId';
 import Signup from './components/Signup/Signup';
 import BusinessList from './components/BusinessList/BusinessList';
 import Settings from './components/Settings/Settings';
+import Lists from './components/List/Lists';
 
 function App() {
     return (

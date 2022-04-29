@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button"
 
-
 export default function SearchBar() {
     const { state } = useLocation();
     const { account_id } = state;
@@ -12,12 +11,12 @@ export default function SearchBar() {
 
     var thisState = {
         id: account_id,
-        term:'',
-        location:'',
-        sortBy:'best_match',
+        term: '',
+        location: '',
+        sortBy: 'best_match',
         price: 2,
         open_now: true,
-        radius: 30000 
+        radius: 30000
     };
 
     const sortByOptions = {
@@ -53,75 +52,72 @@ export default function SearchBar() {
     const [not_list, setNotList] = useState('');
 
     const [priceToggle, setPriceToggle] = useState([false, false, false, false]);   //Not a filter
-    const [listNames, setListNames] = useState({empty: 'empty'});
+    const [listNames, setListNames] = useState({});
+    const [initialized, setInitialized] = useState(false);
 
-    //Get Default Filters
-    fetch('http://localhost:3001/defaultfilters', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: JSON.stringify({
-            'id': id
-        })
-    }).then((response) => response.json()
-    ).then((filters) => {
-        getLists();
-
-        setLocation(filters.address);
-        setRadius(filters.distance);
-        setRating(filters.rating);
-        setPrice(filters.price);
-        setOpenNow(filters.open);
-        setInList(filters.in_list);
-        setNotList(filters.not_list);
-
-        if (filters.address !== '') document.getElementById("location").value = location;
-        if (filters.distance !== -1) document.getElementById("radius").value = radius;
-        if (filters.rating !== -1) document.getElementById("rating").value = rating;
-        if (filters.in_list !== '') document.getElementById("inList").value = in_list
-        if (filters.not_list !== '') document.getElementById("notList").value = not_list
-
-    });
-
-    function getLists() {
-        if ('empty' in listNames && listNames['empty'] === 'empty') {
-            //Get List Names
-            fetch('http://localhost:3001/listnames', {
+    function initialize() {
+        if (!initialized) {
+            //Get Default Filters
+            fetch('http://localhost:3001/defaultfilters', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify({
                     'id': id
                 })
             }).then((response) => response.json()
-            ).then((names) => {
-                //Format: {'list_name': 'list_id', ...}
-                setListNames(names);
+            ).then((filters) => {
+
+                setLocation(filters.address);
+                setRadius(filters.distance);
+                setRating(filters.rating);
+                setPrice(filters.price);
+                setOpenNow(filters.open);
+                setInList(filters.in_list);
+                setNotList(filters.not_list);
+
+                if (filters.address !== '') document.getElementById("location").value = location;
+                if (filters.distance !== -1) document.getElementById("radius").value = radius;
+                if (filters.rating !== -1) document.getElementById("rating").value = rating;
+                if (filters.in_list !== '') document.getElementById("inList").value = in_list
+                if (filters.not_list !== '') document.getElementById("notList").value = not_list
+
+                //Get List Names
+                fetch('http://localhost:3001/listnames', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: JSON.stringify({
+                        'id': id
+                    })
+                }).then((response) => response.json()
+                ).then((names) => {
+                    //Format: {'list_name': 'list_id', ...}
+                    setListNames(names);
+                    setInitialized(true);
+                });
             });
         }
 
     }
 
 
+
     // Determines which sort method to highlight
     function getSortByClass(sortByOption) {
-        if(sortBy === sortByOption) {
+        if (sortBy === sortByOption) {
             return 'active';
         }
         return '';
     }
 
-
-
-    function getFilterByPriceClass(filterByPrice){
-        if (price === filterByPrice) {
+    function getFilterByPriceClass(filterByPrice) {
+        if (priceToggle[filterByPrice - 1] == true) {
             return 'active';
         }
         return '';
 
     }
 
-
-
-    function getFilterByOpenNowClass(filterByOpenNow){
+    function getFilterByOpenNowClass(filterByOpenNow) {
         if (open_now === filterByOpenNow) {
             return 'active';
         }
@@ -129,13 +125,14 @@ export default function SearchBar() {
 
     }
 
+
+
     // Determines which sort method to use
     function handleSortByChange(sortByOption) {
         setSortBy(sortByOption);
     }
 
-
-     // Determines which price range we choose
+    // Determines which price range we choose
     function handleFilterByPriceChange(filterByPrice) {
         priceToggle[filterByPrice - 1] = !priceToggle[filterByPrice - 1];
 
@@ -144,7 +141,7 @@ export default function SearchBar() {
         if (priceToggle[1]) p += '2,';
         if (priceToggle[2]) p += '3,';
         if (priceToggle[3]) p += '4,';
-        if (p !== '') p=p.substring(0, p.length - 1);
+        if (p !== '') p = p.substring(0, p.length - 1);
 
         setPrice(p);
     }
@@ -153,10 +150,6 @@ export default function SearchBar() {
     function handleFilterByOpenNowChange(filterByOpenNow) {
         setOpenNow(filterByOpenNow);
     }
-
-
-
-
 
     // Updates food/product input given by user
     function handleTermChange(event) {
@@ -168,7 +161,7 @@ export default function SearchBar() {
         setLocation(event.target.value);
     }
 
-     // Updates radius input given by user
+    // Updates radius input given by user
     function handleRadiusChange(event) {
         let value = event.target.value;
         if (value > 40000) {
@@ -193,7 +186,7 @@ export default function SearchBar() {
         setRating(event.target.value);
     }
 
-    function handleInListChange(event){
+    function handleInListChange(event) {
         setInList(event.target.value);
     }
 
@@ -204,7 +197,15 @@ export default function SearchBar() {
     // Queries Yelp for food/product
     function handleSearch(event) {
         //this.props.searchYelp(state.term, state.location, state.sortBy, state.price, state.open_now, state.radius);
-        console.log(price);/*
+        document.getElementById("error").innerHTML = '';
+        if (term === '') {
+            document.getElementById("error").innerHTML = 'Please enter some keywords! ';
+        }
+        if (location === '') {
+            document.getElementById("error").innerHTML += 'Please enter a location!';
+
+        }
+        /*
         fetch('http://localhost:3001/search', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -230,48 +231,47 @@ export default function SearchBar() {
         event.preventDefault();
     }
 
+
+
     // Highlights the selected sort-by method
     function renderSortByOptions() {
         return Object.keys(sortByOptions).map(sortByOption => {
             let sortByOptionValue = sortByOptions[sortByOption];
             return (
-                    <li className={getSortByClass(sortByOptionValue)}
-                        key={sortByOptionValue}
-                        onClick={() => handleSortByChange(sortByOptionValue) }>
+                <li className={getSortByClass(sortByOptionValue)}
+                    key={sortByOptionValue}
+                    onClick={() => handleSortByChange(sortByOptionValue)}>
                     {sortByOption}
-                    </li>
-                    );  
+                </li>
+            );
         });
     }
-
 
     // Highlights the selected price range
     function renderFilterByPrice() {
         return Object.keys(filterByPrices).map(filterByPrice => {
             let filterByPriceValue = filterByPrices[filterByPrice];
             return (
-                    <li className={getFilterByPriceClass(filterByPriceValue)}
-                        key={filterByPriceValue}
-                        onClick={()=>handleFilterByPriceChange(filterByPriceValue)}>
+                <li className={getFilterByPriceClass(filterByPriceValue)}
+                    key={filterByPriceValue}
+                    onClick={() => handleFilterByPriceChange(filterByPriceValue)}>
                     {filterByPrice}
-                    </li>
-                    );  
+                </li>
+            );
         });
     }
-
-
 
     // Highlights open or closed
     function renderFilterByOpenNow() {
         return Object.keys(filterByOpenNows).map(filterByOpenNow => {
             let filterByOpenNowValue = filterByOpenNows[filterByOpenNow];
             return (
-                    <li className={getFilterByOpenNowClass(filterByOpenNowValue)}
-                        key={filterByOpenNowValue}
-                        onClick={()=>handleFilterByOpenNowChange(filterByOpenNowValue)}>
+                <li className={getFilterByOpenNowClass(filterByOpenNowValue)}
+                    key={filterByOpenNowValue}
+                    onClick={() => handleFilterByOpenNowChange(filterByOpenNowValue)}>
                     {filterByOpenNow}
-                    </li>
-                    );  
+                </li>
+            );
         });
     }
 
@@ -283,40 +283,35 @@ export default function SearchBar() {
         });
     }
 
+
+
     // Renders two input boxes. One for business and the other for location. 
     return (
         <div className="SearchBar">
-                <div className="NavBar">
-                  UBYELP
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button
-                   onClick={navigate('/search')}
-                   >
-                  Search
-                  </Button>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button
-                  onClick={navigate('/lists', { 'state': {'account_id':account_id}})}
-                  >
-                  Lists
-                  </Button>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button
-                   onClick={navigate('/about', { 'state': {'account_id':account_id}})}
-                   >
-                  About us
-                  </Button>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Button
-                   onClick={navigate('/settings', { 'state': {'account_id':account_id}})}
-                   >
-                  Settings
-                  </Button>
-                </div>
+            <div className="NavBar">
+                UBYELP
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/search') }}>
+                    Search
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                    Lists
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                    About us
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
+                    Settings
+                </Button>
+            </div>
 
+            {initialize()}
             <div className="SearchBar-sort-options">
                 <ul>
-                    {renderSortByOptions()} 
+                    {renderSortByOptions()}
                 </ul>
             </div>
 
@@ -328,37 +323,56 @@ export default function SearchBar() {
 
 
 
-            <div className="SearchBar-filter-openNow">          
+            <div className="SearchBar-filter-openNow">
                 <ul>
-                    {renderFilterByOpenNow()} 
+                    {renderFilterByOpenNow()}
                 </ul>
             </div>
 
 
 
             <div className="SearchBar-fields">
-                    
-                <input placeholder="Enter Keyword. e.g. burgers" onChange={handleTermChange} />
-                <input id="location" placeholder="Enter Location. e.g. San Jose" onChange={handleLocationChange} />
-                <input id="radius" type="number" min="1" max="40000" placeholder="Enter Radius in Meters. e.g. 30000" onChange={handleRadiusChange} />
-                <input id="rating" type="number" min="0" max="5" step="0.1" placeholder="Minimum rating. e.g. 3.5" onChange={handleRatingChange} />
-
+                <div>
+                    <p>Keywords</p>
+                    <input placeholder="Enter Keyword. e.g. burgers" onChange={handleTermChange} />
+                </div>
+                <div>
+                    <p>Location</p>
+                    <input id="location" placeholder="Enter Location. e.g. San Jose" onChange={handleLocationChange} />
+                </div>
+                <div>
+                    <p>Radius (meters)</p>
+                    <input id="radius" type="number" min="1" max="40000" placeholder="Enter Radius in Meters. e.g. 30000" onChange={handleRadiusChange} />
+                </div>
             </div>
 
-            <div className="SearchBar-selects">
-                <select id="inList" onChange={handleInListChange}>
-                    <option value="">Select list...</option>
-                    {renderOptions()}
-                </select>
-                <select id="notList" onChange={handleNotListChange}>
-                    <option value="">Select list...</option>
-                    {renderOptions()}
-                </select>
+            <div className="SearchBar-fields">
+                <div>
+                    <p>Rating</p>
+                    <input id="rating" type="number" min="0" max="5" step="0.1" placeholder="Minimum rating. e.g. 3.5" onChange={handleRatingChange} />
+                </div>
+                <div>
+                    <p>List of restaurants to only include in results</p>
+                    <select id="inList" className="SearchBar-dropdown" onChange={handleInListChange}>
+                        <option value="">Select list to include from...</option>
+                        {renderOptions()}
+                    </select>
+                </div>
+                <div>
+                    <p>List of restaurants to not include in results</p>
+                    <select id="notList" className="SearchBar-dropdown" onChange={handleNotListChange}>
+                        <option value="">Select list to not include...</option>
+                        {renderOptions()}
+                    </select>
+                </div>
             </div>
-
-                <div className="SearchBar-submit">
+            <div>
+                <p id="error" />
+            </div>
+            <div className="SearchBar-submit">
                 <a onClick={handleSearch}>Search</a>
             </div>
-        </div>    
+            
+        </div>
     );
 }

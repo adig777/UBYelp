@@ -12,11 +12,9 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 
 //TODO:
 //-Searchbar frontend to finish
-// **Constant refresh bug
-// *Automatically fill default values on load (open, rating)
-// *Highlighting: price/open buttons
 // *Require keyword and location/try-catch crashes
-// *Remove dots * next to options
+// *Input Headers
+// *Error message
 //-Business bug: rating not displyed properly after select (can be left alone)
 
 class Search {
