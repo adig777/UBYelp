@@ -14,9 +14,8 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 //-Searchbar frontend to finish
 // **Constant refresh bug
 // *Automatically fill default values on load (open, rating)
-// *Bug: Button hightlights stop when clicking price/open buttons
+// *Highlighting: price/open buttons
 // *Require keyword and location/try-catch crashes
-// *Price highlighting
 // *Remove dots * next to options
 //-Business bug: rating not displyed properly after select (can be left alone)
 
