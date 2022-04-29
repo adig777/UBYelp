@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import './Loginpage.css';
 import { useNavigate } from "react-router-dom";
-import {browserHistory} from "react-router";
+
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -25,7 +25,6 @@ export default function Login() {
         ).then((id) => {
             if (id !== -1) {
                 //If login success, redirect with id transfered
-                browserHistory.push({pathname: '/Lists', state: {'account_id':id}});
                 navigate('/search', { 'state': {'account_id':id}});
             } else {
                 //Please try again message
@@ -36,7 +35,7 @@ export default function Login() {
     }
     return (
       <div className="Login">
-
+        
        <meta charset="UTF-8"></meta>
 
         <header>
