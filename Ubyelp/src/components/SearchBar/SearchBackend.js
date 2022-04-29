@@ -13,8 +13,9 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 //TODO:
 //-Searchbar frontend to finish
 // *Require keyword and location/try-catch crashes
-// *Input Headers
-// *Error message
+// *Input Headers formating
+// *Error message formating
+// *Move searchbar
 //-Business bug: rating not displyed properly after select (can be left alone)
 
 class Search {

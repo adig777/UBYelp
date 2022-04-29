@@ -25,7 +25,7 @@ class Settings {
         this.getLastOpen = this.getLastOpen.bind(this);
         this.setFilterDistance = this.setFilterDistance.bind(this);
         this.setFilterRating = this.setFilterRating.bind(this);
-        this.setFilterPriceRange = this.setFilterPriceRange.bind(this);
+        this.setFilterPrice = this.setFilterPrice.bind(this);
         this.setFilterOpen = this.setFilterOpen.bind(this);
         this.setFilterInList = this.setFilterInList.bind(this);
         this.setFilterNotInList = this.setFilterNotInList.bind(this);
@@ -142,20 +142,29 @@ class Settings {
         }
     }
 
-    async setFilterPriceRange(newMin, newMax) {
-        //Check valid input (-1<=x)
+    async setFilterPrice(newPrices) {
+        //Check valid input (1,2,3,4)
         try {
-            if (newMin >= -1 && newMax >= -1 && newMin <= newMax) {
-                var query = 'UPDATE ' + settings_table + ' SET filter_price_min=' + newMin + ' WHERE account_id=' + this.account_id;
-                await this.#quickQuery(query);
-
-                query = 'UPDATE ' + settings_table + ' SET filter_price_max=' + newMax + ' WHERE account_id=' + this.account_id;
-                await this.#quickQuery(query);
-                console.log('filter_price_range changed');
-            } else {
-                throw 'Invalid input';
+            newPrices = newPrices.replace(/ /g, "");    //trim whitespaces
+            if (newPrices !== '') {
+                const values = newPrices.split(",");
+                for (let i = 0; i < values.length; i++) {
+                    if (values[i] === '1'
+                        || values[i] === '2'
+                        || values[i] === '3'
+                        || values[i] === '4') {
+                        continue;
+                    } else {
+                        console.log('crash1');
+                        throw 'Invalid input';
+                    }
+                }
             }
-        } catch(error) {
+            var query = 'UPDATE ' + settings_table + ' SET filter_price=\'' + newPrices + '\' WHERE account_id=' + this.account_id;
+            await this.#quickQuery(query);
+            console.log('filter_price changed');
+        } catch (error) {
+            console.log(error);
             throw 'Invalid input';
         }
     }
@@ -177,7 +186,7 @@ class Settings {
 
     async setFilterInList(listName) {
         //Check valid input (List exists)
-        await this.#queryVerifyListExistance(listName);
+        if(listName !== '') await this.#queryVerifyListExistance(listName);
 
         var query = 'UPDATE ' + settings_table + ' SET filter_in_list=\'' + listName + '\' WHERE account_id=' + this.account_id;
         await this.#quickQuery(query);
@@ -185,7 +194,7 @@ class Settings {
     }
     async setFilterNotInList(listName) {
         //Check valid input (List exists)
-        await this.#queryVerifyListExistance(listName);
+        if (listName !== '') await this.#queryVerifyListExistance(listName);
 
         var query = 'UPDATE ' + settings_table + ' SET filter_not_list=\'' + listName + '\' WHERE account_id=' + this.account_id;
         await this.#quickQuery(query);
@@ -258,30 +267,30 @@ class Settings {
 }
 
 async function test() {
-    var settings = new Settings(1);
+    var settings = new Settings(663);
     console.log('Account id: ' + await settings.getAccountId());
     console.log('Username: ' + await settings.getUsername());
-    await settings.setEmail('newemail@email.com');
+    await settings.setEmail('myEmail@gmail.com');
     console.log('Email: ' + await settings.getEmail());
-    await settings.setAddress('333 address lane');
+    await settings.setAddress('1234 address lane');
     console.log('Address: ' + await settings.getAddress());
-    await settings.setTheme('blue');
+    await settings.setTheme('dark');
     console.log('Theme: ' + await settings.getTheme());
-    await settings.setFilterDistance('16');
+    await settings.setFilterDistance('35000');
     console.log('FDist: ' + await settings.getFilter('distance'));
-    await settings.setFilterRating('3');
+    await settings.setFilterRating('3.0');
     console.log('FRate: ' + await settings.getFilter('rating'));
-    await settings.setFilterPriceRange('3', 10);
-    console.log('FPrice: ' + await settings.getFilter('price_min') + ', ' + await settings.getFilter('price_max'));
-    await  settings.setFilterOpen('1');
+    await settings.setFilterPrice('1,2,3');
+    console.log('FPrice: ' + await settings.getFilter('price'));
+    await  settings.setFilterOpen('0');
     console.log('FOpen: ' + await settings.getFilter('open'));
-    await  settings.setFilterInList('new name');
+    await  settings.setFilterInList('');
     console.log('FInList: ' + await settings.getFilter('in_list'));
-    await settings.setFilterNotInList('new name');
+    await settings.setFilterNotInList('new name 2');
     console.log('FNotList: ' + await settings.getFilter('not_list'));
 
     settings.disconnect();
 }
-//test();
+test();
 
 module.exports = Settings;
