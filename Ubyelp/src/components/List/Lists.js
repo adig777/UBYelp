@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,7 +23,7 @@ export default function Lists(){
    
 
    
-initialize(){
+function initialize(){
    if(!initialized){
    fetch('http://localhost:3001/getlists', {
         method: 'POST',
@@ -220,66 +219,62 @@ initialize(){
                         (e) => setnewlistdesc(e.target.value)
                     }
                     />
-            {
-             Object.keys(mainlist).map((mainlist.listitem) =>
-            return(
-               <div key = {mainlist.listitem.id} >
-                   <br /><br />
-                   {mainlist.listitem.name}
-                   &nbsp;
-            <Button
-                size="small"
-                className="deletebutton"
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={() => deletelistitem(mainlist.id ,mainlist.listitem.id)}
-              >
-                Delete
-              </Button>
-                    <TextField
-                    type = "text"
-                    size = "small"
-                    label = "Change Item Name"
-                    defaultValue = {mainlist.listitem.name}
-                    value = {newitemname}
-                    onChange = {
-                        (e) => setnewitemname(e.target.value)
-                    }
-                    />
-                   <div>
-                    <Button
-                    variant = "text"
-                    size = "small"
-                    >
-                    {mainlist.listitem.link}
-                    </Button>
-                    &nbsp;
-                    <TextField
-                    type = "text"
-                    size = "small"
-                    label = "Change Item Description"
-                    defaultValue = {mainlist.listitem.desc}
-                    value = {newitemdesc}
-                    onChange = {
-                        (e) => setnewitemdesc(e.target.value)
-                    }
-                    />
-                    <TextField
-                    type = "text"
-                    size = "small"
-                    label = "Change Item Rating"
-                    defaultValue = {mainlist.listitem.rating}
-                    value = {newrating}
-                    onChange = {
-                        (e) => setnewrating(e.target.value)
-                    }
-                    />
-                   </div>
-                   
-               </div> 
+                {Object.keys(mainlist).map((listitem) => {
+                    return (
+                        <div key={mainlist.listitem.id} >
+                            <br /><br />
+                            {listitem.name}
+                            &nbsp;
+                            <Button
+                                size="small"
+                                className="deletebutton"
+                                variant="outlined"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => deletelistitem(mainlist.id, listitem.id)}
+                            >
+                                Delete
+                            </Button>
+                            <TextField
+                                type="text"
+                                size="small"
+                                label="Change Item Name"
+                                defaultValue={listitem.name}
+                                value={newitemname}
+                                onChange={(e) => setnewitemname(e.target.value)}
+                            />
+                            <div>
+                                <Button
+                                    variant="text"
+                                    size="small"
+                                >
+                                    {mainlist.listitem.link}
+                                </Button>
+                                &nbsp;
+                                <TextField
+                                    type="text"
+                                    size="small"
+                                    label="Change Item Description"
+                                    defaultValue={listitem.desc}
+                                    value={newitemdesc}
+                                    onChange={(e) => setnewitemdesc(e.target.value)}
+                                />
+                                <TextField
+                                    type="text"
+                                    size="small"
+                                    label="Change Item Rating"
+                                    defaultValue={listitem.rating}
+                                    value={newrating}
+                                    onChange={
+                                        (e) => setnewrating(e.target.value)
+                                    }
+                                />
+                            </div>
+
+                        </div>
 
 
-            ));
+                    );
+                })
             }
             </div>
         );
