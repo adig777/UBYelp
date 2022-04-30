@@ -2,6 +2,7 @@
 import React from "react";
 import ThemeSetter from "./ThemeSetter";
 import "./Settings.css";
+import Button from "@mui/material/Button"
 import ThemeProvider from "./Themes/ThemeProvider";
 import { TextField } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
@@ -10,12 +11,14 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import {useLocation} from "react-router-dom";
-import {useState} from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 function Settings(){
     const { state } = useLocation();
+    const navigate = useNavigate();
     const{account_id} = state;
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
