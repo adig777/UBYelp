@@ -36,17 +36,6 @@ function initialize(){
     ).then((list) => {
        setalllists(list)
     });
-
-    fetch('http://localhost:3001/listnamesandid', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: JSON.stringify({
-            'id': id
-        })
-    }).then((response) => response.json()
-    ).then((results) => {
-       //setnamesandid(results)
-    });
       setInitialized(true)
    }
 }
