@@ -196,6 +196,7 @@ class ListBackend{
                 if (!list[rows[i].listname]) {
                     list[rows[i].listname] = {
                         'id': rows[i].list_id,
+                        'name': rows[i].listname,
                         'desc': rows[i].listdesc,
                         'items': [listitem]
                     }

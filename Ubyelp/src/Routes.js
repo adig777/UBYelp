@@ -162,7 +162,7 @@ app.post('/getlists', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let List = new ListBackend(input.id);
     await List.getLists((list) => {
-        res.end(list);
+        res.end(JSON.stringify(list));
     });
     List.disconnect();
 });

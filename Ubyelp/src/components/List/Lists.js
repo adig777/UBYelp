@@ -213,7 +213,8 @@ function initialize(){
                     onChange = {
                         (e) => editlistdesc(e,mainlist.id)
                     }
-                    />
+                />
+                { console.log(mainlist)}
                 {Object.keys(mainlist).map((listitem) => {
                     return (
                         <div key={mainlist.listitem.id} >
