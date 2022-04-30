@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Accordion } from "react-bootstrap";
 
 
 
@@ -30,7 +31,6 @@ function initialize(){
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
             'id': id
-
         })
     }).then((response) => response.json()
     ).then((list) => {
@@ -155,30 +155,25 @@ function initialize(){
     }
 
     function renderlistoptions(){
-        for(const listnames in alllists){
+        return Object.keys(alllists).map(listnames =>{
             return(
                 <>
                 <Button
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onSubmit = {onsubmit(listnames)}
+                onSubmit = {() => onsubmit(listnames)}
                 >
                 {listnames}
                 </Button>
                 &nbsp;
                 </>
             );
-        }
+        });
     }
 
     function renderlist(listname){
-        var mainlist = []
-        for(const listnames in alllists){
-            if(listnames === listname){
-                 mainlist = alllists[listname]
-            }
-        }
+        var mainlist = alllists[listname]
         return(
             <div>
                 {renderlistoptions}
@@ -213,23 +208,16 @@ function initialize(){
                     onChange = {
                         (e) => editlistdesc(e,mainlist.id)
                     }
-                />
-                { console.log(mainlist)}
+                    />
                 {Object.keys(mainlist).map((listitem) => {
                     return (
                         <div key={mainlist.listitem.id} >
+                            <Accordion defaultActiveKey="0">
+                            <Accordion.Item eventKey={listitem.id}>
                             <br /><br />
-                            {listitem.name}
+                            <Accordion.Header>{listitem.name}</Accordion.Header>
                             &nbsp;
-                            <Button
-                                size="small"
-                                className="deletebutton"
-                                variant="outlined"
-                                startIcon={<DeleteIcon />}
-                                onClick={() => deletelistitem(mainlist.id, listitem.id)}
-                            >
-                                Delete
-                            </Button>
+                           <Accordion.Body>
                             <TextField
                                 type="text"
                                 size="small"
@@ -238,7 +226,7 @@ function initialize(){
                                 value={newitemname}
                                 onChange={(e) => editlistitemname(e, listitem.id)}
                             />
-                            <div>
+                            
                                 <Button
                                     variant="text"
                                     size="small"
@@ -264,8 +252,18 @@ function initialize(){
                                         (e) => editlistitemrating(e, listitem.id)
                                     }
                                 />
-                            </div>
-
+                                </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                            <Button
+                                size="small"
+                                className="deletebutton"
+                                variant="outlined"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => deletelistitem(mainlist.id, listitem.id)}
+                            >
+                                Delete
+                            </Button>
                         </div>
 
 
