@@ -99,7 +99,7 @@ function Settings(){
         }
         setprice(text)
 
-        fetch('http://localhost:3001/setpricerange', {
+        fetch('http://localhost:3001/setprice', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
