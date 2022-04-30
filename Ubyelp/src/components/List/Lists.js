@@ -151,7 +151,7 @@ function initialize(){
     function onsubmit(listnames){
         setInitialized(false)
         setcurrname(listnames)
-        renderlist(currname)
+        renderlist(listnames)
     }
 
     function renderlistoptions(){
@@ -162,7 +162,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onSubmit = {() => onsubmit(listnames)}
+                onClick = {() => onsubmit(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -173,10 +173,10 @@ function initialize(){
     }
 
     function renderlist(listname){
-        var mainlist = alllists[listname]
+        var mainlist = alllists[listname];
         return(
             <div>
-                {renderlistoptions}
+                {renderlistoptions()}
                 <h1>
                     {listname}
                 <Button
@@ -209,9 +209,10 @@ function initialize(){
                         (e) => editlistdesc(e,mainlist.id)
                     }
                     />
-                {Object.keys(mainlist).map((listitem) => {
+                {Object.keys(mainlist.items).map((i) => {
+                    let listitem = mainlist.items[i];
                     return (
-                        <div key={mainlist.listitem.id} >
+                        <div key={listitem.id} >
                             <Accordion defaultActiveKey="0">
                             <Accordion.Item eventKey={listitem.id}>
                             <br /><br />
@@ -231,7 +232,7 @@ function initialize(){
                                     variant="text"
                                     size="small"
                                 >
-                                    {mainlist.listitem.link}
+                                    {listitem.link}
                                 </Button>
                                 &nbsp;
                                 <TextField
@@ -305,7 +306,7 @@ function initialize(){
             My Lists
             </h1>
        
-        {renderlistoptions}
+        {renderlistoptions()}
 
         </div>
     );  
