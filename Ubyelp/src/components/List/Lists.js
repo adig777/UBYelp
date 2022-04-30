@@ -141,6 +141,7 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
         });
+       setInitialized(false);
 
     }
     function deletelistitem(list_id,list_item_id){
