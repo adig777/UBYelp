@@ -45,12 +45,13 @@ function initialize(){
         })
     }).then((response) => response.json()
     ).then((results) => {
-       setnamesandid(results)
+       //setnamesandid(results)
     });
       setInitialized(true)
    }
 }
-    function editlistname(list_id){
+    function editlistname(e,list_id){
+        setnewlistname(e.target.value)
 
         fetch('http://localhost:3001/editlistname', {
         method: 'POST',
@@ -65,7 +66,8 @@ function initialize(){
     });
     }
 
-    function editlistitemname(list_item_id){
+    function editlistitemname(e,list_item_id){
+        setnewitemname(e.target.value)
 
         fetch('http://localhost:3001/edititemname', {
         method: 'POST',
@@ -80,7 +82,8 @@ function initialize(){
     });
     }
 
-    function editlistdesc(list_id){
+    function editlistdesc(e,list_id){
+        setnewlistdesc(e.target.value)
 
         fetch('http://localhost:3001/editlistdesc', {
         method: 'POST',
@@ -95,7 +98,8 @@ function initialize(){
     });
     }
 
-    function editlistitemdesc(list_item_id){
+    function editlistitemdesc(e,list_item_id){
+        setnewitemdesc(e.target.value)
 
         fetch('http://localhost:3001/edititemdesc', {
         method: 'POST',
@@ -110,7 +114,8 @@ function initialize(){
     });
     }
 
-    function editlistitemrating(list_item_id){
+    function editlistitemrating(e,list_item_id){
+        setnewrating(e.target.value)
 
         fetch('http://localhost:3001/edititemrating', {
         method: 'POST',
@@ -206,7 +211,7 @@ function initialize(){
                     defaultValue = {mainlist.name}
                     value = {newlistname}
                     onChange = {
-                        (e) => setnewlistname(e.target.value)
+                        (e) => editlistname(e,mainlist.id)
                     }
                     />
                 <TextField
@@ -216,7 +221,7 @@ function initialize(){
                     defaultValue = {mainlist.desc}
                     value = {newlistdesc}
                     onChange = {
-                        (e) => setnewlistdesc(e.target.value)
+                        (e) => editlistdesc(e,mainlist.id)
                     }
                     />
                 {Object.keys(mainlist).map((listitem) => {
@@ -240,7 +245,7 @@ function initialize(){
                                 label="Change Item Name"
                                 defaultValue={listitem.name}
                                 value={newitemname}
-                                onChange={(e) => setnewitemname(e.target.value)}
+                                onChange={(e) => editlistitemname(e, listitem.id)}
                             />
                             <div>
                                 <Button
@@ -256,7 +261,7 @@ function initialize(){
                                     label="Change Item Description"
                                     defaultValue={listitem.desc}
                                     value={newitemdesc}
-                                    onChange={(e) => setnewitemdesc(e.target.value)}
+                                    onChange={(e) => editlistitemdesc(e, listitem.id)}
                                 />
                                 <TextField
                                     type="text"
@@ -265,7 +270,7 @@ function initialize(){
                                     defaultValue={listitem.rating}
                                     value={newrating}
                                     onChange={
-                                        (e) => setnewrating(e.target.value)
+                                        (e) => editlistitemrating(e, listitem.id)
                                     }
                                 />
                             </div>
@@ -290,11 +295,11 @@ function initialize(){
        <div className="NavBar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/search') }}>
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
                     Search
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                <Button onClick={() => { navigate('/lists') }}>
                     Lists
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -313,11 +318,6 @@ function initialize(){
        
         {renderlistoptions}
 
-        <div>
-        <a>
-            Save
-        </a>    
-        </div>
         </div>
     );  
     
