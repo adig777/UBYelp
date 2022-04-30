@@ -141,7 +141,6 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
         });
-       setInitialized(false);
 
     }
     function deletelistitem(list_id,list_item_id){
@@ -161,6 +160,7 @@ function initialize(){
     }
 
     function onsubmit(listnames){
+        setInitialized(false)
         setcurrname(listnames)
         renderlist(currname)
     }
