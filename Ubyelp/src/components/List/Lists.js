@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
+import { ReactTinyLink } from "react-tiny-link";
 
 
 
@@ -133,7 +134,7 @@ function initialize(){
         setInitialized(false)
     }
     function deletelistitem(list_id,list_item_id){
-        fetch('http://localhost:3001/deletelist', {
+        fetch('http://localhost:3001/deletelistitem', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
@@ -251,6 +252,13 @@ function initialize(){
                             >
                                 Delete
                              </Button>
+                             <ReactTinyLink
+                                cardSize = "small"
+                                showGraphic = {false}
+                                maxLine = {5}
+                                minLine = {2}
+                                url = {listitem.link}
+                             />
                                 </Accordion.Body>
                                 </Accordion.Item>
                         </div>
