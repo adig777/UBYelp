@@ -151,7 +151,6 @@ function initialize(){
     function onsubmit(listnames){
         setInitialized(false)
         setcurrname(listnames)
-        renderlist(listnames)
     }
 
     function renderlistoptions(){
@@ -162,7 +161,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onClick = {() => onsubmit(listnames)}
+                onSubmit = {() => onsubmit(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -173,10 +172,10 @@ function initialize(){
     }
 
     function renderlist(listname){
-        var mainlist = alllists[listname];
+        var mainlist = alllists[listname]
         return(
             <div>
-                {renderlistoptions()}
+                {renderlistoptions}
                 <h1>
                     {listname}
                 <Button
@@ -209,13 +208,11 @@ function initialize(){
                         (e) => editlistdesc(e,mainlist.id)
                     }
                     />
-                {Object.keys(mainlist.items).map((i) => {
-                    let listitem = mainlist.items[i];
+                {Object.keys(mainlist).map((listitem) => {
                     return (
-                        <div key={listitem.id} >
+                        <div key={mainlist.listitem.id} >
                             <Accordion defaultActiveKey="0">
                             <Accordion.Item eventKey={listitem.id}>
-                            <br /><br />
                             <Accordion.Header>{listitem.name}</Accordion.Header>
                             &nbsp;
                            <Accordion.Body>
@@ -227,12 +224,11 @@ function initialize(){
                                 value={newitemname}
                                 onChange={(e) => editlistitemname(e, listitem.id)}
                             />
-                            
                                 <Button
                                     variant="text"
                                     size="small"
                                 >
-                                    {listitem.link}
+                                    {mainlist.listitem.link}
                                 </Button>
                                 &nbsp;
                                 <TextField
@@ -306,7 +302,12 @@ function initialize(){
             My Lists
             </h1>
        
-        {renderlistoptions()}
+        {renderlistoptions}
+        <div>
+            {
+            renderlist(currname)
+            }
+        </div>
 
         </div>
     );  
