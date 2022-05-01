@@ -79,7 +79,6 @@ class ListBackend{
 
         //Remove list-items in list
         let list_item_ids = await this.#queryGetListIds(list_id);
-        console.log(list_item_ids);
         for (let i = 0; i < list_item_ids.length; i++) {
             await this.removeListItem(list_id, list_item_ids[i]);
         }
@@ -213,7 +212,6 @@ class ListBackend{
 
     async #getListsPart2(id, list, connection, callback) {
         const lIQuery = 'SELECT list_item_id, list.name AS \'listname\', list_item.name AS \'itemname\', list_item.desc AS \'itemdesc\', list_item.rating AS \'rating\', list_item.link AS \'link\' FROM ' + account_list_relation + ' JOIN ' + list_item_relation + ' USING(list_id) JOIN ' + list_table + ' USING(list_id) JOIN ' + list_item_table + ' USING(list_item_id) WHERE `account_id`=' + id;
-        console.log(lIQuery);
         connection.query(lIQuery, function (err2, rows2, fields) {
             if (err2) callback(err2, null);
 
