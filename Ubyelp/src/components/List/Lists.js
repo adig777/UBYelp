@@ -169,7 +169,6 @@ function initialize(){
 
     function renderlist(listname){
     if(listname!==''){
-        console.log(listname);
         var mainlist = alllists[listname]
         return(
             <div>
@@ -206,7 +205,8 @@ function initialize(){
                         (e) => editlistdesc(e,mainlist.id)
                     }
                     />
-                {Object.keys(mainlist).map((listitem) => {
+                {Object.keys(mainlist.items).map((i) => {
+                    let listitem = mainlist.items[i];
                     return (
                         <div key={listitem.id} >
                             <Accordion defaultActiveKey="0">
@@ -279,7 +279,7 @@ function initialize(){
        <div className="NavBar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
                     Search
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
