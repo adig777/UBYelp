@@ -52,12 +52,14 @@ function Settings(){
                 })
             }).then((response) => response.json()
             ).then((filters) => {
-                setdistance(filters.distance);
-                setrating(filters.rating);
-                setprice(filters.price);
-                setopen(filters.open);
-                setinlist(filters.in_list);
-                setnotinlist(filters.not_list);
+                 if(filters !== null){
+                    setdistance(filters.distance);
+                    setrating(filters.rating);
+                    setprice(filters.price);
+                    setopen(filters.open);
+                    setinlist(filters.in_list);
+                    setnotinlist(filters.not_list);
+                }
             });
             
             setinitialized(true)
