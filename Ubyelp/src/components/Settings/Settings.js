@@ -19,7 +19,7 @@ function Settings(){
     const{account_id} = state;
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
-    const[price, setprice] = useState('1')
+    const[price, setprice] = useState('')
     const[one, setone] = useState(false)
     const[two, settwo] = useState(false)
     const[three, setthree] = useState(false)
@@ -39,12 +39,12 @@ function Settings(){
                 body: JSON.stringify({
                     'id': id
                 })
-            }
+            }).then((response) => response.json()
             ).then((names) => {
                 setlistnames(names)
             });
-            
-             fetch('http://localhost:3001/defaultfilters', {
+
+            fetch('http://localhost:3001/defaultfilters', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify({
@@ -52,15 +52,31 @@ function Settings(){
                 })
             }).then((response) => response.json()
             ).then((filters) => {
-                 if(filters !== null){
+                if(filters !== null){
                     setdistance(filters.distance);
                     setrating(filters.rating);
                     setprice(filters.price);
                     setopen(filters.open);
                     setinlist(filters.in_list);
                     setnotinlist(filters.not_list);
+                    if(prices.length>0){
+                        const prices = price.split(",")
+                        if(prices.includes('1')){
+                            setone(true)
+                        }
+                        if(prices.includes('2')){
+                            settwo(true)
+                        }
+                        if(prices.includes('3')){
+                            setthree(true)
+                        }
+                        if(prices.includes('4')){
+                            setfour(true)
+                        }
+                    }
                 }
             });
+
             
             setinitialized(true)
         }
@@ -74,7 +90,7 @@ function Settings(){
                 'id':id,
                 'newFilter': distance
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {    
             console.log('setdistance succesful');
         });
@@ -86,7 +102,7 @@ function Settings(){
                 'id':id,
                 'newFilter': rating
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {   
             console.log('setrating succesful');
         });
@@ -99,6 +115,7 @@ function Settings(){
             text = (text + '1,') 
             }
         }
+        setprice(text)
         if(two){
             if(!three && !four){
               text = (text + '2');
@@ -106,6 +123,7 @@ function Settings(){
               text = (text + '2,');
             }
         }
+        setprice(text)
         if(three){
             if(!four){
               text = (text + '3');
@@ -113,19 +131,20 @@ function Settings(){
               text = (text + '3,');
             }
         }
+        setprice(text)
         if(four){
           text = (text + '4');
         }
         setprice(text)
 
-        fetch('http://localhost:3001/setpricerange', {
+        fetch('http://localhost:3001/setprice', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
                 'id':id,
                 'newprices':price
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {   
             console.log('setpricerange succesful'); 
         });
@@ -137,7 +156,7 @@ function Settings(){
                 'id':id,
                 'newFilter': open
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {   
             console.log('setopen succesful'); 
         });
@@ -149,7 +168,7 @@ function Settings(){
                 'id':id,
                 'listName': inlist
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {   
             console.log('setlist successful'); 
         });
@@ -161,7 +180,7 @@ function Settings(){
                 'id':id,
                 'listName': notinlist
             })
-        }
+        }).then((response) => response.json()
         ).then((res) => {    
             console.log('setnotlist successful');
         });
@@ -288,7 +307,6 @@ function Settings(){
                 </div>
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
-                    <div>
 
                     <select id="inList" className="SearchBar-dropdown" onChange={(e) => setinlist(e.target.value)}>
                         <option value="">Include</option>
@@ -298,7 +316,6 @@ function Settings(){
                         <option value="">Exclude</option>
                         {renderlistnames()}
                     </select>
-                    </div>
                     
                 </div>
                 
