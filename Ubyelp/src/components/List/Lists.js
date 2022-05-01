@@ -209,7 +209,6 @@ function initialize(){
                 <Accordion defaultActiveKey="0">
                     {Object.keys(mainlist.items).map((i) => {
                     let listitem = mainlist.items[i];
-                        console.log(listitem);
                     return (
                         <div key={listitem.id} >
                             <Accordion.Item eventKey={listitem.id}>
@@ -252,13 +251,7 @@ function initialize(){
                             >
                                 Delete
                              </Button>
-                             <ReactTinyLink
-                                cardSize = "small"
-                                showGraphic = {false}
-                                maxLine = {5}
-                                minLine = {2}
-                                url = {listitem.link}
-                             />
+                                    <a href={listitem.link} target="_blank">{listitem.name} </a>
                                 </Accordion.Body>
                                 </Accordion.Item>
                         </div>

@@ -27,9 +27,15 @@ app.post('/signup', async (req, res) => {
 app.post('/search', async (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Search = new SearchBackend(input.id);
-    await Search.search(input.keywords, input.location, input.sort_by, input.radius, input.rating, input.price, input.open, input.in_list, input.not_list, await util.promisify((searchResults) => {
-        res.end(JSON.stringify(searchResults))
-    }));
+    try {
+        await Search.search(input.keywords, input.location, input.sort_by, input.radius, input.rating, input.price, input.open, input.in_list, input.not_list, await util.promisify((searchResults) => {
+            res.end(JSON.stringify(searchResults))
+        }));
+    } catch (exception) {
+        res.end(JSON.stringify({}));
+    } finally {
+        Search.disconnect();
+    }
 });
 
 app.post('/defaultfilters', async (req, res) => {
@@ -64,7 +70,7 @@ app.post('/deletelistitem', async (req, res) => {
 
 app.post('/deletelist', async (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
-    let List = new ListBackend(input.id);
+    let List = new ListBackend(input.account_id);
     let result = await List.removeList(input.list_id);
     List.disconnect();
     res.end(result);

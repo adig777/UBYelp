@@ -200,34 +200,37 @@ export default function SearchBar() {
         document.getElementById("error").innerHTML = '';
         if (term === '') {
             document.getElementById("error").innerHTML = 'Please enter some keywords! ';
-        }
-        if (location === '') {
+        } else if (location === '') {
             document.getElementById("error").innerHTML += 'Please enter a location!';
 
+        } else {
+            fetch('http://localhost:3001/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: JSON.stringify({
+                    //Temporary variables used 
+                    //Alternative option: JSON.stringify(this.filters)
+                    id: id,
+                    keywords: term,
+                    location: location,
+                    sort_by: sortBy,
+                    radius: radius,
+                    rating: rating,
+                    price: price,
+                    open: open_now,
+                    in_list: in_list,
+                    not_list: not_list
+                })
+            }).then((response) => response.json()
+            ).then((result) => {
+                if (Object.keys(result).length === 0) {
+                    document.getElementById("error").innerHTML = 'Error in results. Please use use different keywords and verify location is valid.';
+                } else {
+                    //Send to account_id and results BusinessList
+                    navigate('/results', { 'state': { 'account_id': thisState.id, 'searchResults': result } });
+                }
+            });
         }
-        /*
-        fetch('http://localhost:3001/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: JSON.stringify({
-                //Temporary variables used 
-                //Alternative option: JSON.stringify(this.filters)
-                id: id,
-                keywords: term,
-                location: location,
-                sort_by: sortBy,
-                radius: radius,
-                rating: rating,
-                price: price,
-                open: open_now,
-                in_list: in_list,
-                not_list: not_list
-            })
-        }).then((response) => response.json()
-        ).then((result) => {
-            //Send to account_id and results BusinessList
-            navigate('/results', { 'state': { 'account_id': thisState.id, 'searchResults': result } });
-        });*/
         event.preventDefault();
     }
 
