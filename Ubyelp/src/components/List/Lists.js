@@ -8,7 +8,11 @@ import { Accordion } from "react-bootstrap";
 import { ReactTinyLink } from "react-tiny-link";
 
 
-
+function useForceUpdate(){
+    const[update, setupdate] = useState(0);
+    return () => setupdate(update => update + 1);
+}
+   
 export default function Lists(){
    const {state} = useLocation()
    const navigate = useNavigate();
@@ -18,13 +22,13 @@ export default function Lists(){
    const[newlistdesc, setnewlistdesc] = useState('')
    const[newrating, setnewrating] = useState(5)
    const{account_id} = state;
+    const forceupdate = useForceUpdate()
    const[id,setid] = useState(account_id)
    const[currname, setcurrname] = useState('')
    const[alllists, setalllists] = useState([])
    const [initialized, setInitialized] = useState(false);
    
 
-   
 function initialize(){
    if(!initialized){
    fetch('http://localhost:3001/getlists', {
@@ -135,6 +139,7 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
             setInitialized(false)
+            forceupdate()
         });
         
     }
@@ -151,8 +156,8 @@ function initialize(){
         ).then((res) => {  
             console.log('delete list item success')
             setInitialized(false)
+            forceupdate()
         });
-       
     }
 
 
