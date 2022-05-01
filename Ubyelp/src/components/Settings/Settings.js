@@ -39,7 +39,7 @@ function Settings(){
                 body: JSON.stringify({
                     'id': id
                 })
-            }).then((response) => response.json()
+            }
             ).then((names) => {
                 setlistnames(names)
             });
@@ -55,7 +55,7 @@ function Settings(){
                 'id':id,
                 'newFilter': distance
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {    
             console.log('setdistance succesful');
         });
@@ -67,7 +67,7 @@ function Settings(){
                 'id':id,
                 'newFilter': rating
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {   
             console.log('setrating succesful');
         });
@@ -106,7 +106,7 @@ function Settings(){
                 'id':id,
                 'newprices':price
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {   
             console.log('setpricerange succesful'); 
         });
@@ -118,7 +118,7 @@ function Settings(){
                 'id':id,
                 'newFilter': open
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {   
             console.log('setopen succesful'); 
         });
@@ -130,7 +130,7 @@ function Settings(){
                 'id':id,
                 'listName': inlist
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {   
             console.log('setlist successful'); 
         });
@@ -142,7 +142,7 @@ function Settings(){
                 'id':id,
                 'listName': notinlist
             })
-        }).then((response) => response.json()
+        }
         ).then((res) => {    
             console.log('setnotlist successful');
         });
@@ -269,6 +269,7 @@ function Settings(){
                 </div>
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
+                    <div>
 
                     <select id="inList" className="SearchBar-dropdown" onChange={(e) => setinlist(e.target.value)}>
                         <option value="">Include</option>
@@ -278,6 +279,7 @@ function Settings(){
                         <option value="">Exclude</option>
                         {renderlistnames()}
                     </select>
+                    </div>
                     
                 </div>
                 
