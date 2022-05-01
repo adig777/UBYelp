@@ -49,7 +49,7 @@ function initialize(){
         body: JSON.stringify({
             'account_id': id,
             'list_id': list_id,
-            'newTitle': newlistname
+            'newTitle': e.target.value
         })
     }).then((response) => response.json()
     ).then((res) => {  
@@ -65,7 +65,7 @@ function initialize(){
         body: JSON.stringify({
             'account_id': id,
             'list_item_id': list_item_id,
-            'name': newitemname
+            'name': e.target.value
         })
     }).then((response) => response.json()
     ).then((res) => {  
@@ -81,7 +81,7 @@ function initialize(){
         body: JSON.stringify({
             'account_id': id,
             'list_id': list_id,
-            'newDesc': newlistdesc
+            'newDesc': e.target.value
         })
     }).then((response) => response.json()
     ).then((res) => {  
@@ -97,7 +97,7 @@ function initialize(){
         body: JSON.stringify({
             'account_id': id,
             'list_item_id': list_item_id,
-            'newDesc': newitemdesc
+            'newDesc': e.target.value
         })
     }).then((response) => response.json()
     ).then((res) => {  
@@ -105,22 +105,31 @@ function initialize(){
     }
 
     function editlistitemrating(e,list_item_id){
+        
         setnewrating(e.target.value)
 
+    if(newrating>=0 && newrating<=5){
         fetch('http://localhost:3001/edititemrating', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: JSON.stringify({
             'account_id': id,
             'list_item_id': list_item_id,
-            'rating': newrating
+            'rating': e.target.value
         })
     }).then((response) => response.json()
     ).then((res) => {  
     });
+    }   
     }
 
-    function deletelist(list_id){
+    function deletelist(list_id,listname){
+        const temp = alllists
+        const index = temp.indexOf(listname)
+        if(index > -1){
+            temp.splice(index, 1)
+        }
+        setalllists(temp)
         fetch('http://localhost:3001/deletelist', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -130,8 +139,9 @@ function initialize(){
             })
         }).then((response) => response.json()
         ).then((res) => {  
+            setInitialized(false)
         });
-        setInitialized(false)
+        
     }
     function deletelistitem(list_id,list_item_id){
         fetch('http://localhost:3001/deletelistitem', {
@@ -145,8 +155,9 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
             console.log('delete list item success')
+            setInitialized(false)
         });
-        setInitialized(false)
+       
     }
 
 
@@ -181,7 +192,7 @@ function initialize(){
                 className="deletebutton"
                 variant="outlined"
                 startIcon={<DeleteIcon />}
-                onClick={() => deletelist(mainlist.id)}
+                onClick={() => deletelist(mainlist.id, listname)}
               >
                 Delete List
               </Button>
@@ -189,7 +200,7 @@ function initialize(){
                     type = "text"
                     size = "small"
                     label = "Change List Name"
-                    defaultValue = {mainlist.name}
+                    placeholder = {mainlist.name}
                     value = {newlistname}
                     onChange = {
                         (e) => editlistname(e,mainlist.id)
@@ -199,7 +210,7 @@ function initialize(){
                     type = "text"
                     size = "small"
                     label = "Change List Description"
-                    defaultValue = {mainlist.desc}
+                    placeholder = {mainlist.desc}
                     value = {newlistdesc}
                     onChange = {
                         (e) => editlistdesc(e,mainlist.id)
@@ -209,6 +220,7 @@ function initialize(){
                 <Accordion defaultActiveKey="0">
                     {Object.keys(mainlist.items).map((i) => {
                     let listitem = mainlist.items[i];
+                        console.log(listitem);
                     return (
                         <div key={listitem.id} >
                             <Accordion.Item eventKey={listitem.id}>
@@ -219,29 +231,31 @@ function initialize(){
                                 type="text"
                                 size="small"
                                 label="Change Item Name"
-                                defaultValue={listitem.name}
+                                placeholder={listitem.name}
                                 value={newitemname}
                                 onChange={(e) => editlistitemname(e, listitem.id)}
                             />
-                                &nbsp;
+                                &nbsp;&nbsp;
                                 <TextField
                                     type="text"
                                     size="small"
                                     label="Change Item Description"
-                                    defaultValue={listitem.desc}
+                                    placeholder={listitem.desc}
                                     value={newitemdesc}
                                     onChange={(e) => editlistitemdesc(e, listitem.id)}
                                 />
+                                &nbsp;&nbsp;
                                 <TextField
                                     type="text"
                                     size="small"
                                     label="Change Item Rating"
-                                    defaultValue={listitem.rating}
+                                    placeholder={listitem.rating}
                                     value={newrating}
                                     onChange={
                                         (e) => editlistitemrating(e, listitem.id)
                                     }
                                 />
+                                &nbsp;&nbsp;
                                    <Button
                                 size="small"
                                 className="deletebutton"
@@ -251,7 +265,8 @@ function initialize(){
                             >
                                 Delete
                              </Button>
-                                    <a href={listitem.link} target="_blank">{listitem.name} </a>
+                            <a href = {listitem.link} target="_blank"> {listitem.name} </a>
+                          
                                 </Accordion.Body>
                                 </Accordion.Item>
                         </div>
