@@ -194,7 +194,7 @@ function initialize(){
                 startIcon={<DeleteIcon />}
                 onClick={() => deletelist(mainlist.id)}
               >
-                Delete List
+                Delete
               </Button>
               <TextField
                     type = "text"
