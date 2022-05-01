@@ -106,7 +106,7 @@ function initialize(){
 
     function editlistitemrating(e,list_item_id){
         
-        setnewrating(e.target.value)
+    setnewrating(e.target.value)
 
     if(newrating>=0 && newrating<=5){
         fetch('http://localhost:3001/edititemrating', {
@@ -123,13 +123,8 @@ function initialize(){
     }   
     }
 
-    function deletelist(list_id,listname){
-        const temp = alllists
-        const index = temp.indexOf(listname)
-        if(index > -1){
-            temp.splice(index, 1)
-        }
-        setalllists(temp)
+    function deletelist(list_id){
+  
         fetch('http://localhost:3001/deletelist', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -192,7 +187,7 @@ function initialize(){
                 className="deletebutton"
                 variant="outlined"
                 startIcon={<DeleteIcon />}
-                onClick={() => deletelist(mainlist.id, listname)}
+                onClick={() => deletelist(mainlist.id)}
               >
                 Delete List
               </Button>
@@ -220,41 +215,44 @@ function initialize(){
                 <Accordion defaultActiveKey="0">
                     {Object.keys(mainlist.items).map((i) => {
                     let listitem = mainlist.items[i];
-                        console.log(listitem);
                     return (
                         <div key={listitem.id} >
                             <Accordion.Item eventKey={listitem.id}>
                             <Accordion.Header>{listitem.name}</Accordion.Header>
                             &nbsp;
                            <Accordion.Body>
+
                             <TextField
                                 type="text"
                                 size="small"
                                 label="Change Item Name"
                                 placeholder={listitem.name}
                                 value={newitemname}
-                                onChange={(e) => editlistitemname(e, listitem.id)}
+                                onChange={(e) => editlistitemname(e,listitem.id)}
                             />
                                 &nbsp;&nbsp;
-                                <TextField
+                            <div>
+                            <TextField
                                     type="text"
                                     size="small"
                                     label="Change Item Description"
                                     placeholder={listitem.desc}
                                     value={newitemdesc}
-                                    onChange={(e) => editlistitemdesc(e, listitem.id)}
+                                    onChange={(e) => editlistitemdesc(e,listitem.id)}
                                 />
-                                &nbsp;&nbsp;
-                                <TextField
+                            </div>
+                            <div>
+                             <TextField
                                     type="text"
                                     size="small"
                                     label="Change Item Rating"
                                     placeholder={listitem.rating}
                                     value={newrating}
                                     onChange={
-                                        (e) => editlistitemrating(e, listitem.id)
+                                        (e) => editlistitemrating(e,listitem.id)
                                     }
                                 />
+                            </div>
                                 &nbsp;&nbsp;
                                    <Button
                                 size="small"
@@ -265,8 +263,9 @@ function initialize(){
                             >
                                 Delete
                              </Button>
-                            <a href = {listitem.link} target="_blank"> {listitem.name} </a>
-                          
+                             <div>
+                            <a href = {listitem.link} target="_blank" rel="noreferrer"> {listitem.name} </a>
+                            </div>
                                 </Accordion.Body>
                                 </Accordion.Item>
                         </div>
