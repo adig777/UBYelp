@@ -155,7 +155,6 @@ class Settings {
                         || values[i] === '4') {
                         continue;
                     } else {
-                        console.log('crash1');
                         throw 'Invalid input';
                     }
                 }
@@ -164,7 +163,6 @@ class Settings {
             await this.#quickQuery(query);
             console.log('filter_price changed');
         } catch (error) {
-            console.log(error);
             throw 'Invalid input';
         }
     }

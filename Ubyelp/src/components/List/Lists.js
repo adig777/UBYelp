@@ -297,7 +297,7 @@ function initialize(){
                     Search
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/lists') }}>
+                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
                     Lists
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

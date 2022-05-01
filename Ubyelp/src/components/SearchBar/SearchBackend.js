@@ -12,8 +12,8 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 
 //TODO:
 //-Searchbar frontend to finish
-// *Input Headers formating
-// *Error message formating
+// *getList should return lists without list items
+// *Merge home page/login
 //-Business bug: rating not displyed properly after select (can be left alone)
 
 class Search {

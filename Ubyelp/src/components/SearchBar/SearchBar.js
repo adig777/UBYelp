@@ -293,24 +293,24 @@ export default function SearchBar() {
     return (
         <div>
             <div className="NavBar">
-                    UBYELP
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button onClick={() => { navigate('/search') }}>
-                        Search
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
-                        Lists
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
-                        About us
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
-                        Settings
-                    </Button>
-                </div>
+                UBYELP
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
+                    Search
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                    Lists
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                    About us
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
+                    Settings
+                </Button>
+            </div>
             <div className="SearchBar">
             
 

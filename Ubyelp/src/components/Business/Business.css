@@ -103,6 +103,20 @@
     float:left;
 }
 
+.blButton {
+    width: 200px;
+}
+
+.selectb {
+    height: 50px;
+    width: 300px;
+}
+
+.bDesc {
+    height: 100px;
+    width: 600px;
+}
+
 /* Credit to: https://www.foolishdeveloper.com/2022/01/5-star-rating-html-css.html#:~:text=The%20five%2Dstar%20rating%20HTML,give%20reviews%20about%20that%20product. */
 div[class^="rating"] {
     display: flex;

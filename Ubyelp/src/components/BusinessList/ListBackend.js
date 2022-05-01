@@ -48,6 +48,7 @@ class ListBackend{
         this.#queryAccountListAccess;
         this.#queryAccountListItemAccess;
         this.#queryGetListIds;
+        this.#getListsPart2;
     }
 
     //Create List (Requires: name)
@@ -68,7 +69,7 @@ class ListBackend{
         await this.#quickQuery(query);
 
         console.log('List ' + list_id + ' created');
-        return '';
+        return list_id;
     }
 
     //Remove list
@@ -83,13 +84,14 @@ class ListBackend{
             await this.removeListItem(list_id, list_item_ids[i]);
         }
 
+        //Remove account-list relation
+        query = 'DELETE FROM ' + account_list_relation + ' WHERE `account_id`=' + this.account_id + ' AND `list_id`=' + list_id;
+        await this.#quickQuery(query);
+
         //Remove list
         var query = 'DELETE FROM ' + list_table + ' WHERE `list_id`=' + list_id;
         await this.#quickQuery(query);
 
-        //Remove account-list relation
-        query = 'DELETE FROM ' + account_list_relation + ' WHERE `account_id`=' + this.account_id + ' AND `list_id`=' + list_id;
-        await this.#quickQuery(query);
 
         console.log('List ' + list_id + ' removed');
         return '';
@@ -189,29 +191,41 @@ class ListBackend{
 
     //Get all non-empty lists from Database
     async getLists(callback) {
-        const query = 'SELECT list_id, list_item_id, list.name AS \'listname\', list.desc AS \'listdesc\', list_item.name AS \'itemname\', list_item.desc AS \'itemdesc\', list_item.rating AS \'rating\', list_item.link AS \'link\' FROM ' + account_list_relation + ' JOIN ' + list_item_relation + ' USING(list_id) JOIN ' + list_table + ' USING(list_id) JOIN ' + list_item_table + ' USING(list_item_id) WHERE `account_id`=' + this.account_id;
-        this.Connection.query(query, function (err, rows, fields) {
+        let part2 = this.#getListsPart2;
+        let id = this.account_id;
+        let connection = this.Connection;
+        const listQuery = 'SELECT list_id, list.name AS \'listname\', list.desc AS \'listdesc\' FROM ' + account_list_relation + ' JOIN ' + list_table + ' USING(list_id) WHERE account_id=' + this.account_id;
+        this.Connection.query(listQuery, function (err, rows, fields) {
             if (err) callback(err, null);
 
             let list = {};
             for (var i = 0; i < rows.length; i++) {
-                let listitem = {
-                    'id': rows[i].list_item_id,
-                    'name': rows[i].itemname,
-                    'desc': rows[i].itemdesc,
-                    'rating': rows[i].rating,
-                    'link': rows[i].link
-                };
-                if (!list[rows[i].listname]) {
-                    list[rows[i].listname] = {
-                        'id': rows[i].list_id,
-                        'name': rows[i].listname,
-                        'desc': rows[i].listdesc,
-                        'items': [listitem]
-                    }
-                } else {
-                    list[rows[i].listname]['items'].push(listitem);
+                list[rows[i].listname] = {
+                    'id': rows[i].list_id,
+                    'name': rows[i].listname,
+                    'desc': rows[i].listdesc,
+                    'items': []
                 }
+            }
+            part2(id, list, connection, callback);
+        });
+    }
+
+    async #getListsPart2(id, list, connection, callback) {
+        const lIQuery = 'SELECT list_item_id, list.name AS \'listname\', list_item.name AS \'itemname\', list_item.desc AS \'itemdesc\', list_item.rating AS \'rating\', list_item.link AS \'link\' FROM ' + account_list_relation + ' JOIN ' + list_item_relation + ' USING(list_id) JOIN ' + list_table + ' USING(list_id) JOIN ' + list_item_table + ' USING(list_item_id) WHERE `account_id`=' + id;
+        console.log(lIQuery);
+        connection.query(lIQuery, function (err2, rows2, fields) {
+            if (err2) callback(err2, null);
+
+            for (var i = 0; i < rows2.length; i++) {
+                let listitem = {
+                    'id': rows2[i].list_item_id,
+                    'name': rows2[i].itemname,
+                    'desc': rows2[i].itemdesc,
+                    'rating': rows2[i].rating,
+                    'link': rows2[i].link
+                };
+                list[rows2[i].listname]['items'].push(listitem);
             }
             callback(null, list);
         });
@@ -333,17 +347,16 @@ module.exports = ListBackend;
 
 //Testing
 async function test() {
-    var list = new ListBackend(663);
-    /*
-    await list.createList('list3', 'desc');
-    await list.editListName(1, 'new name 2');
-    await list.editListDescription(1, 'new desc');
-    await list.addListItem(5, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);
-    await list.addListItem(5, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);   //Repeat
-    await list.editItemDescription(1, 'old apple store');
-    await list.editItemRating(1, 1);
-    await list.editItemName(1, '3rd Apple Store');
-    await list.getLists((err, list) => {
+    var List = new ListBackend(663);
+    //await List.createList('list6', 'desasd  a s ac');
+    //await List.editListName(1, 'new name 2');
+    //await List.editListDescription(1, 'new desc');
+    //await List.addListItem(6, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);
+    //await List.addListItem(6, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);   //Repeat - test handling duplicates
+    //await List.editItemDescription(16, 'old apple store');
+    //await List.editItemRating(16, 2.5);
+    //await List.editItemName(16, '3rd Apple Store');
+    await List.getLists((err, list) => {
         if (err) throw err;
         else {
             for (var key in list) {
@@ -357,11 +370,11 @@ async function test() {
                 }
             }
         }
+        //await List.removeListItem(1, 1);
+        //await List.removeList(5);
+
+        List.disconnect();   //Must disconnect before exiting page
     });
-    */
-    //await list.removeListItem(1, 1);
-    await list.removeList(4);
     
-    list.disconnect();   //Must disconnect before exiting page
 }
-test();
+//test();

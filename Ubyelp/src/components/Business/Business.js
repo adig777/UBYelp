@@ -6,9 +6,14 @@ class Business extends React.Component {
         super(props);
         this.state = {
             listNames: {},
-            key: this.props.key
+            key: this.props.key,
+            newListModal: false
         }
-        //Set in_list and not_list's dropdown menu values to 'names'
+        this.getLists = this.add.bind(this);
+        this.add = this.add.bind(this);
+        this.addListItem = this.addListItem.bind(this);
+        //this.openAddToListModal = this.openAddToListModal.bind(this);
+        
         fetch('http://localhost:3001/listnames', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -20,11 +25,7 @@ class Business extends React.Component {
             //Format: {'list_name': 'list_id', ...}
             this.setState({ listNames: names });
         });
-        this.addToList = this.addToList.bind(this);
-        //this.openAddToListModal = this.openAddToListModal.bind(this);
     }
-    
-
 
     openModal(business) {
         document.getElementById("modal" + business.id).style.display = 'block';
@@ -33,11 +34,14 @@ class Business extends React.Component {
     }
 
     closeModal(key) {
-        document.getElementById("modal"+key).style.display = 'none';
+        document.getElementById("modal" + key).style.display = 'none';
+        this.setState({ newListModal: false });
     }
 
     closeSuccessModal(key) {
         document.getElementById("successModal" + key).style.display = 'none';
+        this.setState({ newListModal: false });
+        document.location.reload(true);
     }
 
     renderModalOptions() {
@@ -48,15 +52,36 @@ class Business extends React.Component {
         });
     }
 
-    addToList(business) {
+    add(business) {
         let listMenu = document.getElementById('listMenu' + business.id);
-        if (listMenu.value !== '') {
+        let listName = document.getElementById("newListName" + business.id);
+        if (this.state.newListModal == true && listName.value !== '' && document.querySelector('input[name="rating"]:checked') != null) {
+            fetch('http://localhost:3001/createlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: JSON.stringify({
+                    'id': business.account_id,
+                    'name': listName.value,
+                    'desc': document.getElementById("newListDesc" + business.id).value,
+                })
+            }).then(async (response) => {
+                let listId = await response.text();
+                this.addListItem(business, listId);
+                this.getLists();
+            });
+        } else if (document.querySelector('input[name="rating"]:checked') != null && document.getElementById('listMenu' + business.id).value !== '') {
+            this.addListItem(business, document.getElementById('listMenu' + business.id).value);
+        }
+    }
+
+    addListItem(business,listId) {
+        if (document.querySelector('input[name="rating"]:checked') != null) {
             fetch('http://localhost:3001/addlistitem', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: JSON.stringify({
                     'account_id': business.account_id,
-                    'list_id': listMenu.value,
+                    'list_id': listId,
                     'link': encodeURIComponent(business.url),
                     'name': business.name,
                     'desc': document.getElementById("desc" + business.id).value,
@@ -70,13 +95,39 @@ class Business extends React.Component {
                 document.getElementById("successModal" + this.props.business.id).style.display = 'block';
                 if (message === '') {
                     //Open success modal
-                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Added ' + business.name + ' on ' + business.location.address1 + ' to ' + listMenu.options[listMenu.selectedIndex].text + '!';
+                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Added ' + business.name + ' on ' + business.location.address1 + ' to list!';
                 } else {
                     //Open modal with error message
-                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Error: '+message;
+                    document.getElementById("modalMessage" + this.props.business.id).innerHTML = 'Error: ' + message;
                 }
-                
+
             });
+        }
+    }
+
+    newList() {
+        if (this.state.newListModal == true) {
+            return (
+                <div>
+                    <h3>New list name</h3>
+                    <textarea id={"newListName" + this.props.business.id} />
+                    <h3>New list description</h3>
+                    <textarea className="bDesc" id={"newListDesc" + this.props.business.id} />
+                    <br/>
+                    <button className="blButton" id={"cancelNewListButton" + this.props.business.id} onClick={() => this.setState({ newListModal: false })}>Cancel new list creation</button>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <select className="selectb" id={"listMenu" + this.props.business.id}>
+                        <option value="">Select list...</option>
+                        {this.renderModalOptions()}
+                    </select>
+                    <br/>
+                    <button className="blButton" id={"newListButton" + this.props.business.id} onClick={() => this.setState({ newListModal: true })}>Or add to a new list!</button>
+                </div>
+            );
         }
     }
 
@@ -108,15 +159,14 @@ class Business extends React.Component {
 
                 <div id={"modal"+this.props.business.id} className="modal">
                     <div className="modal-content">
-                        <span className="close" onClick={() =>this.closeModal(this.props.business.id)}>&times;</span>
-                        <h2 id={"modelHeader" + this.props.business.id}></h2>
-                        <select id={"listMenu" + this.props.business.id}>
-                            {this.renderModalOptions()}
-                            <option value="">Select list...</option>
-                        </select>
+                        <span className="close" onClick={() => this.closeModal(this.props.business.id)}>&times;</span>
+                        <div>
+                            <h2 id={"modelHeader" + this.props.business.id}></h2>
+                        </div>
+                        {this.newList()}
                         <input type="hidden" id={"listId" + this.props.business.id} />
                         <h3>Description</h3>
-                        <textarea id={"desc" + this.props.business.id} cols="60" rows="3" />
+                        <textarea className="bDesc" id={"desc" + this.props.business.id} rows="3" />
                         <h3>Rating for list</h3>
                         <div className="rating">
                             <input type="radio" name="rating" value="5" id="5"/><label for="5">☆</label>
@@ -125,7 +175,7 @@ class Business extends React.Component {
                             <input type="radio" name="rating" value="2" id="2"/><label for="2">☆</label>
                             <input type="radio" name="rating" value="1" id="1" /><label for="1">☆</label>
                         </div>
-                        <button id={"submit" + this.props.business.id} onClick={() => this.addToList(this.props.business)}>Add!</button>
+                        <button id={"submit" + this.props.business.id} onClick={() => this.add(this.props.business)}>Add!</button>
                     </div>
                 </div>
 

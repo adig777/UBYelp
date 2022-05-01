@@ -119,7 +119,7 @@ app.post('/edititemname', async (req, res) => {
 app.post('/setdistance', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterDistance(input.newFilter);
+    await Settings.setFilterDistance(input.newFilter);
     Settings.disconnect();
     res.end();
 });
@@ -127,7 +127,7 @@ app.post('/setdistance', async(req, res) => {
 app.post('/setrating', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterRating(input.newFilter);
+    await Settings.setFilterRating(input.newFilter);
     Settings.disconnect();
     res.end();
 });
@@ -135,7 +135,7 @@ app.post('/setrating', async(req, res) => {
 app.post('/setprice', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterPrice(input.newprices);
+    await Settings.setFilterPrice(input.newprices);
     Settings.disconnect();
     res.end();
 });
@@ -143,7 +143,7 @@ app.post('/setprice', async(req, res) => {
 app.post('/setopen', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterOpen(input.newFilter);
+    await Settings.setFilterOpen(input.newFilter);
     Settings.disconnect();
     res.end();
 });
@@ -151,7 +151,7 @@ app.post('/setopen', async(req, res) => {
 app.post('/setinlist', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterInList(input.listName);
+    await Settings.setFilterInList(input.listName);
     Settings.disconnect();
     res.end();
 });
@@ -159,7 +159,7 @@ app.post('/setinlist', async(req, res) => {
 app.post('/setnotlist', async(req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
     let Settings = new SettingsBackend(input.id);
-    let result = await Settings.setFilterNotInList(input.listName);
+    await Settings.setFilterNotInList(input.listName);
     Settings.disconnect();
     res.end();
 });
@@ -169,8 +169,8 @@ app.post('/getlists', async(req, res) => {
     let List = new ListBackend(input.id);
     await List.getLists((err, list) => {
         res.end(JSON.stringify(list));
+        List.disconnect();
     });
-    List.disconnect();
 });
 
 app.post('/createlist', async(req, res) => {
@@ -178,8 +178,8 @@ app.post('/createlist', async(req, res) => {
     let List = new ListBackend(input.id);
     let result = await List.createList(input.name, input.desc);
     List.disconnect();
-    res.end(result);
-    });
+    res.end(result+'');
+});
 
 // app.post('/listnamesandid', (req, res) => {
 //     let input = JSON.parse(Object.keys(req.body)[0]);
