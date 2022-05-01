@@ -121,7 +121,7 @@ app.post('/setdistance', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterDistance(input.newFilter);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/setrating', async(req, res) => {
@@ -129,7 +129,7 @@ app.post('/setrating', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterRating(input.newFilter);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/setprice', async(req, res) => {
@@ -137,7 +137,7 @@ app.post('/setprice', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterPrice(input.newprices);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/setopen', async(req, res) => {
@@ -145,7 +145,7 @@ app.post('/setopen', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterOpen(input.newFilter);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/setinlist', async(req, res) => {
@@ -153,7 +153,7 @@ app.post('/setinlist', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterInList(input.listName);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/setnotlist', async(req, res) => {
@@ -161,7 +161,7 @@ app.post('/setnotlist', async(req, res) => {
     let Settings = new SettingsBackend(input.id);
     let result = await Settings.setFilterNotInList(input.listName);
     Settings.disconnect();
-    res.end(result);
+    res.end();
 });
 
 app.post('/getlists', async(req, res) => {
