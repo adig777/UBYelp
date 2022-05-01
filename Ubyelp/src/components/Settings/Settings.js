@@ -19,7 +19,7 @@ function Settings(){
     const{account_id} = state;
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
-    const[price, setprice] = useState('')
+    const[price, setprice] = useState('1')
     const[one, setone] = useState(false)
     const[two, settwo] = useState(false)
     const[three, setthree] = useState(false)
