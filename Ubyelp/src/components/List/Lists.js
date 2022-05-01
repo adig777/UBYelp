@@ -9,11 +9,7 @@ import { ReactTinyLink } from "react-tiny-link";
 import "./Lists.css";
 
 
-function useForceUpdate(){
-    const[update, setupdate] = useState(0);
-    return () => setupdate(update => update + 1);
-}
-   
+
 export default function Lists(){
    const {state} = useLocation()
    const navigate = useNavigate();
@@ -140,7 +136,7 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
             setInitialized(false)
-            forceupdate()
+            
         });
         
     }
@@ -157,8 +153,12 @@ function initialize(){
         ).then((res) => {  
             console.log('delete list item success')
             setInitialized(false)
-            forceupdate()
+            
         });
+    }
+    
+     function refresh(){
+        document.location.reload(true)
     }
 
 
@@ -197,6 +197,7 @@ function initialize(){
               >
                 Delete
               </Button>
+              <div>
               <TextField
                     type = "text"
                     size = "small"
@@ -207,6 +208,8 @@ function initialize(){
                         (e) => editlistname(e,mainlist.id)
                     }
                     />
+               </div>
+                Current List Description: {mainlist.desc} &nbsp;&nbsp;
                 <TextField
                     type = "text"
                     size = "small"
@@ -238,6 +241,7 @@ function initialize(){
                             />
                                 &nbsp;&nbsp;
                             <div>
+                            Current Description: {listitem.desc} &nbsp;&nbsp;
                             <TextField
                                     type="text"
                                     size="small"
@@ -279,6 +283,15 @@ function initialize(){
                 })
             }
             </Accordion>
+            <div>
+            <Button
+            size = "small"
+            className = "Savebutton"
+            variant = "contained"
+            onClick = {() => refresh()}
+            >
+            Save
+            </Button>
             </div>
         );
     }}
