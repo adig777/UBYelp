@@ -162,20 +162,20 @@ function Settings(){
     }
 
     function Handlecheckbox1(e){
-        const checked = e.taget.checked
+        const checked = e.target.checked
         setone(checked)
     }
     function Handlecheckbox2(e){
-        const checked = e.taget.checked
+        const checked = e.target.checked
         settwo(checked)
         
     }
     function Handlecheckbox3(e){
-        const checked = e.taget.checked
+        const checked = e.target.checked
         setthree(checked)
     }
     function Handlecheckbox4(e){
-        const checked = e.taget.checked
+        const checked = e.target.checked
         setfour(checked)
     }
 
