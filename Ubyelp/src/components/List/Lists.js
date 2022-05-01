@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 import { ReactTinyLink } from "react-tiny-link";
+import "./Lists.css";
 
 
 function useForceUpdate(){
