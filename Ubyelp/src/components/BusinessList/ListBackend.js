@@ -47,6 +47,7 @@ class ListBackend{
         this.#quickQuery;
         this.#queryAccountListAccess;
         this.#queryAccountListItemAccess;
+        this.#queryGetListIds;
     }
 
     //Create List (Requires: name)
@@ -72,9 +73,17 @@ class ListBackend{
 
     //Remove list
     async removeList(list_id) {
-        //Remove list
-        if(!await this.#queryAccountListAccess(list_id)) return 'Illegal access to list';
+        //Verify access
+        if (!await this.#queryAccountListAccess(list_id)) return 'Illegal access to list';
 
+        //Remove list-items in list
+        let list_item_ids = await this.#queryGetListIds(list_id);
+        console.log(list_item_ids);
+        for (let i = 0; i < list_item_ids.length; i++) {
+            await this.removeListItem(list_id, list_item_ids[i]);
+        }
+
+        //Remove list
         var query = 'DELETE FROM ' + list_table + ' WHERE `list_id`=' + list_id;
         await this.#quickQuery(query);
 
@@ -267,6 +276,21 @@ class ListBackend{
         });
     }
 
+    #queryGetListIds(list_id) {
+        return new Promise((resolve, reject) => {
+            var query = 'SELECT list_item_id FROM ' + list_item_relation + ' JOIN ' + list_table + ' USING(list_id) WHERE list_id = ' + list_id;
+            this.Connection.query(query, async function (err, rows, fields) {
+                if (err) reject(err);
+
+                var ids = [];
+                for (var i = 0; i < rows.length; i++) {
+                    ids.push(rows[i].list_item_id);
+                }
+                resolve(ids);
+            });
+        });
+    }
+
     #quickQuery(query) {
         return new Promise((resolve, reject) => {
             this.Connection.query(query, function (err, rows, fields) {
@@ -310,11 +334,12 @@ module.exports = ListBackend;
 //Testing
 async function test() {
     var list = new ListBackend(663);
+    /*
     await list.createList('list3', 'desc');
     await list.editListName(1, 'new name 2');
     await list.editListDescription(1, 'new desc');
-    await list.addListItem(4, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);
-    await list.addListItem(4, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);   //Repeat
+    await list.addListItem(5, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);
+    await list.addListItem(5, 'Aple', 'www.yelp.com/asfsdhkgdl', 'local apple store', 4);   //Repeat
     await list.editItemDescription(1, 'old apple store');
     await list.editItemRating(1, 1);
     await list.editItemName(1, '3rd Apple Store');
@@ -333,9 +358,10 @@ async function test() {
             }
         }
     });
-    //await list.removeListItem(1, 1, 1);
-    //await list.removeList(1, 1);
+    */
+    //await list.removeListItem(1, 1);
+    await list.removeList(4);
     
     list.disconnect();   //Must disconnect before exiting page
 }
-//test();
+test();

@@ -78,7 +78,7 @@ app.post('/deletelist', async (req, res) => {
 
 app.post('/editlistname', async (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
-    let List = new ListBackend(input.id);
+    let List = new ListBackend(input.account_id);
     let result = await List.editListName(input.list_id, input.newTitle);
     List.disconnect();
     res.end(result);
@@ -86,7 +86,7 @@ app.post('/editlistname', async (req, res) => {
 
 app.post('/editlistdesc', async (req, res) => {
     let input = JSON.parse(Object.keys(req.body)[0]);
-    let List = new ListBackend(input.id);
+    let List = new ListBackend(input.account_id);
     let result = await List.editListDescription(input.list_id, input.newDesc);
     List.disconnect();
     res.end(result);

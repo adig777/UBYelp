@@ -200,8 +200,9 @@ export default function SearchBar() {
         document.getElementById("error").innerHTML = '';
         if (term === '') {
             document.getElementById("error").innerHTML = 'Please enter some keywords! ';
+            if (location === '') document.getElementById("error").innerHTML += 'Please enter a location!';
         } else if (location === '') {
-            document.getElementById("error").innerHTML += 'Please enter a location!';
+            document.getElementById("error").innerHTML = 'Please enter a location!';
 
         } else {
             fetch('http://localhost:3001/search', {
@@ -224,7 +225,7 @@ export default function SearchBar() {
             }).then((response) => response.json()
             ).then((result) => {
                 if (Object.keys(result).length === 0) {
-                    document.getElementById("error").innerHTML = 'Error in results. Please use use different keywords and verify location is valid.';
+                    document.getElementById("error").innerHTML = 'Error in results. Please use different keywords and enter a valid location.';
                 } else {
                     //Send to account_id and results BusinessList
                     navigate('/results', { 'state': { 'account_id': thisState.id, 'searchResults': result } });
@@ -290,92 +291,93 @@ export default function SearchBar() {
 
     // Renders two input boxes. One for business and the other for location. 
     return (
-        <div className="SearchBar">
+        <div>
             <div className="NavBar">
-                UBYELP
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/search') }}>
-                    Search
-                </Button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
-                    Lists
-                </Button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
-                    About us
-                </Button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
-                    Settings
-                </Button>
-            </div>
-
-            {initialize()}
-            <div className="SearchBar-sort-options">
-                <ul>
-                    {renderSortByOptions()}
-                </ul>
-            </div>
-
-            <div className="SearchBar-filter-prices">
-                <ul>
-                    {renderFilterByPrice()}
-                </ul>
-            </div>
-
-
-
-            <div className="SearchBar-filter-openNow">
-                <ul>
-                    {renderFilterByOpenNow()}
-                </ul>
-            </div>
-
-
-
-            <div className="SearchBar-fields">
-                <div>
-                    <p>Keywords</p>
-                    <input placeholder="Enter Keyword. e.g. burgers" onChange={handleTermChange} />
+                    UBYELP
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button onClick={() => { navigate('/search') }}>
+                        Search
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button onClick={() => { navigate('/lists', { 'state': { 'account_id': account_id } }) }}>
+                        Lists
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                        About us
+                    </Button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
+                        Settings
+                    </Button>
                 </div>
-                <div>
-                    <p>Location</p>
-                    <input id="location" placeholder="Enter Location. e.g. San Jose" onChange={handleLocationChange} />
-                </div>
-                <div>
-                    <p>Radius (meters)</p>
-                    <input id="radius" type="number" min="1" max="40000" placeholder="Enter Radius in Meters. e.g. 30000" onChange={handleRadiusChange} />
-                </div>
-            </div>
-
-            <div className="SearchBar-fields">
-                <div>
-                    <p>Rating</p>
-                    <input id="rating" type="number" min="0" max="5" step="0.1" placeholder="Minimum rating. e.g. 3.5" onChange={handleRatingChange} />
-                </div>
-                <div>
-                    <p>List of restaurants to only include in results</p>
-                    <select id="inList" className="SearchBar-dropdown" onChange={handleInListChange}>
-                        <option value="">Select list to include from...</option>
-                        {renderOptions()}
-                    </select>
-                </div>
-                <div>
-                    <p>List of restaurants to not include in results</p>
-                    <select id="notList" className="SearchBar-dropdown" onChange={handleNotListChange}>
-                        <option value="">Select list to not include...</option>
-                        {renderOptions()}
-                    </select>
-                </div>
-            </div>
-            <div>
-                <p id="error" />
-            </div>
-            <div className="SearchBar-submit">
-                <a onClick={handleSearch}>Search</a>
-            </div>
+            <div className="SearchBar">
             
+
+                {initialize()}
+                <div className="SearchBar-sort-options">
+                    <ul>
+                        {renderSortByOptions()}
+                    </ul>
+                </div>
+
+                <div className="SearchBar-filter-prices">
+                    <ul>
+                        {renderFilterByPrice()}
+                    </ul>
+                </div>
+
+
+
+                <div className="SearchBar-filter-openNow">
+                    <ul>
+                        {renderFilterByOpenNow()}
+                    </ul>
+                </div>
+
+
+
+                <div className="SearchBar-fields">
+                    <div>
+                        <h5>Keywords</h5>
+                        <input placeholder="Enter Keyword. e.g. burgers" onChange={handleTermChange} />
+                    </div>
+                    <div>
+                        <h5>Location</h5>
+                        <input id="location" placeholder="Enter Location. e.g. San Jose" onChange={handleLocationChange} />
+                    </div>
+                    <div>
+                        <h5>Radius (meters)</h5>
+                        <input id="radius" type="number" min="1" max="40000" placeholder="Enter Radius in Meters. e.g. 30000" onChange={handleRadiusChange} />
+                    </div>
+                </div>
+
+                <div className="SearchBar-fields">
+                    <div>
+                        <h5>Rating</h5>
+                        <input id="rating" type="number" min="0" max="5" step="0.1" placeholder="Minimum rating. e.g. 3.5" onChange={handleRatingChange} />
+                    </div>
+                    <div>
+                        <h5>List to only include in results</h5>
+                        <select id="inList" className="SearchBar-dropdown" onChange={handleInListChange}>
+                            <option value="">Select list to include from...</option>
+                            {renderOptions()}
+                        </select>
+                    </div>
+                    <div>
+                        <h5>List to not include in results</h5>
+                        <select id="notList" className="SearchBar-dropdown" onChange={handleNotListChange}>
+                            <option value="">Select list to not include...</option>
+                            {renderOptions()}
+                        </select>
+                    </div>
+                </div>
+                <div className="SearchBar-submit">
+                    <a onClick={handleSearch}>Search</a>
+                </div>
+            
+            </div>
+            <p id="error" className="Searchbar-error" />
         </div>
     );
 }
