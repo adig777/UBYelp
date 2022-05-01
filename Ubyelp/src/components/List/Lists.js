@@ -157,7 +157,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onSubmit = {() => setcurrname(listnames)}
+                onClick = {() => setcurrname(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -168,8 +168,8 @@ function initialize(){
     }
 
     function renderlist(listname){
-    if(currname!==null){
-        var mainlist = alllists[listname]
+    if(listname!==''){
+        var mainlist = alllists[listname];
         return(
             <div>
                 {renderlistoptions}
@@ -206,9 +206,11 @@ function initialize(){
                     />
                 </h1>
                 <Accordion defaultActiveKey="0">
-                {Object.keys(mainlist).map((listitem) => {
+                    {Object.keys(mainlist.items).map((i) => {
+                    let listitem = mainlist.items[i];
+                        console.log(listitem);
                     return (
-                        <div key={mainlist.listitem.id} >
+                        <div key={listitem.id} >
                             <Accordion.Item eventKey={listitem.id}>
                             <Accordion.Header>{listitem.name}</Accordion.Header>
                             &nbsp;
@@ -270,7 +272,7 @@ function initialize(){
        <div className="NavBar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
+                <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
                     Search
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -291,7 +293,7 @@ function initialize(){
             My Lists
             </h1>
        
-        {renderlistoptions}
+        {renderlistoptions()}
         <div>
             {
             renderlist(currname)
