@@ -167,6 +167,14 @@ app.post('/getlists', async(req, res) => {
     List.disconnect();
 });
 
+app.post('/createlist', async(req, res) => {
+    let input = JSON.parse(Object.keys(req.body)[0]);
+    let List = new ListBackend(input.id);
+    let result = await List.createList(input.name, input.desc);
+    List.disconnect();
+    res.end(result);
+    });
+
 // app.post('/listnamesandid', (req, res) => {
 //     let input = JSON.parse(Object.keys(req.body)[0]);
 //     let Search = new SearchBackend(input.id);
