@@ -43,6 +43,23 @@ function Settings(){
             ).then((names) => {
                 setlistnames(names)
             });
+            
+             fetch('http://localhost:3001/defaultfilters', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: JSON.stringify({
+                    'id': id
+                })
+            }).then((response) => response.json()
+            ).then((filters) => {
+                setdistance(filters.distance);
+                setrating(filters.rating);
+                setprice(filters.price);
+                setopen(filters.open);
+                setinlist(filters.in_list);
+                setnotinlist(filters.not_list);
+            });
+            
             setinitialized(true)
         }
     }
