@@ -167,7 +167,7 @@ function initialize(){
             return(
                 <>
                 <Button
-                variant = "outlined"
+                variant = "text"
                 value = {listnames}
                 type = "submit"
                 onClick = {() => setcurrname(listnames)}
