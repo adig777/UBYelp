@@ -148,10 +148,6 @@ function initialize(){
 
     }
 
-    function onsubmit(listnames){
-        setInitialized(false)
-        setcurrname(listnames)
-    }
 
     function renderlistoptions(){
         return Object.keys(alllists).map(listnames =>{
@@ -161,7 +157,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onSubmit = {() => onsubmit(listnames)}
+                onSubmit = {setcurrname(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -172,6 +168,7 @@ function initialize(){
     }
 
     function renderlist(listname){
+        setInitialized(false)
         var mainlist = alllists[listname]
         return(
             <div>
@@ -183,7 +180,7 @@ function initialize(){
                 className="deletebutton"
                 variant="outlined"
                 startIcon={<DeleteIcon />}
-                onClick={() => deletelist(mainlist.id)}
+                onClick={deletelist(mainlist.id)}
               >
                 Delete List
               </Button>
@@ -257,7 +254,7 @@ function initialize(){
                                 className="deletebutton"
                                 variant="outlined"
                                 startIcon={<DeleteIcon />}
-                                onClick={() => deletelistitem(mainlist.id, listitem.id)}
+                                onClick={deletelistitem(mainlist.id, listitem.id)}
                             >
                                 Delete
                             </Button>
