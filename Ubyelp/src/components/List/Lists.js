@@ -157,7 +157,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onSubmit = {() => setcurrname(listnames)}
+                onClick = {() => setcurrname(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -168,8 +168,8 @@ function initialize(){
     }
 
     function renderlist(listname){
-        setInitialized(false)
-    if(!currname===null){
+    if(listname!==''){
+        console.log(listname);
         var mainlist = alllists[listname]
         return(
             <div>
@@ -208,7 +208,7 @@ function initialize(){
                     />
                 {Object.keys(mainlist).map((listitem) => {
                     return (
-                        <div key={mainlist.listitem.id} >
+                        <div key={listitem.id} >
                             <Accordion defaultActiveKey="0">
                             <Accordion.Item eventKey={listitem.id}>
                             <Accordion.Header>{listitem.name}</Accordion.Header>
@@ -226,7 +226,7 @@ function initialize(){
                                     variant="text"
                                     size="small"
                                 >
-                                    {mainlist.listitem.link}
+                                    {listitem.link}
                                 </Button>
                                 &nbsp;
                                 <TextField
@@ -300,7 +300,7 @@ function initialize(){
             My Lists
             </h1>
        
-        {renderlistoptions}
+        {renderlistoptions()}
         <div>
             {
             renderlist(currname)
