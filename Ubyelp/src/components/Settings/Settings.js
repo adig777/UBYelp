@@ -2,7 +2,6 @@
 import React from "react";
 import ThemeSetter from "./ThemeSetter";
 import "./Settings.css";
-import Button from "@mui/material/Button"
 import ThemeProvider from "./Themes/ThemeProvider";
 import { TextField } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
@@ -11,14 +10,12 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import {useLocation} from "react-router-dom";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
 
 
 
 function Settings(){
     const { state } = useLocation();
-    const navigate = useNavigate();
     const{account_id} = state;
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
@@ -75,34 +72,34 @@ function Settings(){
             console.log('setrating succesful');
         });
 
-        var text = ''
+        let text = ''
         if(one){
             if(!two && !three && !four){
-                text.concat('1')
+                text = (text + '1');
             }else{
-            text.concat('1,') 
+            text = (text + '1,') 
             }
         }
         if(two){
-            if(!one && !three && !four){
-                text.concat('2')
+            if(!three && !four){
+              text = (text + '2');
             }else{
-            text.concat('2,') 
+              text = (text + '2,');
             }
         }
         if(three){
-            if(!one && !two && !four){
-                text.concat('3')
+            if(!four){
+              text = (text + '3');
             }else{
-            text.concat('3,') 
+              text = (text + '3,');
             }
         }
         if(four){
-           text.concat('4')
+          text = (text + '4');
         }
         setprice(text)
 
-        fetch('http://localhost:3001/setprice', {
+        fetch('http://localhost:3001/setpricerange', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: JSON.stringify({
@@ -162,27 +159,25 @@ function Settings(){
     }
 
     function Handlecheckbox1(e){
-        const checked = e.target.checked
-        setone(checked)
+        const check = e.target.checked
+        setone(check)
     }
     function Handlecheckbox2(e){
-        const checked = e.target.checked
-        settwo(checked)
-        
+        const check = e.target.checked
+        settwo(check)
     }
     function Handlecheckbox3(e){
-        const checked = e.target.checked
-        setthree(checked)
+        const check = e.target.checked
+        setthree(check)
     }
     function Handlecheckbox4(e){
-        const checked = e.target.checked
-        setfour(checked)
+        const check = e.target.checked
+        setfour(check)
     }
-
 
         return(
             <div className='settings'>
-             <div className="NavBar">
+                <div className="NavBar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
@@ -209,40 +204,38 @@ function Settings(){
                 </h1>
                 <div>
                     Select Default Filters:&nbsp;&nbsp;
-                <a onClick={(e) => HandleSave(e)}>
+                <Button onClick={(e) => HandleSave(e)}>
                 Save
-                </a>
+                </Button>
                 </div>
                 <div className = 'distance'>
                     Select Default Distance: 
                     <TextField
                     type = "number"
                     size = "small"
-                    placeholder = "Enter in Miles..."
+                    placeholder = "Enter in Miles..1-40000"
                     onChange = {(e) => setdistance(e.target.value)}
                     value = {distance}
                     />
                 </div>
                 <div className = 'open'>
                     Only show places that are open? 
-                    Yes <input type="radio" value={1} name="gender" onClick = {(e) => setopen(e.target.value)}/> 
-                    <input type="radio" value={0} name="gender" onClick = {(e) => setopen(e.target.value)}/> No
+                    Yes <input type="radio" value={1} name="open" onClick = {(e) => setopen(e.target.value)}/> 
+                    <input type="radio" value={0} name="open" onClick = {(e) => setopen(e.target.value)}/> No
                 </div>
                 <div className = 'rating'>
                     Select Default Rating Filter: 
                     <TextField
                     type = "number"
                     size = "small"
-                    placeholder = "1-5"
+                    placeholder = "0-5"
                     onChange = {(e) => setrating(e.target.value)}
                     value = {rating}
                     />
                 </div>
                 <div className = 'price'>
                     Select Default Price Range: 
-                    <div>
-          Cheapest first{" "}
-          $
+                    
           <input
             onChange={(e) => Handlecheckbox1(e)}
             type="checkbox"
@@ -273,7 +266,6 @@ function Settings(){
             name="filters"
             value="4"
           />
-        </div>
                 </div>
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
