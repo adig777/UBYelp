@@ -130,7 +130,7 @@ function initialize(){
         }).then((response) => response.json()
         ).then((res) => {  
         });
-
+        setInitialized(false)
     }
     function deletelistitem(list_id,list_item_id){
         fetch('http://localhost:3001/deletelist', {
@@ -145,7 +145,7 @@ function initialize(){
         ).then((res) => {  
             console.log('delete list item success')
         });
-
+        setInitialized(false)
     }
 
 
@@ -157,7 +157,7 @@ function initialize(){
                 variant = "outlined"
                 value = {listnames}
                 type = "submit"
-                onClick = {() => setcurrname(listnames)}
+                onSubmit = {() => setcurrname(listnames)}
                 >
                 {listnames}
                 </Button>
@@ -168,7 +168,7 @@ function initialize(){
     }
 
     function renderlist(listname){
-    if(listname!==''){
+    if(currname!==null){
         var mainlist = alllists[listname]
         return(
             <div>
@@ -184,8 +184,7 @@ function initialize(){
               >
                 Delete List
               </Button>
-                </h1>
-                <TextField
+              <TextField
                     type = "text"
                     size = "small"
                     label = "Change List Name"
@@ -205,11 +204,11 @@ function initialize(){
                         (e) => editlistdesc(e,mainlist.id)
                     }
                     />
-                {Object.keys(mainlist.items).map((i) => {
-                    let listitem = mainlist.items[i];
+                </h1>
+                <Accordion defaultActiveKey="0">
+                {Object.keys(mainlist).map((listitem) => {
                     return (
-                        <div key={listitem.id} >
-                            <Accordion defaultActiveKey="0">
+                        <div key={mainlist.listitem.id} >
                             <Accordion.Item eventKey={listitem.id}>
                             <Accordion.Header>{listitem.name}</Accordion.Header>
                             &nbsp;
@@ -222,12 +221,6 @@ function initialize(){
                                 value={newitemname}
                                 onChange={(e) => editlistitemname(e, listitem.id)}
                             />
-                                <Button
-                                    variant="text"
-                                    size="small"
-                                >
-                                    {listitem.link}
-                                </Button>
                                 &nbsp;
                                 <TextField
                                     type="text"
@@ -247,10 +240,7 @@ function initialize(){
                                         (e) => editlistitemrating(e, listitem.id)
                                     }
                                 />
-                                </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion>
-                            <Button
+                                   <Button
                                 size="small"
                                 className="deletebutton"
                                 variant="outlined"
@@ -258,13 +248,14 @@ function initialize(){
                                 onClick={() => deletelistitem(mainlist.id, listitem.id)}
                             >
                                 Delete
-                            </Button>
+                             </Button>
+                                </Accordion.Body>
+                                </Accordion.Item>
                         </div>
-
-
                     );
                 })
             }
+            </Accordion>
             </div>
         );
     }}
@@ -279,7 +270,7 @@ function initialize(){
        <div className="NavBar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
+                <Button onClick={() => { navigate('/about', { 'state': { 'account_id': account_id } }) }}>
                     Search
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -300,7 +291,7 @@ function initialize(){
             My Lists
             </h1>
        
-        {renderlistoptions()}
+        {renderlistoptions}
         <div>
             {
             renderlist(currname)
