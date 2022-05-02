@@ -252,6 +252,7 @@ function initialize(){
                                 />
                             </div>
                             <div>
+                             Current Rating: {listitem.rating}/5
                              <TextField
                                     type="text"
                                     size="small"
