@@ -12,8 +12,9 @@ const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 
 //TODO:
 //-Searchbar frontend to finish
-// *getList should return lists without list items
 // *Merge home page/login
+//  *About page
+//  *Nav bar in About
 //-Business bug: rating not displyed properly after select (can be left alone)
 
 class Search {

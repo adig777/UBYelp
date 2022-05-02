@@ -4,6 +4,7 @@
     .Signup {
         padding: 60px 0;
         text-align: center;
+        background-image: url("./myimage.jpeg");
         background-size: cover;
         height: 95vh;
         width: 95vw;
@@ -27,7 +28,7 @@
     h5 {
         margin-bottom: 15px;
         font-size: 40px;
-        color: rgb(7, 7, 7);
+        color: bisque;
     }
     
       

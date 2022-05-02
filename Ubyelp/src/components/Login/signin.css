@@ -1,49 +1,45 @@
 /*@media all and (min-width: 480px) {*/
-   
-   
-    .Signup {
+    .Login {
         padding: 60px 0;
         text-align: center;
         background-size: cover;
         height: 95vh;
         width: 95vw;
-
     }
     
-
-
+    
     Form {
         background-color: lightblue;
         width: 450px;
         height: 300px;
         margin-bottom: 10px;
-        padding-top: 20px;
-           
-      }
-
-
-
-    
-    h5 {
-        margin-bottom: 15px;
-        font-size: 40px;
-        color: rgb(7, 7, 7);
+        
     }
     
-      
-    .Signup form {
     
+    
+    h1 {
+        margin-bottom: -15px;
+        font-size: 40px;
+    }
+    
+    h4 {
+        font-family: monospace;
+        font-size: 18px;
+        margin-bottom: 40px;
+    }
+      
+    .Login form {
         margin: 0 auto;
         max-width: 320px;
     }
     
     .input {
         border-radius: 8px;
-        color: #221595;
+        color: #606468;
         margin-bottom: 1em;
         padding: 10px 16px;
         width: 250px;
-
     }
     
     .input-header {
@@ -55,7 +51,7 @@
         width: 100px;
         border-radius: 4px;
         font-family: Inconsolata, monospace;
-        height: 30px;
+        height: 40px;
         font-size: 16px;
         font-weight: 100;
         letter-spacing: 1px;
@@ -69,3 +65,4 @@
         font-family: monospace;
         font-size: 16px;
     }
+      /*}*/

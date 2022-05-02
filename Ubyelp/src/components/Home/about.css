@@ -1,0 +1,13 @@
+.about-h1 {
+background-color: rgb(177, 70, 13);
+}
+
+.about {
+    padding: 30px 30px;
+    text-align: center;
+    background-size: cover;
+    height: 300vh;
+    width: 300vw;
+
+}
+

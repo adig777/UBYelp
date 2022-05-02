@@ -10,13 +10,15 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import {useLocation} from "react-router-dom";
-import {useState} from "react";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button"
 
 
 function Settings(){
     const { state } = useLocation();
-    const{account_id} = state;
+    const { account_id } = state;
+    const navigate = useNavigate();
     const[distance, setdistance] = useState(100)
     const[rating, setrating] = useState(5)
     const[price, setprice] = useState('')

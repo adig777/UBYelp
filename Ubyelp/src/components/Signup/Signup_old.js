@@ -1,24 +1,8 @@
-/*
-import React from 'react';
-  
-const SignUp = () => {
-  return (
-    <div>
-      <h1>Sign Up Successful</h1>
-    </div>
-  );
-};
-  
-export default SignUp;
-
-*/
-
-
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import './signup.css';
+import './Signup.css';
 
 export default function Signup() {
     const [username, setUsername] = useState("");
@@ -57,7 +41,7 @@ export default function Signup() {
                 document.getElementById("error").innerHTML = 'Account already created with this email!';
             } else {
                 //If signup success, redirect with ?id=[id]
-                navigate('/search', { 'state': { 'account_id': res } });
+                navigate('/search', { 'state': { 'id': res } });
             }
         });
         event.preventDefault();
