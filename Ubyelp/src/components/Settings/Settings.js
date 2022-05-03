@@ -61,7 +61,7 @@ function Settings(){
                     setopen(filters.open);
                     setinlist(filters.in_list);
                     setnotinlist(filters.not_list);
-                    if(prices.length>0){
+                    if(price.length>0){
                         const prices = price.split(",")
                         if(prices.includes('1')){
                             setone(true)
