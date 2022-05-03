@@ -242,6 +242,7 @@ function Settings(){
                 Save
                 </Button>
                 </div>
+                <br />
                 <div className = 'distance'>
                     Select Default Distance: 
                     <TextField
@@ -252,11 +253,13 @@ function Settings(){
                     value = {distance}
                     />
                 </div>
+                <br />
                 <div className = 'open'>
                     Only show places that are open? 
                     Yes <input type="radio" value={1} name="open" onClick = {(e) => setopen(e.target.value)}/> 
                     <input type="radio" value={0} name="open" onClick = {(e) => setopen(e.target.value)}/> No
                 </div>
+                <br />
                 <div className = 'rting'>
                     Select Default Rating Filter: 
                     <TextField
@@ -267,6 +270,7 @@ function Settings(){
                     value = {rating}
                     />
                 </div>
+                <br />
                 <div className = 'price'>
                     Select Default Price Range: 
                     
@@ -301,6 +305,7 @@ function Settings(){
             value={four}
           />
                 </div>
+                <br />
                 <div className = "DefaultList">
                     Select Which Lists to Include/Exclude: 
 
@@ -315,7 +320,7 @@ function Settings(){
                     
                 </div>
                 
-                
+                <br />
                 <ThemeProvider>
                     <div className="themeSwitch">
                     Light/Dark Theme:&nbsp;&nbsp;
