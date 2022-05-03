@@ -30,11 +30,10 @@ app.post('/search', async (req, res) => {
     try {
         await Search.search(input.keywords, input.location, input.sort_by, input.radius, input.rating, input.price, input.open, input.in_list, input.not_list, await util.promisify((searchResults) => {
             res.end(JSON.stringify(searchResults))
+            Search.disconnect();
         }));
     } catch (exception) {
         res.end(JSON.stringify({}));
-    } finally {
-        Search.disconnect();
     }
 });
 
@@ -169,7 +168,6 @@ app.post('/getlists', async(req, res) => {
     let List = new ListBackend(input.id);
     await List.getLists((err, list) => {
         res.end(JSON.stringify(list));
-        List.disconnect();
     });
 });
 
