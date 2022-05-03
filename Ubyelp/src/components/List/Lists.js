@@ -26,7 +26,7 @@ export default function Lists(){
    
 
 function initialize(){
-   if(!initialized){
+    if (!initialized) {
    fetch('http://localhost:3001/getlists', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -51,8 +51,7 @@ function initialize(){
             'list_id': list_id,
             'newTitle': e.target.value
         })
-    }).then((response) => response.json()
-    ).then((res) => {  
+    }).then((res) => {  
     });
     }
 
@@ -67,8 +66,7 @@ function initialize(){
             'list_item_id': list_item_id,
             'name': e.target.value
         })
-    }).then((response) => response.json()
-    ).then((res) => {  
+    }).then((res) => {  
     });
     }
 
@@ -83,8 +81,7 @@ function initialize(){
             'list_id': list_id,
             'newDesc': e.target.value
         })
-    }).then((response) => response.json()
-    ).then((res) => {  
+    }).then((res) => {  
     });
     }
 
@@ -99,8 +96,7 @@ function initialize(){
             'list_item_id': list_item_id,
             'newDesc': e.target.value
         })
-    }).then((response) => response.json()
-    ).then((res) => {  
+    }).then((res) => {  
     });
     }
 
@@ -117,8 +113,7 @@ function initialize(){
             'list_item_id': list_item_id,
             'rating': e.target.value
         })
-    }).then((response) => response.json()
-    ).then((res) => {  
+    }).then((res) => {  
     });
     }   
     }
@@ -132,10 +127,10 @@ function initialize(){
                 'account_id': id,
                 'list_id': list_id
             })
-        }).then((response) => response.json()
-        ).then((res) => {  
+        }).then((res) => {  
             setInitialized(false)
-            
+            document.location.reload(true)
+            initialize()
         });
         
     }
@@ -148,11 +143,11 @@ function initialize(){
                 'list_id': list_id,
                 'list_item_id': list_item_id
             })
-        }).then((response) => response.json()
-        ).then((res) => {  
+        }).then((res) => {  
             console.log('delete list item success')
             setInitialized(false)
-            
+            document.location.reload(true)
+            initialize()
         });
     }
     
@@ -195,7 +190,9 @@ function initialize(){
                 onClick={() => deletelist(mainlist.id)}
               >
                 Delete
-              </Button>
+                    </Button>
+
+                </h1>
               <div>
               <TextField
                     type = "text"
@@ -207,8 +204,11 @@ function initialize(){
                         (e) => editlistname(e,mainlist.id)
                     }
                     />
-               </div>
+                </div>
+                <br/>
                 Current List Description: {mainlist.desc} &nbsp;&nbsp;
+                
+                 <div>
                 <TextField
                     type = "text"
                     size = "small"
@@ -219,7 +219,7 @@ function initialize(){
                         (e) => editlistdesc(e,mainlist.id)
                     }
                     />
-                </h1>
+                </div>
                 <Accordion defaultActiveKey="0">
                     {Object.keys(mainlist.items).map((i) => {
                     let listitem = mainlist.items[i];
@@ -239,8 +239,11 @@ function initialize(){
                                 onChange={(e) => editlistitemname(e,listitem.id)}
                             />
                                 &nbsp;&nbsp;
+                            <br />
+                             <br />
                             <div>
                             Current Description: {listitem.desc} &nbsp;&nbsp;
+                            <div>
                             <TextField
                                     type="text"
                                     size="small"
@@ -250,8 +253,11 @@ function initialize(){
                                     onChange={(e) => editlistitemdesc(e,listitem.id)}
                                 />
                             </div>
+                            </div>
+                            <br />
                             <div>
                              Current Rating: {listitem.rating}/5
+                            <div>
                              <TextField
                                     type="text"
                                     size="small"
@@ -263,6 +269,8 @@ function initialize(){
                                     }
                                 />
                             </div>
+                            </div>
+                            <br />
                                 &nbsp;&nbsp;
                                    <Button
                                 size="small"
@@ -292,7 +300,8 @@ function initialize(){
             >
             Save
             </Button>
-            </div>
+                </div>
+                </div>
         );
     }}
     

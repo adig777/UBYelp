@@ -8,15 +8,6 @@ var ListBackend = require('../BusinessList/ListBackend');
 
 const QUERYLIMIT = 50;  //Default: 20, Maximum: 50
 
-//mySQL tables
-
-//TODO:
-//-Searchbar frontend to finish
-// *Merge home page/login
-//  *About page
-//  *Nav bar in About
-//-Business bug: rating not displyed properly after select (can be left alone)
-
 class Search {
     constructor(account_id) {
         this.account_id = account_id

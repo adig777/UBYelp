@@ -92,8 +92,7 @@ function Settings(){
                 'id':id,
                 'newFilter': distance
             })
-        }).then((response) => response.json()
-        ).then((res) => {    
+        }).then((res) => {    
             console.log('setdistance succesful');
         });
 
@@ -104,8 +103,7 @@ function Settings(){
                 'id':id,
                 'newFilter': rating
             })
-        }).then((response) => response.json()
-        ).then((res) => {   
+        }).then((res) => {   
             console.log('setrating succesful');
         });
 
@@ -146,8 +144,7 @@ function Settings(){
                 'id':id,
                 'newprices':price
             })
-        }).then((response) => response.json()
-        ).then((res) => {   
+        }).then((res) => {   
             console.log('setpricerange succesful'); 
         });
 
@@ -158,8 +155,7 @@ function Settings(){
                 'id':id,
                 'newFilter': open
             })
-        }).then((response) => response.json()
-        ).then((res) => {   
+        }).then((res) => {   
             console.log('setopen succesful'); 
         });
 
@@ -170,8 +166,7 @@ function Settings(){
                 'id':id,
                 'listName': inlist
             })
-        }).then((response) => response.json()
-        ).then((res) => {   
+        }).then((res) => {   
             console.log('setlist successful'); 
         });
 
@@ -182,8 +177,7 @@ function Settings(){
                 'id':id,
                 'listName': notinlist
             })
-        }).then((response) => response.json()
-        ).then((res) => {    
+        }).then((res) => {    
             console.log('setnotlist successful');
         });
     e.preventDefault();
@@ -263,7 +257,7 @@ function Settings(){
                     Yes <input type="radio" value={1} name="open" onClick = {(e) => setopen(e.target.value)}/> 
                     <input type="radio" value={0} name="open" onClick = {(e) => setopen(e.target.value)}/> No
                 </div>
-                <div className = 'rating'>
+                <div className = 'rting'>
                     Select Default Rating Filter: 
                     <TextField
                     type = "number"
