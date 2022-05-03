@@ -29,11 +29,12 @@ app.post('/search', async (req, res) => {
     let Search = new SearchBackend(input.id);
     try {
         await Search.search(input.keywords, input.location, input.sort_by, input.radius, input.rating, input.price, input.open, input.in_list, input.not_list, await util.promisify((searchResults) => {
-            res.end(JSON.stringify(searchResults))
+            res.end(JSON.stringify(searchResults));
             Search.disconnect();
         }));
     } catch (exception) {
         res.end(JSON.stringify({}));
+        Search.disconnect();
     }
 });
 

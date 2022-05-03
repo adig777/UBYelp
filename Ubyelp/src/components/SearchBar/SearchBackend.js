@@ -127,8 +127,8 @@ class Search {
                 }
             }
             callback(results);
+            listBackend.disconnect();
         });
-        listBackend.disconnect();
     }
 
     //Deprecated

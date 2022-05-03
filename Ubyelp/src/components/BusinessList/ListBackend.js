@@ -132,7 +132,7 @@ class ListBackend{
         await this.#quickQuery(query);
 
         //Create list item
-        query = 'INSERT INTO ' + list_item_table + ' (`list_item_id`, `name`, `desc`, `rating`, `link`) VALUES (' + list_item_id + ', \'' + name + '\', \'' + desc + '\', ' + rating + ', \'' + link + '\');';
+        query = 'INSERT INTO ' + list_item_table + ' (`list_item_id`, `name`, `desc`, `rating`, `link`) VALUES (' + list_item_id + ', \'' + name.replace('\'', '').replace('\"', '') + '\', \'' + desc + '\', ' + rating + ', \'' + link + '\');';
         await this.#quickQuery(query);
 
         console.log('List item added');
@@ -206,11 +206,11 @@ class ListBackend{
                     'items': []
                 }
             }
-            part2(id, list, connection, this, callback);
+            part2(id, list, connection, callback);
         });
     }
 
-    async #getListsPart2(id, list, connection, List, callback) {
+    async #getListsPart2(id, list, connection, callback) {
         const lIQuery = 'SELECT list_item_id, list.name AS \'listname\', list_item.name AS \'itemname\', list_item.desc AS \'itemdesc\', list_item.rating AS \'rating\', list_item.link AS \'link\' FROM ' + account_list_relation + ' JOIN ' + list_item_relation + ' USING(list_id) JOIN ' + list_table + ' USING(list_id) JOIN ' + list_item_table + ' USING(list_item_id) WHERE `account_id`=' + id;
         connection.query(lIQuery, function (err2, rows2, fields) {
             if (err2) callback(err2, null);
@@ -226,7 +226,6 @@ class ListBackend{
                 list[rows2[i].listname]['items'].push(listitem);
             }
             callback(null, list);
-            List.disconnect();
         });
     }
 
