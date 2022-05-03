@@ -280,7 +280,7 @@ function Settings(){
             onChange={(e) => Handlecheckbox1(e)}
             type="checkbox"
             name="filters"
-            value="1"
+            value={one}
           />
           &nbsp;&nbsp;
            $$
@@ -288,7 +288,7 @@ function Settings(){
             onChange={(e) => Handlecheckbox2(e)}
             type="checkbox"
             name="filters"
-            value="2"
+            value={two}
           />
           &nbsp;&nbsp;
            $$$
@@ -296,7 +296,7 @@ function Settings(){
             onChange={(e) => Handlecheckbox3(e)}
             type="checkbox"
             name="filters"
-            value="3"
+            value={three}
           />
           &nbsp;&nbsp;
            $$$$
@@ -304,7 +304,7 @@ function Settings(){
             onChange={(e) => Handlecheckbox4(e)}
             type="checkbox"
             name="filters"
-            value="4"
+            value={four}
           />
                 </div>
                 <div className = "DefaultList">
