@@ -19,7 +19,6 @@ export default function Lists(){
    const[newlistdesc, setnewlistdesc] = useState('')
    const[newrating, setnewrating] = useState(5)
    const{account_id} = state;
-    const forceupdate = useForceUpdate()
    const[id,setid] = useState(account_id)
    const[currname, setcurrname] = useState('')
    const[alllists, setalllists] = useState([])
