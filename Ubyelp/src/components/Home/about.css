@@ -6,8 +6,15 @@ background-color: rgb(177, 70, 13);
     padding: 30px 30px;
     text-align: center;
     background-size: cover;
-    height: 300vh;
-    width: 300vw;
-
+    height: 150%;
+    width: 100%;
+    background-image: url('./myimage.jpeg');
 }
 
+.about-text{
+    color: white;
+}
+
+.about-navbar {
+    text-align: center;
+}

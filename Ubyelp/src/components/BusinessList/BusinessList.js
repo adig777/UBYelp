@@ -4,6 +4,7 @@ import Button from "@mui/material/Button"
 import Business from '../Business/Business';
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function BusinessList() {
     const { state } = useLocation();
@@ -39,6 +40,10 @@ export default function BusinessList() {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } }) }}>
                     Settings
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button startIcon={<LogoutIcon />} onClick={() => { navigate('/') }}>
+                    Log out
                 </Button>
             </div>
             <div className="BusinessList">

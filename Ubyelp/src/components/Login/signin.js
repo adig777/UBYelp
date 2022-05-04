@@ -14,7 +14,7 @@ export default signin;
 
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button"
 import './signin.css';
 import { useNavigate } from "react-router-dom";
 
@@ -52,8 +52,8 @@ export default function Login() {
        <meta charset="UTF-8"></meta>
 
         <header>
-          <h1>UBYelp</h1>
-          <h4>&#127854;It's Yelp, but UnBiased&#127856;</h4>
+          <h1 className="signin-header">UBYelp</h1>
+          <h4 className="signin-header">&#127854;It's Yelp, but UnBiased&#127856;</h4>
         </header>
 
 
@@ -82,8 +82,8 @@ export default function Login() {
             />
             </Form.Group>
 
-            <p>
-            <Button block size="lg" type="submit" disabled={!validateForm()}>
+                <p className="signin-button">
+            <Button className="signin-button" size="large" variant="outline" type="submit" disabled={!validateForm()}>
             Log In
             </Button>
             </p>
@@ -92,8 +92,8 @@ export default function Login() {
                 <label>Don't Have an Account Yet?</label>
             </p>
 
-            <p>
-            <Button block size="lg" onClick={() => { navigate('/signup') }}>
+                <p className="signin-button">
+            <Button size="large" variant="outline" onClick={() => { navigate('/signup') }}>
                 Sign Up
             </Button>
             </p>

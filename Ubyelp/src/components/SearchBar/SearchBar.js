@@ -3,6 +3,7 @@ import './SearchBar.css';
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button"
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function SearchBar() {
     const { state } = useLocation();
@@ -292,7 +293,7 @@ export default function SearchBar() {
     // Renders two input boxes. One for business and the other for location. 
     return (
         <div>
-            <div className="NavBar">
+            <div className="SearchBar-navbar">
                 UBYELP
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={() => { navigate('/search', { 'state': { 'account_id': account_id } }) }}>
@@ -309,6 +310,10 @@ export default function SearchBar() {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
                     Settings
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button startIcon={<LogoutIcon />} onClick={() => { navigate('/') }}>
+                    Log out
                 </Button>
             </div>
             <div className="SearchBar">

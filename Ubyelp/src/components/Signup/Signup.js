@@ -16,7 +16,7 @@ export default SignUp;
 
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import Button from "@mui/material/Button"
 import { useNavigate } from "react-router-dom";
 import './signup.css';
 
@@ -66,12 +66,11 @@ export default function Signup() {
         <div className="Signup">
 
 
-          <div className="form-group">
-            <h5>Sign Up</h5>
-           </div>
+            
 
             <Form onSubmit={handleSubmit}>
- 
+
+            <h5 className="signup-header">Sign Up</h5>
             <div className="form-group">   
             <p>
             <label for="username">Enter Username:</label>
@@ -127,8 +126,8 @@ export default function Signup() {
 
 
             <div className="form-group">
-                <p>
-                <Button block size="lg" type="submit" disabled={!validateForm()}>
+                <p className="signin-button">
+                <Button size="large" variant="outline" type="submit" disabled={!validateForm()}>
                     Sign Up
                 </Button>
                 </p>

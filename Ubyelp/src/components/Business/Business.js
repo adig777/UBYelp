@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import './Business.css';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 class Business extends React.Component {
     constructor(props) {

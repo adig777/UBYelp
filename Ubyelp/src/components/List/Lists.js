@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Accordion } from "react-bootstrap";
 import { ReactTinyLink } from "react-tiny-link";
 import "./Lists.css";
-
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 export default function Lists(){
@@ -329,6 +329,10 @@ function initialize(){
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Button onClick={() => { navigate('/settings', { 'state': { 'account_id': account_id } })}}>
                     Settings
+                </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button startIcon={<LogoutIcon />} onClick={() => { navigate('/') }}>
+                    Log out
                 </Button>
             </div>
          {initialize()}

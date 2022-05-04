@@ -13,6 +13,7 @@ import {useLocation} from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button"
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 function Settings(){
@@ -229,6 +230,11 @@ function Settings(){
                 <Button onClick={() => { navigate('/settings') }}>
                     Settings
                 </Button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Button startIcon={<LogoutIcon />} onClick={() => { navigate('/') }}>
+                    Log out
+                </Button>
+
             </div>
                 
                 {initialize()}
@@ -273,7 +279,6 @@ function Settings(){
                 <br />
                 <div className = 'price'>
                     Select Default Price Range: 
-                    
           <input
             onChange={(e) => Handlecheckbox1(e)}
             type="checkbox"
